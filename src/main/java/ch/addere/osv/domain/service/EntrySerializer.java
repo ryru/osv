@@ -6,6 +6,9 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import java.io.IOException;
 
+/**
+ * Serializer for open source vulnerabilities.
+ */
 public class EntrySerializer extends StdSerializer<Entry> {
 
   protected EntrySerializer() {
@@ -17,9 +20,11 @@ public class EntrySerializer extends StdSerializer<Entry> {
   }
 
   @Override
-  public void serialize(Entry value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+  public void serialize(Entry value, JsonGenerator gen, SerializerProvider provider)
+      throws IOException {
     gen.writeStartObject();
     gen.writeStringField("id", value.getId().toString());
+    gen.writeStringField("published", value.getPublished().toString());
     gen.writeStringField("modified", value.getModified().toString());
     gen.writeEndObject();
   }

@@ -8,14 +8,14 @@ import lombok.NonNull;
 import lombok.Value;
 
 /**
- * Modified is the time an entry was last modified. Time is represented as an FRC3339-formatted
+ * Published is the time an entry was published. Time is represented as an FRC3339-formatted
  * timestamp.
  */
 @EqualsAndHashCode(callSuper = true)
 @Value
-public class Modified extends EntryDate {
+public class Published extends EntryDate {
 
-  public Modified(@NonNull Instant date) {
+  public Published(@NonNull Instant date) {
     this.date = date;
   }
 
@@ -24,7 +24,7 @@ public class Modified extends EntryDate {
     return date.toString();
   }
 
-  public static Modified create(@NonNull String date) {
-    return new Modified(parse(date));
+  public static Published create(@NonNull String date) {
+    return new Published(parse(date));
   }
 }

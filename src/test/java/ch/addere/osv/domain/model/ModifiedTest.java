@@ -13,7 +13,7 @@ class ModifiedTest {
     var now = Instant.now();
     var modified = new Modified(now);
     assertThat(modified).satisfies(m -> {
-      assertThat(m.getDate()).isEqualTo(now);
+      assertThat(m.date()).isEqualTo(now);
       assertThat(m.toString()).isEqualTo(now.toString());
     });
   }

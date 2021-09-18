@@ -3,6 +3,7 @@ package ch.addere.osv.domain.service;
 import ch.addere.osv.domain.model.Entry;
 import ch.addere.osv.domain.model.fields.Id;
 import ch.addere.osv.domain.model.fields.Modified;
+import ch.addere.osv.domain.model.fields.Published;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -10,6 +11,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import java.io.IOException;
 
+/**
+ * Deserializer for open source vulnerabilities.
+ */
 public class EntryDeserializer extends StdDeserializer<Entry> {
 
   protected EntryDeserializer() {
@@ -28,10 +32,15 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
     JsonNode idNode = node.get("id");
     Id id = Id.create(trimJson(idNode.toString()));
 
-    JsonNode modifiedNote = node.get("modified");
-    Modified modified = Modified.create(trimJson(modifiedNote.toString()));
+    JsonNode modifiedNode = node.get("modified");
+    Modified modified = Modified.create(trimJson(modifiedNode.toString()));
 
-    return Entry.builder(id, modified).build();
+    JsonNode publishedNode = node.get("published");
+    Published published = Published.create(trimJson(publishedNode.toString()));
+
+    return Entry.builder(id, modified)
+        .published(published)
+        .build();
   }
 
   private static String trimJson(String json) {

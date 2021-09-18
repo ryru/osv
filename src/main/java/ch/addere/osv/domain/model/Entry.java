@@ -2,6 +2,7 @@ package ch.addere.osv.domain.model;
 
 import ch.addere.osv.domain.model.fields.Id;
 import ch.addere.osv.domain.model.fields.Modified;
+import ch.addere.osv.domain.model.fields.Published;
 import lombok.Builder;
 import lombok.Value;
 
@@ -14,6 +15,7 @@ public class Entry {
 
   Id id;
   Modified modified;
+  Published published;
 
   /**
    * Entity builder creates new entities.
