@@ -4,6 +4,7 @@ import ch.addere.osv.domain.model.Entry;
 import ch.addere.osv.domain.model.fields.Id;
 import ch.addere.osv.domain.model.fields.Modified;
 import ch.addere.osv.domain.model.fields.Published;
+import ch.addere.osv.domain.model.fields.Withdrawn;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -38,8 +39,12 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
     JsonNode publishedNode = node.get("published");
     Published published = Published.create(trimJson(publishedNode.toString()));
 
+    JsonNode withdrawnNode = node.get("withdrawn");
+    Withdrawn withdrawn = Withdrawn.create(trimJson(withdrawnNode.toString()));
+
     return Entry.builder(id, modified)
         .published(published)
+        .withdrawn(withdrawn)
         .build();
   }
 

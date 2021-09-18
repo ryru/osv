@@ -26,6 +26,7 @@ public class EntrySerializer extends StdSerializer<Entry> {
     gen.writeStringField("id", value.getId().toString());
     gen.writeStringField("published", value.getPublished().toString());
     gen.writeStringField("modified", value.getModified().toString());
+    gen.writeStringField("withdrawn", value.getWithdrawn().toString());
     gen.writeEndObject();
   }
 }
