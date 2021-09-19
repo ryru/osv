@@ -7,11 +7,13 @@ import ch.addere.osv.domain.model.fields.Published;
 import ch.addere.osv.domain.model.fields.Withdrawn;
 import lombok.Builder;
 import lombok.Value;
+import lombok.experimental.Accessors;
 
 /**
  * Entry is an open source vulnerability.
  */
 @Value
+@Accessors(fluent = true)
 @Builder(builderMethodName = "hiddenBuilder")
 public class Entry {
 

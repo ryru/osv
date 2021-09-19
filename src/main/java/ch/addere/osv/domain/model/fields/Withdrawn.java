@@ -6,6 +6,7 @@ import java.time.Instant;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.Value;
+import lombok.experimental.Accessors;
 
 /**
  * Withdrawn is the time an entry should be considered to have been withdrawn. Time is represented
@@ -13,6 +14,7 @@ import lombok.Value;
  */
 @EqualsAndHashCode(callSuper = true)
 @Value
+@Accessors(fluent = true)
 public class Withdrawn extends EntryDate {
 
   public Withdrawn(@NonNull Instant date) {

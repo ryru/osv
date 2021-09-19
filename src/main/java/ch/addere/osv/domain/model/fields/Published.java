@@ -6,6 +6,7 @@ import java.time.Instant;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.Value;
+import lombok.experimental.Accessors;
 
 /**
  * Published is the time an entry was published. Time is represented as an FRC3339-formatted
@@ -13,6 +14,7 @@ import lombok.Value;
  */
 @EqualsAndHashCode(callSuper = true)
 @Value
+@Accessors(fluent = true)
 public class Published extends EntryDate {
 
   public Published(@NonNull Instant date) {

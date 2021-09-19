@@ -53,8 +53,8 @@ class IdTest {
     String stringId = "OSV-2020-111";
     Id sut = create("OSV-2020-111");
     assertThat(sut).satisfies(i -> {
-      assertThat(i.getDb().toString()).isEqualTo("OSV");
-      assertThat(i.getEntryId()).isEqualTo("2020-111");
+      assertThat(i.database().toString()).isEqualTo("OSV");
+      assertThat(i.entryId()).isEqualTo("2020-111");
       assertThat(i.toJson()).isEqualTo(stringId);
     });
   }

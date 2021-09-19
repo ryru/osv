@@ -6,19 +6,21 @@ import static java.util.stream.Collectors.joining;
 
 import lombok.NonNull;
 import lombok.Value;
+import lombok.experimental.Accessors;
 
 /**
  * ID is a unique identifier for a vulnerability entry.
  */
 @Value
+@Accessors(fluent = true)
 public class Id implements Jsonable {
 
-  Database db;
+  Database database;
   String entryId;
 
   @Override
   public String toJson() {
-    return db.name() + "-" + entryId;
+    return database.name() + "-" + entryId;
   }
 
   /**

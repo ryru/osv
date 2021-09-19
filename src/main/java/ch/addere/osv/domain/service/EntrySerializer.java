@@ -23,11 +23,11 @@ public class EntrySerializer extends StdSerializer<Entry> {
   public void serialize(Entry value, JsonGenerator gen, SerializerProvider provider)
       throws IOException {
     gen.writeStartObject();
-    gen.writeStringField("id", value.getId().toJson());
-    gen.writeStringField("published", value.getPublished().toJson());
-    gen.writeStringField("modified", value.getModified().toJson());
-    gen.writeStringField("withdrawn", value.getWithdrawn().toJson());
-    gen.writeStringField("details", value.getDetails().toJson());
+    gen.writeStringField("id", value.id().toJson());
+    gen.writeStringField("published", value.published().toJson());
+    gen.writeStringField("modified", value.modified().toJson());
+    gen.writeStringField("withdrawn", value.withdrawn().toJson());
+    gen.writeStringField("details", value.details().toJson());
     gen.writeEndObject();
   }
 }
