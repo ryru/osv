@@ -1,6 +1,5 @@
 package ch.addere.osv.domain.model.fields;
 
-import lombok.NonNull;
 import lombok.Value;
 import lombok.experimental.Accessors;
 
@@ -9,24 +8,10 @@ import lombok.experimental.Accessors;
  */
 @Value
 @Accessors(fluent = true)
-public class Details implements Jsonable {
+public class Details {
 
   public static final String DETAILS = "details";
 
   String details;
 
-  /**
-   * Create a details object from a string.
-   *
-   * @param details describing the vulnerability more detailed
-   * @return an instance of a parsed detail description
-   */
-  public static Details create(@NonNull String details) {
-    return new Details(details);
-  }
-
-  @Override
-  public String toJson() {
-    return details.replace("\\n", "\n");
-  }
 }

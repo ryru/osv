@@ -9,14 +9,14 @@ import lombok.experimental.Accessors;
  */
 @Value
 @Accessors(fluent = true)
-public class Summary implements Jsonable {
+public class Summary {
 
   public static final String SUMMARY = "summary";
 
   String summary;
 
   /**
-   * An open source vulnerability.
+   * An open source vulnerability summary.
    *
    * @param summary sum up of the vulnerability
    */
@@ -26,10 +26,5 @@ public class Summary implements Jsonable {
           "summary must not exceed 120 characters, was " + summary.length());
     }
     this.summary = summary;
-  }
-
-  @Override
-  public String toJson() {
-    return summary;
   }
 }

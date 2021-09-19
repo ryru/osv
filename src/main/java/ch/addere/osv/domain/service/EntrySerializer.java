@@ -9,6 +9,12 @@ import static ch.addere.osv.domain.model.fields.Summary.SUMMARY;
 import static ch.addere.osv.domain.model.fields.Withdrawn.WITHDRAWN;
 
 import ch.addere.osv.domain.model.Entry;
+import ch.addere.osv.domain.model.fields.Details;
+import ch.addere.osv.domain.model.fields.Id;
+import ch.addere.osv.domain.model.fields.Modified;
+import ch.addere.osv.domain.model.fields.Published;
+import ch.addere.osv.domain.model.fields.Summary;
+import ch.addere.osv.domain.model.fields.Withdrawn;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
@@ -31,22 +37,46 @@ public class EntrySerializer extends StdSerializer<Entry> {
   public void serialize(Entry entry, JsonGenerator gen, SerializerProvider provider)
       throws IOException {
     gen.writeStartObject();
-    gen.writeStringField(ID, entry.id().toJson());
-    gen.writeStringField(PUBLISHED, entry.published().toJson());
-    gen.writeStringField(MODIFIED, entry.modified().toJson());
+    gen.writeStringField(ID, writeId(entry.id()));
+    gen.writeStringField(PUBLISHED, writePublished(entry.published()));
+    gen.writeStringField(MODIFIED, writeModified(entry.modified()));
     writeAliases(entry, gen);
-    gen.writeStringField(WITHDRAWN, entry.withdrawn().toJson());
-    gen.writeStringField(SUMMARY, entry.summary().toJson());
-    gen.writeStringField(DETAILS, entry.details().toJson());
+    gen.writeStringField(WITHDRAWN, writeWithdrawn(entry.withdrawn()));
+    gen.writeStringField(SUMMARY, writeSummary(entry.summary()));
+    gen.writeStringField(DETAILS, writeDetails(entry.details()));
     gen.writeEndObject();
+  }
+
+  private static String writeId(Id id) {
+    return id.database().name() + "-" + id.entryId();
+  }
+
+  private static String writePublished(Published published) {
+    return published.published().toString();
+  }
+
+  private static String writeModified(Modified modified) {
+    return modified.modified().toString();
   }
 
   private static void writeAliases(Entry value, JsonGenerator gen) throws IOException {
     gen.writeFieldName(ALIASES);
     gen.writeStartArray();
     for (var aliasId : value.aliases().aliases()) {
-      gen.writeString(aliasId.toJson());
+      gen.writeString(writeId(aliasId));
     }
     gen.writeEndArray();
+  }
+
+  private static String writeWithdrawn(Withdrawn withdrawn) {
+    return withdrawn.withdrawn().toString();
+  }
+
+  private static String writeSummary(Summary summary) {
+    return summary.summary();
+  }
+
+  private static String writeDetails(Details details) {
+    return details.details().replace("\\n", "\n");
   }
 }

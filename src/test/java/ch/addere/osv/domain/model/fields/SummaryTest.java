@@ -22,7 +22,6 @@ class SummaryTest {
     assertThat(summary).satisfies(s -> {
       assertThat(s).isNotNull();
       assertThat(s.summary()).isEqualTo(text);
-      assertThat(s.toJson()).isEqualTo(text);
     });
   }
 

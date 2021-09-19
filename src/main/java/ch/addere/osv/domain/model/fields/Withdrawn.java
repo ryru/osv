@@ -1,7 +1,5 @@
 package ch.addere.osv.domain.model.fields;
 
-import static java.time.Instant.parse;
-
 import java.time.Instant;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
@@ -23,12 +21,7 @@ public class Withdrawn extends EntryDate {
     this.date = date;
   }
 
-  @Override
-  public String toJson() {
-    return date.toString();
-  }
-
-  public static Withdrawn create(@NonNull String date) {
-    return new Withdrawn(parse(date));
+  public Instant withdrawn() {
+    return this.date;
   }
 }
