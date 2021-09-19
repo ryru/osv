@@ -1,4 +1,4 @@
-package ch.addere.osv.domain.model;
+package ch.addere.osv.domain.model.fields;
 
 import static ch.addere.osv.domain.model.fields.Id.Database.GO;
 import static ch.addere.osv.domain.model.fields.Id.Database.OSV;
@@ -8,7 +8,6 @@ import static ch.addere.osv.domain.model.fields.Id.Database.UVI;
 import static ch.addere.osv.domain.model.fields.Id.create;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.addere.osv.domain.model.fields.Id;
 import org.junit.jupiter.api.Test;
 
 class IdTest {
@@ -58,41 +57,4 @@ class IdTest {
       assertThat(i.toJson()).isEqualTo(stringId);
     });
   }
-/*
-
-  @Test
-  void testFromStringWithAdditionalQuotes() {
-    String stringId = "OSV-2020-111";
-    Id sut = create("\"OSV-2020-111\"");
-    assertThat(sut).satisfies(i -> {
-      assertThat(i.getDb().name()).isEqualTo("OSV");
-      assertThat(i.getEntryId()).isEqualTo("2020-111");
-      assertThat(i.toString()).isEqualTo(stringId);
-    });
-  }
-*/
-
-/*
-  @Test
-  void testCveFromString() {
-    String stringId = "CVE-2021-3114";
-    Id sut = create(stringId);
-    assertThat(sut).satisfies(id -> {
-      assertThat(id.getDb().name()).isEqualTo("CVE");
-      assertThat(id.getEntryId()).isEqualTo("2021-3114");
-      assertThat(id.toString()).isEqualTo(stringId);
-    });
-  }
-*/
-
-/*  @Test
-  void testGhsaFromString() {
-    String stringId = "GHSA-vp9c-fpxx-744v";
-    Id sut = create(stringId);
-    assertThat(sut).satisfies(id -> {
-      assertThat(id.getDb().name()).isEqualTo("GHSA");
-      assertThat(id.getEntryId()).isEqualTo("vp9c-fpxx-744v");
-      assertThat(id.toString()).isEqualTo(stringId);
-    });
-  }*/
 }

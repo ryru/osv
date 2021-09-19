@@ -11,6 +11,8 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 public class Summary implements Jsonable {
 
+  public static final String SUMMARY = "summary";
+
   String summary;
 
   /**

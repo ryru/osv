@@ -1,5 +1,12 @@
 package ch.addere.osv.domain.service;
 
+import static ch.addere.osv.domain.model.fields.Details.DETAILS;
+import static ch.addere.osv.domain.model.fields.Id.ID;
+import static ch.addere.osv.domain.model.fields.Modified.MODIFIED;
+import static ch.addere.osv.domain.model.fields.Published.PUBLISHED;
+import static ch.addere.osv.domain.model.fields.Summary.SUMMARY;
+import static ch.addere.osv.domain.model.fields.Withdrawn.WITHDRAWN;
+
 import ch.addere.osv.domain.model.Entry;
 import ch.addere.osv.domain.model.fields.Details;
 import ch.addere.osv.domain.model.fields.Id;
@@ -32,22 +39,22 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
     ObjectCodec codec = p.getCodec();
     JsonNode node = codec.readTree(p);
 
-    JsonNode idNode = node.get("id");
+    JsonNode idNode = node.get(ID);
     Id id = Id.create(trimJson(idNode.toString()));
 
-    JsonNode modifiedNode = node.get("modified");
+    JsonNode modifiedNode = node.get(MODIFIED);
     Modified modified = Modified.create(trimJson(modifiedNode.toString()));
 
-    JsonNode publishedNode = node.get("published");
+    JsonNode publishedNode = node.get(PUBLISHED);
     Published published = Published.create(trimJson(publishedNode.toString()));
 
-    JsonNode withdrawnNode = node.get("withdrawn");
+    JsonNode withdrawnNode = node.get(WITHDRAWN);
     Withdrawn withdrawn = Withdrawn.create(trimJson(withdrawnNode.toString()));
 
-    JsonNode summaryNode = node.get("summary");
+    JsonNode summaryNode = node.get(SUMMARY);
     Summary summary = new Summary(trimJson(summaryNode.toString()));
 
-    JsonNode detailsNode = node.get("details");
+    JsonNode detailsNode = node.get(DETAILS);
     Details details = Details.create(trimJson(detailsNode.toString()));
 
     return Entry.builder(id, modified)

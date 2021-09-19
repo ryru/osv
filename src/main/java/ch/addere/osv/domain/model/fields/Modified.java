@@ -17,6 +17,8 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 public class Modified extends EntryDate {
 
+  public static final String MODIFIED = "modified";
+
   public Modified(@NonNull Instant date) {
     this.date = date;
   }

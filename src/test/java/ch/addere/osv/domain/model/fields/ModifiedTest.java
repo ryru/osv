@@ -1,8 +1,7 @@
-package ch.addere.osv.domain.model;
+package ch.addere.osv.domain.model.fields;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.addere.osv.domain.model.fields.Modified;
 import java.time.Instant;
 import org.junit.jupiter.api.Test;
 

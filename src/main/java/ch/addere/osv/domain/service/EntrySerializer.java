@@ -1,5 +1,12 @@
 package ch.addere.osv.domain.service;
 
+import static ch.addere.osv.domain.model.fields.Details.DETAILS;
+import static ch.addere.osv.domain.model.fields.Id.ID;
+import static ch.addere.osv.domain.model.fields.Modified.MODIFIED;
+import static ch.addere.osv.domain.model.fields.Published.PUBLISHED;
+import static ch.addere.osv.domain.model.fields.Summary.SUMMARY;
+import static ch.addere.osv.domain.model.fields.Withdrawn.WITHDRAWN;
+
 import ch.addere.osv.domain.model.Entry;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -23,12 +30,12 @@ public class EntrySerializer extends StdSerializer<Entry> {
   public void serialize(Entry value, JsonGenerator gen, SerializerProvider provider)
       throws IOException {
     gen.writeStartObject();
-    gen.writeStringField("id", value.id().toJson());
-    gen.writeStringField("published", value.published().toJson());
-    gen.writeStringField("modified", value.modified().toJson());
-    gen.writeStringField("withdrawn", value.withdrawn().toJson());
-    gen.writeStringField("summary", value.summary().toJson());
-    gen.writeStringField("details", value.details().toJson());
+    gen.writeStringField(ID, value.id().toJson());
+    gen.writeStringField(PUBLISHED, value.published().toJson());
+    gen.writeStringField(MODIFIED, value.modified().toJson());
+    gen.writeStringField(WITHDRAWN, value.withdrawn().toJson());
+    gen.writeStringField(SUMMARY, value.summary().toJson());
+    gen.writeStringField(DETAILS, value.details().toJson());
     gen.writeEndObject();
   }
 }

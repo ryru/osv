@@ -15,6 +15,8 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 public class Id implements Jsonable {
 
+  public static final String ID = "id";
+
   Database database;
   String entryId;
 
