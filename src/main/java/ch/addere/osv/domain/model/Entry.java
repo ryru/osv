@@ -4,6 +4,7 @@ import ch.addere.osv.domain.model.fields.Details;
 import ch.addere.osv.domain.model.fields.Id;
 import ch.addere.osv.domain.model.fields.Modified;
 import ch.addere.osv.domain.model.fields.Published;
+import ch.addere.osv.domain.model.fields.Summary;
 import ch.addere.osv.domain.model.fields.Withdrawn;
 import lombok.Builder;
 import lombok.Value;
@@ -21,6 +22,7 @@ public class Entry {
   Modified modified;
   Published published;
   Withdrawn withdrawn;
+  Summary summary;
   Details details;
 
   /**

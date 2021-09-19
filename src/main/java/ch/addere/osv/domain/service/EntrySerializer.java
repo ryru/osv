@@ -27,6 +27,7 @@ public class EntrySerializer extends StdSerializer<Entry> {
     gen.writeStringField("published", value.published().toJson());
     gen.writeStringField("modified", value.modified().toJson());
     gen.writeStringField("withdrawn", value.withdrawn().toJson());
+    gen.writeStringField("summary", value.summary().toJson());
     gen.writeStringField("details", value.details().toJson());
     gen.writeEndObject();
   }
