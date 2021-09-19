@@ -1,5 +1,6 @@
 package ch.addere.osv.domain.service;
 
+import static ch.addere.osv.domain.model.fields.Aliases.ALIASES;
 import static ch.addere.osv.domain.model.fields.Details.DETAILS;
 import static ch.addere.osv.domain.model.fields.Id.ID;
 import static ch.addere.osv.domain.model.fields.Modified.MODIFIED;
@@ -27,15 +28,25 @@ public class EntrySerializer extends StdSerializer<Entry> {
   }
 
   @Override
-  public void serialize(Entry value, JsonGenerator gen, SerializerProvider provider)
+  public void serialize(Entry entry, JsonGenerator gen, SerializerProvider provider)
       throws IOException {
     gen.writeStartObject();
-    gen.writeStringField(ID, value.id().toJson());
-    gen.writeStringField(PUBLISHED, value.published().toJson());
-    gen.writeStringField(MODIFIED, value.modified().toJson());
-    gen.writeStringField(WITHDRAWN, value.withdrawn().toJson());
-    gen.writeStringField(SUMMARY, value.summary().toJson());
-    gen.writeStringField(DETAILS, value.details().toJson());
+    gen.writeStringField(ID, entry.id().toJson());
+    gen.writeStringField(PUBLISHED, entry.published().toJson());
+    gen.writeStringField(MODIFIED, entry.modified().toJson());
+    writeAliases(entry, gen);
+    gen.writeStringField(WITHDRAWN, entry.withdrawn().toJson());
+    gen.writeStringField(SUMMARY, entry.summary().toJson());
+    gen.writeStringField(DETAILS, entry.details().toJson());
     gen.writeEndObject();
+  }
+
+  private static void writeAliases(Entry value, JsonGenerator gen) throws IOException {
+    gen.writeFieldName(ALIASES);
+    gen.writeStartArray();
+    for (var aliasId : value.aliases().aliases()) {
+      gen.writeString(aliasId.toJson());
+    }
+    gen.writeEndArray();
   }
 }

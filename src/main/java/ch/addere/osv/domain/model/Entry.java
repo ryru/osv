@@ -1,5 +1,6 @@
 package ch.addere.osv.domain.model;
 
+import ch.addere.osv.domain.model.fields.Aliases;
 import ch.addere.osv.domain.model.fields.Details;
 import ch.addere.osv.domain.model.fields.Id;
 import ch.addere.osv.domain.model.fields.Modified;
@@ -20,6 +21,7 @@ public class Entry {
 
   Id id;
   Modified modified;
+  Aliases aliases;
   Published published;
   Withdrawn withdrawn;
   Summary summary;

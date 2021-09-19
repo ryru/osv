@@ -50,7 +50,8 @@ public class Id implements Jsonable {
     OSV("OSV"),
     PYSEC("PYSEC"),
     RUSTSEC("RUSTSEC"),
-    UVI("UVI");
+    UVI("UVI"),
+    CVE("CVE");
 
     private final String database;
 

@@ -1,5 +1,6 @@
 package ch.addere.osv.domain.service;
 
+import static ch.addere.osv.domain.model.fields.Aliases.ALIASES;
 import static ch.addere.osv.domain.model.fields.Details.DETAILS;
 import static ch.addere.osv.domain.model.fields.Id.ID;
 import static ch.addere.osv.domain.model.fields.Modified.MODIFIED;
@@ -8,6 +9,7 @@ import static ch.addere.osv.domain.model.fields.Summary.SUMMARY;
 import static ch.addere.osv.domain.model.fields.Withdrawn.WITHDRAWN;
 
 import ch.addere.osv.domain.model.Entry;
+import ch.addere.osv.domain.model.fields.Aliases;
 import ch.addere.osv.domain.model.fields.Details;
 import ch.addere.osv.domain.model.fields.Id;
 import ch.addere.osv.domain.model.fields.Modified;
@@ -20,6 +22,8 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Deserializer for open source vulnerabilities.
@@ -45,6 +49,16 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
     JsonNode modifiedNode = node.get(MODIFIED);
     Modified modified = Modified.create(trimJson(modifiedNode.toString()));
 
+    JsonNode aliasesNode = node.get(ALIASES);
+    List<Id> ids = new ArrayList<>();
+    if (aliasesNode.isArray()) {
+      for (final JsonNode objNode : aliasesNode) {
+        ids.add(Id.create(trimJson(objNode.toString())));
+      }
+    }
+    Aliases aliases = new Aliases(ids);
+    //Aliases aliases = Aliases.create(trimJson(aliasesNode.toString()));
+
     JsonNode publishedNode = node.get(PUBLISHED);
     Published published = Published.create(trimJson(publishedNode.toString()));
 
@@ -60,6 +74,7 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
     return Entry.builder(id, modified)
         .published(published)
         .withdrawn(withdrawn)
+        .aliases(aliases)
         .summary(summary)
         .details(details)
         .build();
