@@ -11,13 +11,13 @@ import lombok.Value;
  * ID is a unique identifier for a vulnerability entry.
  */
 @Value
-public class Id {
+public class Id implements Jsonable {
 
   Database db;
   String entryId;
 
   @Override
-  public String toString() {
+  public String toJson() {
     return db.name() + "-" + entryId;
   }
 

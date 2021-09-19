@@ -1,5 +1,6 @@
 package ch.addere.osv.domain.model;
 
+import ch.addere.osv.domain.model.fields.Details;
 import ch.addere.osv.domain.model.fields.Id;
 import ch.addere.osv.domain.model.fields.Modified;
 import ch.addere.osv.domain.model.fields.Published;
@@ -18,6 +19,7 @@ public class Entry {
   Modified modified;
   Published published;
   Withdrawn withdrawn;
+  Details details;
 
   /**
    * Entity builder creates new entities.

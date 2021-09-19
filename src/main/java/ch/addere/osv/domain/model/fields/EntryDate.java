@@ -5,7 +5,7 @@ import java.time.Instant;
 /**
  * Date representation of all date fields within the specification.
  */
-public abstract class EntryDate {
+public abstract class EntryDate implements Jsonable {
 
   Instant date;
 

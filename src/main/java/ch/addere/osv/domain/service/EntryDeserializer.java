@@ -1,6 +1,7 @@
 package ch.addere.osv.domain.service;
 
 import ch.addere.osv.domain.model.Entry;
+import ch.addere.osv.domain.model.fields.Details;
 import ch.addere.osv.domain.model.fields.Id;
 import ch.addere.osv.domain.model.fields.Modified;
 import ch.addere.osv.domain.model.fields.Published;
@@ -42,9 +43,13 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
     JsonNode withdrawnNode = node.get("withdrawn");
     Withdrawn withdrawn = Withdrawn.create(trimJson(withdrawnNode.toString()));
 
+    JsonNode detailsNode = node.get("details");
+    Details details = Details.create(trimJson(detailsNode.toString()));
+
     return Entry.builder(id, modified)
         .published(published)
         .withdrawn(withdrawn)
+        .details(details)
         .build();
   }
 

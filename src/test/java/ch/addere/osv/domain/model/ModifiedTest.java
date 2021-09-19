@@ -14,7 +14,7 @@ class ModifiedTest {
     var modified = new Modified(now);
     assertThat(modified).satisfies(m -> {
       assertThat(m.date()).isEqualTo(now);
-      assertThat(m.toString()).isEqualTo(now.toString());
+      assertThat(m.toJson()).isEqualTo(now.toString());
     });
   }
 
@@ -22,6 +22,6 @@ class ModifiedTest {
   void testDateAndTimeParsing() {
     var stringDate = "2021-03-10T23:20:53Z";
     var sut = Modified.create(stringDate);
-    assertThat(sut.toString()).isEqualTo("2021-03-10T23:20:53Z");
+    assertThat(sut.toJson()).isEqualTo("2021-03-10T23:20:53Z");
   }
 }

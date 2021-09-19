@@ -20,7 +20,7 @@ public class Withdrawn extends EntryDate {
   }
 
   @Override
-  public String toString() {
+  public String toJson() {
     return date.toString();
   }
 
