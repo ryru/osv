@@ -29,7 +29,9 @@ public class Id {
     PYSEC("PYSEC"),
     RUSTSEC("RUSTSEC"),
     UVI("UVI"),
-    CVE("CVE");
+    CVE("CVE"),
+    NPM("NPM"),
+    SNYK("SNYK");
 
     private final String database;
 

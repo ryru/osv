@@ -5,6 +5,7 @@ import ch.addere.osv.domain.model.fields.Details;
 import ch.addere.osv.domain.model.fields.Id;
 import ch.addere.osv.domain.model.fields.Modified;
 import ch.addere.osv.domain.model.fields.Published;
+import ch.addere.osv.domain.model.fields.Related;
 import ch.addere.osv.domain.model.fields.Summary;
 import ch.addere.osv.domain.model.fields.Withdrawn;
 import lombok.Builder;
@@ -22,6 +23,7 @@ public class Entry {
   Id id;
   Modified modified;
   Aliases aliases;
+  Related related;
   Published published;
   Withdrawn withdrawn;
   Summary summary;

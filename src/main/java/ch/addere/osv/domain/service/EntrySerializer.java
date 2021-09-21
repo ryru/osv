@@ -5,6 +5,7 @@ import static ch.addere.osv.domain.model.fields.Details.DETAILS;
 import static ch.addere.osv.domain.model.fields.Id.ID;
 import static ch.addere.osv.domain.model.fields.Modified.MODIFIED;
 import static ch.addere.osv.domain.model.fields.Published.PUBLISHED;
+import static ch.addere.osv.domain.model.fields.Related.RELATED;
 import static ch.addere.osv.domain.model.fields.Summary.SUMMARY;
 import static ch.addere.osv.domain.model.fields.Withdrawn.WITHDRAWN;
 
@@ -41,6 +42,7 @@ public class EntrySerializer extends StdSerializer<Entry> {
     gen.writeStringField(PUBLISHED, writePublished(entry.published()));
     gen.writeStringField(MODIFIED, writeModified(entry.modified()));
     writeAliases(entry, gen);
+    writeRelated(entry, gen);
     gen.writeStringField(WITHDRAWN, writeWithdrawn(entry.withdrawn()));
     gen.writeStringField(SUMMARY, writeSummary(entry.summary()));
     gen.writeStringField(DETAILS, writeDetails(entry.details()));
@@ -64,6 +66,15 @@ public class EntrySerializer extends StdSerializer<Entry> {
     gen.writeStartArray();
     for (var aliasId : value.aliases().aliases()) {
       gen.writeString(writeId(aliasId));
+    }
+    gen.writeEndArray();
+  }
+
+  private static void writeRelated(Entry value, JsonGenerator gen) throws IOException {
+    gen.writeFieldName(RELATED);
+    gen.writeStartArray();
+    for (var relatedId : value.related().related()) {
+      gen.writeString(writeId(relatedId));
     }
     gen.writeEndArray();
   }

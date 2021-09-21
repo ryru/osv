@@ -6,6 +6,7 @@ import static ch.addere.osv.domain.model.fields.Id.Database.valueOf;
 import static ch.addere.osv.domain.model.fields.Id.ID;
 import static ch.addere.osv.domain.model.fields.Modified.MODIFIED;
 import static ch.addere.osv.domain.model.fields.Published.PUBLISHED;
+import static ch.addere.osv.domain.model.fields.Related.RELATED;
 import static ch.addere.osv.domain.model.fields.Summary.SUMMARY;
 import static ch.addere.osv.domain.model.fields.Withdrawn.WITHDRAWN;
 import static java.util.Arrays.stream;
@@ -18,6 +19,7 @@ import ch.addere.osv.domain.model.fields.Id;
 import ch.addere.osv.domain.model.fields.Id.Database;
 import ch.addere.osv.domain.model.fields.Modified;
 import ch.addere.osv.domain.model.fields.Published;
+import ch.addere.osv.domain.model.fields.Related;
 import ch.addere.osv.domain.model.fields.Summary;
 import ch.addere.osv.domain.model.fields.Withdrawn;
 import com.fasterxml.jackson.core.JsonParser;
@@ -51,6 +53,7 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
     Id id = readId(node.get(ID));
     Modified modified = readModified(node.get(MODIFIED));
     Aliases aliases = readAliases(node.get(ALIASES));
+    Related related = readRelated(node.get(RELATED));
     Published published = readPublished(node.get(PUBLISHED));
     Withdrawn withdrawn = readWithdrawn(node.get(WITHDRAWN));
     Summary summary = readSummary(node.get(SUMMARY));
@@ -60,6 +63,7 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
         .published(published)
         .withdrawn(withdrawn)
         .aliases(aliases)
+        .related(related)
         .summary(summary)
         .details(details)
         .build();
@@ -88,6 +92,16 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
       }
     }
     return new Aliases(ids);
+  }
+
+  private static Related readRelated(JsonNode relatedNode) {
+    List<Id> ids = new ArrayList<>();
+    if (relatedNode.isArray()) {
+      for (final JsonNode idNote : relatedNode) {
+        ids.add(readId(idNote));
+      }
+    }
+    return new Related(ids);
   }
 
   private static Published readPublished(JsonNode publishedNode) {

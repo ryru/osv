@@ -1,9 +1,12 @@
 package ch.addere.osv.domain.model.fields;
 
+import static ch.addere.osv.domain.model.fields.Id.Database.CVE;
 import static ch.addere.osv.domain.model.fields.Id.Database.GO;
+import static ch.addere.osv.domain.model.fields.Id.Database.NPM;
 import static ch.addere.osv.domain.model.fields.Id.Database.OSV;
 import static ch.addere.osv.domain.model.fields.Id.Database.PYSEC;
 import static ch.addere.osv.domain.model.fields.Id.Database.RUSTSEC;
+import static ch.addere.osv.domain.model.fields.Id.Database.SNYK;
 import static ch.addere.osv.domain.model.fields.Id.Database.UVI;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -37,6 +40,27 @@ class IdTest {
     Id rustsecId = new Id(RUSTSEC, "2020-111");
     String id = rustsecId.toString();
     assertThat(id).isEqualTo("RUSTSEC-2020-111");
+  }
+
+  @Test
+  void testCveToJson() {
+    Id cveId = new Id(CVE, "2020-111");
+    String id = cveId.toString();
+    assertThat(id).isEqualTo("CVE-2020-111");
+  }
+
+  @Test
+  void testNPMToJson() {
+    Id npmId = new Id(NPM, "2020-111");
+    String id = npmId.toString();
+    assertThat(id).isEqualTo("NPM-2020-111");
+  }
+
+  @Test
+  void testSNYKToJson() {
+    Id snykId = new Id(SNYK, "2020-111");
+    String id = snykId.toString();
+    assertThat(id).isEqualTo("SNYK-2020-111");
   }
 
   @Test
