@@ -8,10 +8,10 @@ import java.util.List;
  */
 public final class IdAggregate {
 
-  public static final String ALIASES = "aliases";
-  public static final String RELATED = "related";
+  public static final String ALIASES_KEY = "aliases";
+  public static final String RELATED_KEY = "related";
 
-  final List<Id> related;
+  private final List<Id> related;
 
   private IdAggregate(List<Id> related) {
     this.related = related;

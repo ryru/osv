@@ -11,7 +11,8 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 public class Summary {
 
-  public static final String SUMMARY = "summary";
+  public static final String SUMMARY_KEY = "summary";
+  private static final int MAX_LENGTH = 120;
 
   String summary;
 
@@ -21,7 +22,7 @@ public class Summary {
    * @param summary sum up of the vulnerability
    */
   public Summary(@NonNull String summary) {
-    if (summary.length() > 120) {
+    if (summary.length() > MAX_LENGTH) {
       throw new IllegalArgumentException(
           "summary must not exceed 120 characters, was " + summary.length());
     }

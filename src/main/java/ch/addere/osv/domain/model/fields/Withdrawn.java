@@ -15,7 +15,7 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 public class Withdrawn extends EntryDate {
 
-  public static final String WITHDRAWN = "withdrawn";
+  public static final String WITHDRAWN_KEY = "withdrawn";
 
   public Withdrawn(@NonNull Instant date) {
     this.date = date;

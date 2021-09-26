@@ -29,7 +29,7 @@ public class Deserializer {
     try {
       return mapper.readValue(json, Entry.class);
     } catch (JsonProcessingException e) {
-      throw new ParserException("deserialization error");
+      throw new ParserException("deserialization error", e);
     }
   }
 }

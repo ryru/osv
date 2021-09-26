@@ -1,13 +1,13 @@
 package ch.addere.osv.domain.service;
 
-import static ch.addere.osv.domain.model.fields.Details.DETAILS;
-import static ch.addere.osv.domain.model.fields.Id.ID;
-import static ch.addere.osv.domain.model.fields.IdAggregate.ALIASES;
-import static ch.addere.osv.domain.model.fields.IdAggregate.RELATED;
-import static ch.addere.osv.domain.model.fields.Modified.MODIFIED;
-import static ch.addere.osv.domain.model.fields.Published.PUBLISHED;
-import static ch.addere.osv.domain.model.fields.Summary.SUMMARY;
-import static ch.addere.osv.domain.model.fields.Withdrawn.WITHDRAWN;
+import static ch.addere.osv.domain.model.fields.Details.DETAILS_KEY;
+import static ch.addere.osv.domain.model.fields.Id.ID_KEY;
+import static ch.addere.osv.domain.model.fields.IdAggregate.ALIASES_KEY;
+import static ch.addere.osv.domain.model.fields.IdAggregate.RELATED_KEY;
+import static ch.addere.osv.domain.model.fields.Modified.MODIFIED_KEY;
+import static ch.addere.osv.domain.model.fields.Published.PUBLISHED_KEY;
+import static ch.addere.osv.domain.model.fields.Summary.SUMMARY_KEY;
+import static ch.addere.osv.domain.model.fields.Withdrawn.WITHDRAWN_KEY;
 
 import ch.addere.osv.domain.model.Entry;
 import ch.addere.osv.domain.model.fields.Details;
@@ -40,11 +40,11 @@ public class EntrySerializer extends StdSerializer<Entry> {
   public void serialize(Entry entry, JsonGenerator gen, SerializerProvider provider)
       throws IOException {
     gen.writeStartObject();
-    gen.writeStringField(ID, writeId(entry.id()));
+    gen.writeStringField(ID_KEY, writeId(entry.id()));
     if (entry.published().isPresent()) {
-      gen.writeStringField(PUBLISHED, writePublished(entry.published().get()));
+      gen.writeStringField(PUBLISHED_KEY, writePublished(entry.published().get()));
     }
-    gen.writeStringField(MODIFIED, writeModified(entry.modified()));
+    gen.writeStringField(MODIFIED_KEY, writeModified(entry.modified()));
     if (entry.aliases().isPresent()) {
       writeAliases(entry, gen);
     }
@@ -52,13 +52,13 @@ public class EntrySerializer extends StdSerializer<Entry> {
       writeRelated(entry, gen);
     }
     if (entry.withdrawn().isPresent()) {
-      gen.writeStringField(WITHDRAWN, writeWithdrawn(entry.withdrawn().get()));
+      gen.writeStringField(WITHDRAWN_KEY, writeWithdrawn(entry.withdrawn().get()));
     }
     if (entry.summary().isPresent()) {
-      gen.writeStringField(SUMMARY, writeSummary(entry.summary().get()));
+      gen.writeStringField(SUMMARY_KEY, writeSummary(entry.summary().get()));
     }
     if (entry.details().isPresent()) {
-      gen.writeStringField(DETAILS, writeDetails(entry.details().get()));
+      gen.writeStringField(DETAILS_KEY, writeDetails(entry.details().get()));
     }
     gen.writeEndObject();
   }
@@ -76,7 +76,7 @@ public class EntrySerializer extends StdSerializer<Entry> {
   }
 
   private static void writeAliases(Entry value, JsonGenerator gen) throws IOException {
-    gen.writeFieldName(ALIASES);
+    gen.writeFieldName(ALIASES_KEY);
     gen.writeStartArray();
     var ids = value.aliases().map(IdAggregate::ids).orElse(List.of());
     for (var id : ids) {
@@ -86,7 +86,7 @@ public class EntrySerializer extends StdSerializer<Entry> {
   }
 
   private static void writeRelated(Entry value, JsonGenerator gen) throws IOException {
-    gen.writeFieldName(RELATED);
+    gen.writeFieldName(RELATED_KEY);
     gen.writeStartArray();
     var ids = value.related().map(IdAggregate::ids).orElse(List.of());
     for (var id : ids) {

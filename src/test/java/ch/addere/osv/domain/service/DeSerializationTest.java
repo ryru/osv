@@ -18,6 +18,7 @@ class DeSerializationTest {
       + "\"modified\":\"2021-03-10T23:20:53Z\"}";
   private static final String GO_OSV_PATH = "src/test/resources/go-osv.json";
 
+  @SuppressWarnings("PMD.UnusedPrivateMethod")
   private static Stream<String> nonParsableOpenSourceVulnerabilitiesReports() {
     return Stream.of(
         EMPTY_FILE,
@@ -25,6 +26,7 @@ class DeSerializationTest {
     );
   }
 
+  @SuppressWarnings("PMD.UnusedPrivateMethod")
   private static Stream<String> parsableOpenSourceVulnerabilitiesReports() {
     return Stream.of(
         MINIMAL_OSV,

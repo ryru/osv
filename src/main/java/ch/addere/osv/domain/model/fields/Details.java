@@ -10,8 +10,9 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 public class Details {
 
-  public static final String DETAILS = "details";
+  public static final String DETAILS_KEY = "details";
 
+  @SuppressWarnings("PMD.AvoidFieldNameMatchingTypeNameRule")
   String details;
 
 }

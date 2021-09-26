@@ -1,14 +1,14 @@
 package ch.addere.osv.domain.service;
 
-import static ch.addere.osv.domain.model.fields.Details.DETAILS;
+import static ch.addere.osv.domain.model.fields.Details.DETAILS_KEY;
 import static ch.addere.osv.domain.model.fields.Id.Database.valueOf;
-import static ch.addere.osv.domain.model.fields.Id.ID;
-import static ch.addere.osv.domain.model.fields.IdAggregate.ALIASES;
-import static ch.addere.osv.domain.model.fields.IdAggregate.RELATED;
-import static ch.addere.osv.domain.model.fields.Modified.MODIFIED;
-import static ch.addere.osv.domain.model.fields.Published.PUBLISHED;
-import static ch.addere.osv.domain.model.fields.Summary.SUMMARY;
-import static ch.addere.osv.domain.model.fields.Withdrawn.WITHDRAWN;
+import static ch.addere.osv.domain.model.fields.Id.ID_KEY;
+import static ch.addere.osv.domain.model.fields.IdAggregate.ALIASES_KEY;
+import static ch.addere.osv.domain.model.fields.IdAggregate.RELATED_KEY;
+import static ch.addere.osv.domain.model.fields.Modified.MODIFIED_KEY;
+import static ch.addere.osv.domain.model.fields.Published.PUBLISHED_KEY;
+import static ch.addere.osv.domain.model.fields.Summary.SUMMARY_KEY;
+import static ch.addere.osv.domain.model.fields.Withdrawn.WITHDRAWN_KEY;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.joining;
 
@@ -51,20 +51,20 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
     ObjectCodec codec = p.getCodec();
     JsonNode node = codec.readTree(p);
 
-    if (node.get(ID) == null) {
+    if (node.get(ID_KEY) == null) {
       throw new ParserException("deserialization error");
     }
-    Id id = readId(node.get(ID));
-    if (node.get(MODIFIED) == null) {
+    Id id = readId(node.get(ID_KEY));
+    if (node.get(MODIFIED_KEY) == null) {
       throw new ParserException("deserialization error");
     }
-    Modified modified = readModified(node.get(MODIFIED));
-    Optional<IdAggregate> aliases = readAliases(node.get(ALIASES));
-    Optional<IdAggregate> related = readRelated(node.get(RELATED));
-    Optional<Published> published = readPublished(node.get(PUBLISHED));
-    Optional<Withdrawn> withdrawn = readWithdrawn(node.get(WITHDRAWN));
-    Optional<Summary> summary = readSummary(node.get(SUMMARY));
-    Optional<Details> details = readDetails(node.get(DETAILS));
+    Modified modified = readModified(node.get(MODIFIED_KEY));
+    Optional<IdAggregate> aliases = readAliases(node.get(ALIASES_KEY));
+    Optional<IdAggregate> related = readRelated(node.get(RELATED_KEY));
+    Optional<Published> published = readPublished(node.get(PUBLISHED_KEY));
+    Optional<Withdrawn> withdrawn = readWithdrawn(node.get(WITHDRAWN_KEY));
+    Optional<Summary> summary = readSummary(node.get(SUMMARY_KEY));
+    Optional<Details> details = readDetails(node.get(DETAILS_KEY));
 
     return Entry.builder(id, modified)
         .published(published)

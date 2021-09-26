@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 public class Id {
 
-  public static final String ID = "id";
+  public static final String ID_KEY = "id";
 
   Database database;
   String entryId;
@@ -39,6 +39,7 @@ public class Id {
       database = databaseName;
     }
 
+    @Override
     public String toString() {
       return database;
     }

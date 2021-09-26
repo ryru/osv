@@ -7,9 +7,9 @@ import java.time.Instant;
  */
 public abstract class EntryDate {
 
-  Instant date;
+  protected Instant date;
 
-  public Instant date() {
+  protected Instant date() {
     return date;
   }
 }

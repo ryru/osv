@@ -14,58 +14,60 @@ import org.junit.jupiter.api.Test;
 
 class IdTest {
 
+  private static final String ENTRY_ID = "2020-111";
+
   @Test
   void testGoToJson() {
-    Id goId = new Id(GO, "2020-111");
+    Id goId = new Id(GO, ENTRY_ID);
     String id = goId.toString();
     assertThat(id).isEqualTo("GO-2020-111");
   }
 
   @Test
   void testOsvToJson() {
-    Id osvId = new Id(OSV, "2020-111");
+    Id osvId = new Id(OSV, ENTRY_ID);
     String id = osvId.toString();
     assertThat(id).isEqualTo("OSV-2020-111");
   }
 
   @Test
   void testPysecToJson() {
-    Id pysecId = new Id(PYSEC, "2020-111");
+    Id pysecId = new Id(PYSEC, ENTRY_ID);
     String id = pysecId.toString();
     assertThat(id).isEqualTo("PYSEC-2020-111");
   }
 
   @Test
   void testRustsecToJson() {
-    Id rustsecId = new Id(RUSTSEC, "2020-111");
+    Id rustsecId = new Id(RUSTSEC, ENTRY_ID);
     String id = rustsecId.toString();
     assertThat(id).isEqualTo("RUSTSEC-2020-111");
   }
 
   @Test
   void testCveToJson() {
-    Id cveId = new Id(CVE, "2020-111");
+    Id cveId = new Id(CVE, ENTRY_ID);
     String id = cveId.toString();
     assertThat(id).isEqualTo("CVE-2020-111");
   }
 
   @Test
   void testNpmToJson() {
-    Id npmId = new Id(NPM, "2020-111");
+    Id npmId = new Id(NPM, ENTRY_ID);
     String id = npmId.toString();
     assertThat(id).isEqualTo("NPM-2020-111");
   }
 
   @Test
   void testSnykToJson() {
-    Id snykId = new Id(SNYK, "2020-111");
+    Id snykId = new Id(SNYK, ENTRY_ID);
     String id = snykId.toString();
     assertThat(id).isEqualTo("SNYK-2020-111");
   }
 
   @Test
   void testUviToJson() {
-    Id uviId = new Id(UVI, "2020-111");
+    Id uviId = new Id(UVI, ENTRY_ID);
     String id = uviId.toString();
     assertThat(id).isEqualTo("UVI-2020-111");
   }
