@@ -1,15 +1,14 @@
 package ch.addere.osv.domain.model.fields;
 
+import java.util.ArrayList;
 import java.util.List;
 import lombok.NonNull;
-import lombok.Value;
 import lombok.experimental.Accessors;
 
 /**
  * Related specifies a list of IDs of closely related vulnerabilities. E.g. same issue in alternate
  * ecosystems.
  */
-@Value
 @Accessors(fluent = true)
 public class Related {
 
@@ -26,6 +25,15 @@ public class Related {
     if (related.isEmpty()) {
       throw new IllegalArgumentException("related must not be empty");
     }
-    this.related = related;
+    this.related = new ArrayList<>(related);
+  }
+
+  /**
+   * Get a list of related vulnerabilities.
+   *
+   * @return a copy of related
+   */
+  public List<Id> related() {
+    return new ArrayList<>(related);
   }
 }

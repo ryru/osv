@@ -1,14 +1,13 @@
 package ch.addere.osv.domain.model.fields;
 
+import java.util.ArrayList;
 import java.util.List;
 import lombok.NonNull;
-import lombok.Value;
 import lombok.experimental.Accessors;
 
 /**
  * Aliases is a list of IDs of the same vulnerability in other databases.
  */
-@Value
 @Accessors(fluent = true)
 public class Aliases {
 
@@ -25,6 +24,15 @@ public class Aliases {
     if (aliases.isEmpty()) {
       throw new IllegalArgumentException("aliases must not be empty");
     }
-    this.aliases = aliases;
+    this.aliases = new ArrayList<>(aliases);
+  }
+
+  /**
+   * Get a list of vulnerability aliases.
+   *
+   * @return a copy of aliases
+   */
+  public List<Id> aliases() {
+    return new ArrayList<>(aliases);
   }
 }
