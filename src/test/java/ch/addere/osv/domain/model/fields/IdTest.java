@@ -50,14 +50,14 @@ class IdTest {
   }
 
   @Test
-  void testNPMToJson() {
+  void testNpmToJson() {
     Id npmId = new Id(NPM, "2020-111");
     String id = npmId.toString();
     assertThat(id).isEqualTo("NPM-2020-111");
   }
 
   @Test
-  void testSNYKToJson() {
+  void testSnykToJson() {
     Id snykId = new Id(SNYK, "2020-111");
     String id = snykId.toString();
     assertThat(id).isEqualTo("SNYK-2020-111");

@@ -17,3 +17,5 @@ jobs:
         uses: gradle/wrapper-validation-action@v1
       - name: Build with Gradle
         run: ./gradlew build
+      - name: Verify
+        run: ./gradlew check
