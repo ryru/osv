@@ -8,6 +8,7 @@ import ch.addere.osv.domain.model.fields.Published;
 import ch.addere.osv.domain.model.fields.Related;
 import ch.addere.osv.domain.model.fields.Summary;
 import ch.addere.osv.domain.model.fields.Withdrawn;
+import java.util.Optional;
 import lombok.Builder;
 import lombok.Value;
 import lombok.experimental.Accessors;
@@ -22,12 +23,12 @@ public class Entry {
 
   Id id;
   Modified modified;
-  Aliases aliases;
-  Related related;
-  Published published;
-  Withdrawn withdrawn;
-  Summary summary;
-  Details details;
+  Optional<Aliases> aliases;
+  Optional<Related> related;
+  Optional<Published> published;
+  Optional<Withdrawn> withdrawn;
+  Optional<Summary> summary;
+  Optional<Details> details;
 
   /**
    * Entity builder creates new entities.

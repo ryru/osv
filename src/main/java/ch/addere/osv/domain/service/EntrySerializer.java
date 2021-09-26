@@ -39,13 +39,25 @@ public class EntrySerializer extends StdSerializer<Entry> {
       throws IOException {
     gen.writeStartObject();
     gen.writeStringField(ID, writeId(entry.id()));
-    gen.writeStringField(PUBLISHED, writePublished(entry.published()));
+    if (entry.published().isPresent()) {
+      gen.writeStringField(PUBLISHED, writePublished(entry.published().get()));
+    }
     gen.writeStringField(MODIFIED, writeModified(entry.modified()));
-    writeAliases(entry, gen);
-    writeRelated(entry, gen);
-    gen.writeStringField(WITHDRAWN, writeWithdrawn(entry.withdrawn()));
-    gen.writeStringField(SUMMARY, writeSummary(entry.summary()));
-    gen.writeStringField(DETAILS, writeDetails(entry.details()));
+    if (entry.aliases().isPresent()) {
+      writeAliases(entry, gen);
+    }
+    if (entry.withdrawn().isPresent()) {
+      writeRelated(entry, gen);
+    }
+    if (entry.withdrawn().isPresent()) {
+      gen.writeStringField(WITHDRAWN, writeWithdrawn(entry.withdrawn().get()));
+    }
+    if (entry.summary().isPresent()) {
+      gen.writeStringField(SUMMARY, writeSummary(entry.summary().get()));
+    }
+    if (entry.details().isPresent()) {
+      gen.writeStringField(DETAILS, writeDetails(entry.details().get()));
+    }
     gen.writeEndObject();
   }
 
@@ -64,7 +76,7 @@ public class EntrySerializer extends StdSerializer<Entry> {
   private static void writeAliases(Entry value, JsonGenerator gen) throws IOException {
     gen.writeFieldName(ALIASES);
     gen.writeStartArray();
-    for (var aliasId : value.aliases().aliases()) {
+    for (var aliasId : value.aliases().get().aliases()) {
       gen.writeString(writeId(aliasId));
     }
     gen.writeEndArray();
@@ -73,7 +85,7 @@ public class EntrySerializer extends StdSerializer<Entry> {
   private static void writeRelated(Entry value, JsonGenerator gen) throws IOException {
     gen.writeFieldName(RELATED);
     gen.writeStartArray();
-    for (var relatedId : value.related().related()) {
+    for (var relatedId : value.related().get().related()) {
       gen.writeString(writeId(relatedId));
     }
     gen.writeEndArray();

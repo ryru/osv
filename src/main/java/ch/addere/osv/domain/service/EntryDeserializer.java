@@ -31,6 +31,8 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import lombok.NonNull;
 
 /**
  * Deserializer for open source vulnerabilities.
@@ -50,14 +52,20 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
     ObjectCodec codec = p.getCodec();
     JsonNode node = codec.readTree(p);
 
+    if (node.get(ID) == null) {
+      throw new ParserException("deserialization error");
+    }
     Id id = readId(node.get(ID));
+    if (node.get(MODIFIED) == null) {
+      throw new ParserException("deserialization error");
+    }
     Modified modified = readModified(node.get(MODIFIED));
-    Aliases aliases = readAliases(node.get(ALIASES));
-    Related related = readRelated(node.get(RELATED));
-    Published published = readPublished(node.get(PUBLISHED));
-    Withdrawn withdrawn = readWithdrawn(node.get(WITHDRAWN));
-    Summary summary = readSummary(node.get(SUMMARY));
-    Details details = readDetails(node.get(DETAILS));
+    Optional<Aliases> aliases = readAliases(node.get(ALIASES));
+    Optional<Related> related = readRelated(node.get(RELATED));
+    Optional<Published> published = readPublished(node.get(PUBLISHED));
+    Optional<Withdrawn> withdrawn = readWithdrawn(node.get(WITHDRAWN));
+    Optional<Summary> summary = readSummary(node.get(SUMMARY));
+    Optional<Details> details = readDetails(node.get(DETAILS));
 
     return Entry.builder(id, modified)
         .published(published)
@@ -84,49 +92,79 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
     return new Modified(instant);
   }
 
-  private static Aliases readAliases(JsonNode aliasesNode) {
+  private static Optional<Aliases> readAliases(JsonNode aliasesNode) {
+    if (isEmptyJsonNode(aliasesNode)) {
+      return Optional.empty();
+    }
     List<Id> ids = new ArrayList<>();
     if (aliasesNode.isArray()) {
       for (final JsonNode idNote : aliasesNode) {
         ids.add(readId(idNote));
       }
     }
-    return new Aliases(ids);
+    if (ids.isEmpty()) {
+      return Optional.empty();
+    } else {
+      return Optional.of(new Aliases(ids));
+    }
   }
 
-  private static Related readRelated(JsonNode relatedNode) {
+  private static Optional<Related> readRelated(JsonNode relatedNode) {
+    if (isEmptyJsonNode(relatedNode)) {
+      return Optional.empty();
+    }
     List<Id> ids = new ArrayList<>();
     if (relatedNode.isArray()) {
       for (final JsonNode idNote : relatedNode) {
         ids.add(readId(idNote));
       }
     }
-    return new Related(ids);
+    if (ids.isEmpty()) {
+      return Optional.empty();
+    } else {
+      return Optional.of(new Related(ids));
+    }
   }
 
-  private static Published readPublished(JsonNode publishedNode) {
+  private static Optional<Published> readPublished(JsonNode publishedNode) {
+    if (isEmptyJsonNode(publishedNode)) {
+      return Optional.empty();
+    }
     Instant instant = readInstant(publishedNode);
-    return new Published(instant);
+    return Optional.of(new Published(instant));
   }
 
-  private static Withdrawn readWithdrawn(JsonNode withdrawnNode) {
+  private static Optional<Withdrawn> readWithdrawn(JsonNode withdrawnNode) {
+    if (isEmptyJsonNode(withdrawnNode)) {
+      return Optional.empty();
+    }
     Instant instant = readInstant(withdrawnNode);
-    return new Withdrawn(instant);
+    return Optional.of(new Withdrawn(instant));
   }
 
-  private static Summary readSummary(JsonNode summary) {
-    return new Summary(trimJson(summary.toString()));
+  private static Optional<Summary> readSummary(JsonNode summary) {
+    if (isEmptyJsonNode(summary)) {
+      return Optional.empty();
+    }
+    return Optional.of(new Summary(trimJson(summary.toString())));
   }
 
-  private static Details readDetails(JsonNode details) {
-    return new Details(trimJson(details.toString()));
+  private static Optional<Details> readDetails(JsonNode details) {
+    if (isEmptyJsonNode(details)) {
+      return Optional.empty();
+    }
+    return Optional.of(new Details(trimJson(details.toString())));
+  }
+
+  private static boolean isEmptyJsonNode(JsonNode relatedNode) {
+    return relatedNode == null || relatedNode.isNull();
   }
 
   private static Instant readInstant(JsonNode jsonNode) {
     return Instant.parse(trimJson(jsonNode.toString()));
   }
 
-  private static String trimJson(String json) {
+  private static String trimJson(@NonNull String json) {
     return json.trim().replace("\"", "");
   }
 }
