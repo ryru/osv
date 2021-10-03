@@ -1,25 +1,24 @@
 package ch.addere.osv.domain.service;
 
-import static ch.addere.osv.domain.model.fields.Aliases.ALIASES;
 import static ch.addere.osv.domain.model.fields.Details.DETAILS;
 import static ch.addere.osv.domain.model.fields.Id.Database.valueOf;
 import static ch.addere.osv.domain.model.fields.Id.ID;
+import static ch.addere.osv.domain.model.fields.IdAggregate.ALIASES;
+import static ch.addere.osv.domain.model.fields.IdAggregate.RELATED;
 import static ch.addere.osv.domain.model.fields.Modified.MODIFIED;
 import static ch.addere.osv.domain.model.fields.Published.PUBLISHED;
-import static ch.addere.osv.domain.model.fields.Related.RELATED;
 import static ch.addere.osv.domain.model.fields.Summary.SUMMARY;
 import static ch.addere.osv.domain.model.fields.Withdrawn.WITHDRAWN;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.joining;
 
 import ch.addere.osv.domain.model.Entry;
-import ch.addere.osv.domain.model.fields.Aliases;
 import ch.addere.osv.domain.model.fields.Details;
 import ch.addere.osv.domain.model.fields.Id;
 import ch.addere.osv.domain.model.fields.Id.Database;
+import ch.addere.osv.domain.model.fields.IdAggregate;
 import ch.addere.osv.domain.model.fields.Modified;
 import ch.addere.osv.domain.model.fields.Published;
-import ch.addere.osv.domain.model.fields.Related;
 import ch.addere.osv.domain.model.fields.Summary;
 import ch.addere.osv.domain.model.fields.Withdrawn;
 import com.fasterxml.jackson.core.JsonParser;
@@ -60,8 +59,8 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
       throw new ParserException("deserialization error");
     }
     Modified modified = readModified(node.get(MODIFIED));
-    Optional<Aliases> aliases = readAliases(node.get(ALIASES));
-    Optional<Related> related = readRelated(node.get(RELATED));
+    Optional<IdAggregate> aliases = readAliases(node.get(ALIASES));
+    Optional<IdAggregate> related = readRelated(node.get(RELATED));
     Optional<Published> published = readPublished(node.get(PUBLISHED));
     Optional<Withdrawn> withdrawn = readWithdrawn(node.get(WITHDRAWN));
     Optional<Summary> summary = readSummary(node.get(SUMMARY));
@@ -92,7 +91,7 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
     return new Modified(instant);
   }
 
-  private static Optional<Aliases> readAliases(JsonNode aliasesNode) {
+  private static Optional<IdAggregate> readAliases(JsonNode aliasesNode) {
     if (isEmptyJsonNode(aliasesNode)) {
       return Optional.empty();
     }
@@ -105,11 +104,11 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
     if (ids.isEmpty()) {
       return Optional.empty();
     } else {
-      return Optional.of(new Aliases(ids));
+      return Optional.of(IdAggregate.of(ids.toArray(new Id[0])));
     }
   }
 
-  private static Optional<Related> readRelated(JsonNode relatedNode) {
+  private static Optional<IdAggregate> readRelated(JsonNode relatedNode) {
     if (isEmptyJsonNode(relatedNode)) {
       return Optional.empty();
     }
@@ -122,7 +121,7 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
     if (ids.isEmpty()) {
       return Optional.empty();
     } else {
-      return Optional.of(new Related(ids));
+      return Optional.of(IdAggregate.of(ids.toArray(new Id[0])));
     }
   }
 

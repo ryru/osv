@@ -1,11 +1,10 @@
 package ch.addere.osv.domain.model;
 
-import ch.addere.osv.domain.model.fields.Aliases;
 import ch.addere.osv.domain.model.fields.Details;
 import ch.addere.osv.domain.model.fields.Id;
+import ch.addere.osv.domain.model.fields.IdAggregate;
 import ch.addere.osv.domain.model.fields.Modified;
 import ch.addere.osv.domain.model.fields.Published;
-import ch.addere.osv.domain.model.fields.Related;
 import ch.addere.osv.domain.model.fields.Summary;
 import ch.addere.osv.domain.model.fields.Withdrawn;
 import java.util.Optional;
@@ -23,8 +22,8 @@ public class Entry {
 
   Id id;
   Modified modified;
-  Optional<Aliases> aliases;
-  Optional<Related> related;
+  Optional<IdAggregate> aliases;
+  Optional<IdAggregate> related;
   Optional<Published> published;
   Optional<Withdrawn> withdrawn;
   Optional<Summary> summary;
@@ -41,4 +40,13 @@ public class Entry {
   public static EntryBuilder builder(Id id, Modified modified) {
     return hiddenBuilder().id(id).modified(modified);
   }
+
+  public Id getId() {
+    return id;
+  }
+
+  public Modified getModified() {
+    return modified;
+  }
+
 }

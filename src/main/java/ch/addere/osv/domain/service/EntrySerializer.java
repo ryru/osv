@@ -1,17 +1,18 @@
 package ch.addere.osv.domain.service;
 
-import static ch.addere.osv.domain.model.fields.Aliases.ALIASES;
 import static ch.addere.osv.domain.model.fields.Details.DETAILS;
 import static ch.addere.osv.domain.model.fields.Id.ID;
+import static ch.addere.osv.domain.model.fields.IdAggregate.ALIASES;
+import static ch.addere.osv.domain.model.fields.IdAggregate.RELATED;
 import static ch.addere.osv.domain.model.fields.Modified.MODIFIED;
 import static ch.addere.osv.domain.model.fields.Published.PUBLISHED;
-import static ch.addere.osv.domain.model.fields.Related.RELATED;
 import static ch.addere.osv.domain.model.fields.Summary.SUMMARY;
 import static ch.addere.osv.domain.model.fields.Withdrawn.WITHDRAWN;
 
 import ch.addere.osv.domain.model.Entry;
 import ch.addere.osv.domain.model.fields.Details;
 import ch.addere.osv.domain.model.fields.Id;
+import ch.addere.osv.domain.model.fields.IdAggregate;
 import ch.addere.osv.domain.model.fields.Modified;
 import ch.addere.osv.domain.model.fields.Published;
 import ch.addere.osv.domain.model.fields.Summary;
@@ -20,6 +21,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Serializer for open source vulnerabilities.
@@ -76,8 +78,9 @@ public class EntrySerializer extends StdSerializer<Entry> {
   private static void writeAliases(Entry value, JsonGenerator gen) throws IOException {
     gen.writeFieldName(ALIASES);
     gen.writeStartArray();
-    for (var aliasId : value.aliases().get().aliases()) {
-      gen.writeString(writeId(aliasId));
+    var ids = value.aliases().map(IdAggregate::ids).orElse(List.of());
+    for (var id : ids) {
+      gen.writeString(writeId(id));
     }
     gen.writeEndArray();
   }
@@ -85,8 +88,9 @@ public class EntrySerializer extends StdSerializer<Entry> {
   private static void writeRelated(Entry value, JsonGenerator gen) throws IOException {
     gen.writeFieldName(RELATED);
     gen.writeStartArray();
-    for (var relatedId : value.related().get().related()) {
-      gen.writeString(writeId(relatedId));
+    var ids = value.related().map(IdAggregate::ids).orElse(List.of());
+    for (var id : ids) {
+      gen.writeString(writeId(id));
     }
     gen.writeEndArray();
   }
