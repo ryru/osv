@@ -38,7 +38,7 @@ class DeSerializationTest {
   @MethodSource("nonParsableOpenSourceVulnerabilitiesReports")
   void testInvalidOpenSourceVulnerabilityReport(String jsonData) {
     assertThatThrownBy(() -> deserializeSerialize(jsonData))
-        .isInstanceOf(ParserException.class)
+        .isInstanceOf(OsvParserException.class)
         .hasMessage("deserialization error");
   }
 

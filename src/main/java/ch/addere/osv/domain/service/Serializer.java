@@ -9,7 +9,7 @@ import java.io.IOException;
 /**
  * JSON serializer.
  */
-public class Serializer {
+class Serializer {
 
   /**
    * Serialize an open source vulnerability Entry to JSON.

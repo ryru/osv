@@ -11,5 +11,55 @@
   ],
   "withdrawn": "2021-04-13T15:00:03Z",
   "summary": "incorrect P-224 curve operations",
-  "details": "The P224() Curve implementation can in rare circumstances generate incorrect outputs, including returning invalid points from ScalarMult.\n\nThe crypto/x509 and golang.org/x/crypto/ocsp (but not crypto/tls) packages support P-224 ECDSA keys, but they are not supported by publicly trusted certificate authorities. No other standard library or golang.org/x/crypto package supports or uses the P-224 curve.\n\nThe incorrect output was found by the elliptic-curve-differential-fuzzer project running on OSS-Fuzz and reported by Philippe Antoine (Catena cyber)."
+  "details": "The P224() Curve implementation can in rare circumstances generate incorrect outputs, including returning invalid points from ScalarMult.\n\nThe crypto/x509 and golang.org/x/crypto/ocsp (but not crypto/tls) packages support P-224 ECDSA keys, but they are not supported by publicly trusted certificate authorities. No other standard library or golang.org/x/crypto package supports or uses the P-224 curve.\n\nThe incorrect output was found by the elliptic-curve-differential-fuzzer project running on OSS-Fuzz and reported by Philippe Antoine (Catena cyber).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "Go",
+        "name": "crypto/elliptic"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            {
+              "introduced": "1.0.0"
+            },
+            {
+              "fixed": "1.14.14"
+            },
+            {
+              "introduced": "1.15.0"
+            },
+            {
+              "fixed": "1.15.17"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "2.8.0",
+        "2.8.0.post1",
+        "2.8.0.post2",
+        "2.9.0",
+        "2.9.1",
+        "2.9.2"
+      ],
+      "ecosystem_specific": {
+        "functions": [
+          "P224"
+        ],
+        "module": "std",
+        "severity": "HIGH"
+      },
+      "database_specific": {
+        "CWE": "CWE-327",
+        "CVSS": {
+          "Score": "6.8",
+          "Severity": "Medium",
+          "Code": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:C/C:H/I:N/A:N"
+        }
+      }
+    }
+  ]
 }

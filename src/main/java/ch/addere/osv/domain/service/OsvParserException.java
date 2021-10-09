@@ -5,13 +5,13 @@ import java.io.IOException;
 /**
  * Exception for all kind of JSON OSV parsing.
  */
-public class ParserException extends IOException {
+public class OsvParserException extends IOException {
 
-  public ParserException(String message) {
+  public OsvParserException(String message) {
     super(message);
   }
 
-  public ParserException(String message, Throwable cause) {
+  public OsvParserException(String message, Throwable cause) {
     super(message, cause);
   }
 }

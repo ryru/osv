@@ -1,5 +1,6 @@
 package ch.addere.osv.domain.service;
 
+import static ch.addere.osv.domain.model.fields.Affected.AFFECTED_KEY;
 import static ch.addere.osv.domain.model.fields.Details.DETAILS_KEY;
 import static ch.addere.osv.domain.model.fields.Id.ID_KEY;
 import static ch.addere.osv.domain.model.fields.IdAggregate.ALIASES_KEY;
@@ -8,8 +9,19 @@ import static ch.addere.osv.domain.model.fields.Modified.MODIFIED_KEY;
 import static ch.addere.osv.domain.model.fields.Published.PUBLISHED_KEY;
 import static ch.addere.osv.domain.model.fields.Summary.SUMMARY_KEY;
 import static ch.addere.osv.domain.model.fields.Withdrawn.WITHDRAWN_KEY;
+import static ch.addere.osv.domain.model.fields.affected.DatabaseSpecific.DATABASE_SPECIFIC_KEY;
+import static ch.addere.osv.domain.model.fields.affected.EcosystemSpecific.ECOSYSTEM_SPECIFIC_KEY;
+import static ch.addere.osv.domain.model.fields.affected.Package.PACKAGE_KEY;
+import static ch.addere.osv.domain.model.fields.affected.Ranges.RANGES_KEY;
+import static ch.addere.osv.domain.model.fields.affected.Versions.VERSIONS_KEY;
+import static ch.addere.osv.domain.model.fields.affected.pckg.Ecosystem.ECOSYSTEM_KEY;
+import static ch.addere.osv.domain.model.fields.affected.pckg.Name.NAME_KEY;
+import static ch.addere.osv.domain.model.fields.affected.pckg.Purl.PURL_KEY;
+import static ch.addere.osv.domain.model.fields.affected.ranges.Event.EVENTS_KEY;
+import static ch.addere.osv.domain.model.fields.affected.ranges.Type.TYPE_KEY;
 
 import ch.addere.osv.domain.model.Entry;
+import ch.addere.osv.domain.model.fields.Affected;
 import ch.addere.osv.domain.model.fields.Details;
 import ch.addere.osv.domain.model.fields.Id;
 import ch.addere.osv.domain.model.fields.IdAggregate;
@@ -17,11 +29,22 @@ import ch.addere.osv.domain.model.fields.Modified;
 import ch.addere.osv.domain.model.fields.Published;
 import ch.addere.osv.domain.model.fields.Summary;
 import ch.addere.osv.domain.model.fields.Withdrawn;
+import ch.addere.osv.domain.model.fields.affected.DatabaseSpecific;
+import ch.addere.osv.domain.model.fields.affected.EcosystemSpecific;
+import ch.addere.osv.domain.model.fields.affected.Package;
+import ch.addere.osv.domain.model.fields.affected.Ranges;
+import ch.addere.osv.domain.model.fields.affected.Versions;
+import ch.addere.osv.domain.model.fields.affected.pckg.Ecosystem;
+import ch.addere.osv.domain.model.fields.affected.pckg.Name;
+import ch.addere.osv.domain.model.fields.affected.pckg.Purl;
+import ch.addere.osv.domain.model.fields.affected.ranges.Event;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Serializer for open source vulnerabilities.
@@ -59,6 +82,9 @@ public class EntrySerializer extends StdSerializer<Entry> {
     }
     if (entry.details().isPresent()) {
       gen.writeStringField(DETAILS_KEY, writeDetails(entry.details().get()));
+    }
+    if (!entry.affected().isEmpty()) {
+      writeAffected(entry, gen);
     }
     gen.writeEndObject();
   }
@@ -105,5 +131,110 @@ public class EntrySerializer extends StdSerializer<Entry> {
 
   private static String writeDetails(Details details) {
     return details.details().replace("\\n", "\n");
+  }
+
+  private static void writeAffected(Entry value, JsonGenerator gen) throws IOException {
+    gen.writeFieldName(AFFECTED_KEY);
+    gen.writeStartArray();
+    List<Affected> affected = new ArrayList<>(value.affected());
+    if (!affected.isEmpty()) {
+      for (Affected aff : affected) {
+        gen.writeStartObject();
+        if (aff.pckge() != null) {
+          gen.writeFieldName(PACKAGE_KEY);
+          writePackage(aff.pckge(), gen);
+        }
+        if (!aff.ranges().isEmpty()) {
+          gen.writeFieldName(RANGES_KEY);
+          gen.writeStartArray();
+          Set<Ranges> ranges = aff.ranges();
+          for (Ranges range : ranges) {
+            writeRanges(range, gen);
+          }
+          gen.writeEndArray();
+        }
+        if (aff.versions().isPresent()) {
+          gen.writeFieldName(VERSIONS_KEY);
+          writeVersions(aff.versions().get(), gen);
+        }
+        if (aff.ecosystemSpecific().isPresent()) {
+          gen.writeFieldName(ECOSYSTEM_SPECIFIC_KEY);
+          writeEcosystemSpecific(aff.ecosystemSpecific().get(), gen);
+        }
+        if (aff.databaseSpecific().isPresent()) {
+          gen.writeFieldName(DATABASE_SPECIFIC_KEY);
+          writeDatabaseSpecific(aff.databaseSpecific().get(), gen);
+        }
+        gen.writeEndObject();
+      }
+    }
+    gen.writeEndArray();
+  }
+
+  private static void writePackage(Package pckg, JsonGenerator gen) throws IOException {
+    gen.writeStartObject();
+    gen.writeFieldName(ECOSYSTEM_KEY);
+    gen.writeString(writeEcosystem(pckg.ecosystem()));
+    gen.writeFieldName(NAME_KEY);
+    gen.writeString(writeName(pckg.name()));
+    if (pckg.purl().isPresent()) {
+      gen.writeFieldName(PURL_KEY);
+      gen.writeString(writePurl(pckg.purl().get()));
+    }
+    gen.writeEndObject();
+  }
+
+  private static String writeEcosystem(Ecosystem ecosystem) {
+    return ecosystem.name();
+  }
+
+  private static String writeName(Name name) {
+    return name.value();
+  }
+
+  private static String writePurl(Purl purl) {
+    return purl.value();
+  }
+
+  private static void writeRanges(Ranges ranges, JsonGenerator gen) throws IOException {
+    gen.writeStartObject();
+    gen.writeFieldName(TYPE_KEY);
+    gen.writeString(ranges.type().name());
+    if (!ranges.events().isEmpty()) {
+      gen.writeFieldName(EVENTS_KEY);
+      gen.writeStartArray();
+      List<? extends Event> events = ranges.events();
+      for (Event e : events) {
+        writeRangeEvent(e, gen);
+      }
+      gen.writeEndArray();
+    }
+    gen.writeEndObject();
+  }
+
+  private static void writeRangeEvent(Event e, JsonGenerator gen) throws IOException {
+    gen.writeStartObject();
+    gen.writeFieldName(e.event().name());
+    gen.writeString(e.release());
+    gen.writeEndObject();
+  }
+
+  private static void writeVersions(Versions versions, JsonGenerator gen) throws IOException {
+    gen.writeStartArray();
+    List<String> versionList = versions.versions();
+    for (String v : versionList) {
+      gen.writeString(v);
+    }
+    gen.writeEndArray();
+  }
+
+  private static void writeEcosystemSpecific(EcosystemSpecific ecosystemSpecific, JsonGenerator gen)
+      throws IOException {
+    gen.writeRawValue(ecosystemSpecific.value());
+  }
+
+  private static void writeDatabaseSpecific(DatabaseSpecific databaseSpecific, JsonGenerator gen)
+      throws IOException {
+    gen.writeRawValue(databaseSpecific.value());
   }
 }

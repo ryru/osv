@@ -1,7 +1,7 @@
 package ch.addere.osv.domain.service;
 
+import static ch.addere.osv.domain.model.fields.Affected.AFFECTED_KEY;
 import static ch.addere.osv.domain.model.fields.Details.DETAILS_KEY;
-import static ch.addere.osv.domain.model.fields.Id.Database.valueOf;
 import static ch.addere.osv.domain.model.fields.Id.ID_KEY;
 import static ch.addere.osv.domain.model.fields.IdAggregate.ALIASES_KEY;
 import static ch.addere.osv.domain.model.fields.IdAggregate.RELATED_KEY;
@@ -13,6 +13,7 @@ import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.joining;
 
 import ch.addere.osv.domain.model.Entry;
+import ch.addere.osv.domain.model.fields.Affected;
 import ch.addere.osv.domain.model.fields.Details;
 import ch.addere.osv.domain.model.fields.Id;
 import ch.addere.osv.domain.model.fields.Id.Database;
@@ -21,6 +22,7 @@ import ch.addere.osv.domain.model.fields.Modified;
 import ch.addere.osv.domain.model.fields.Published;
 import ch.addere.osv.domain.model.fields.Summary;
 import ch.addere.osv.domain.model.fields.Withdrawn;
+import ch.addere.osv.domain.service.serializer.AffectedDeserializer;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -31,7 +33,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import lombok.NonNull;
+import java.util.Set;
 
 /**
  * Deserializer for open source vulnerabilities.
@@ -52,11 +54,11 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
     JsonNode node = codec.readTree(p);
 
     if (node.get(ID_KEY) == null) {
-      throw new ParserException("deserialization error");
+      throw new OsvParserException("deserialization error");
     }
     Id id = readId(node.get(ID_KEY));
     if (node.get(MODIFIED_KEY) == null) {
-      throw new ParserException("deserialization error");
+      throw new OsvParserException("deserialization error");
     }
     Modified modified = readModified(node.get(MODIFIED_KEY));
     Optional<IdAggregate> aliases = readAliases(node.get(ALIASES_KEY));
@@ -65,21 +67,27 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
     Optional<Withdrawn> withdrawn = readWithdrawn(node.get(WITHDRAWN_KEY));
     Optional<Summary> summary = readSummary(node.get(SUMMARY_KEY));
     Optional<Details> details = readDetails(node.get(DETAILS_KEY));
+    Set<Affected> affected = Set.of();
+    JsonNode affecedNode = node.withArray(AFFECTED_KEY);
+    if (!affecedNode.isNull()) {
+      affected = AffectedDeserializer.deserialize(node.get(AFFECTED_KEY));
+    }
 
     return Entry.builder(id, modified)
-        .published(published)
-        .withdrawn(withdrawn)
-        .aliases(aliases)
-        .related(related)
-        .summary(summary)
-        .details(details)
+        .published(published.orElse(null))
+        .withdrawn(withdrawn.orElse(null))
+        .aliases(aliases.orElse(null))
+        .related(related.orElse(null))
+        .summary(summary.orElse(null))
+        .details(details.orElse(null))
+        .affected(affected.toArray(new Affected[0]))
         .build();
   }
 
   private static Id readId(JsonNode idNode) {
     final String delimiter = "-";
-    String[] tokenized = trimJson(idNode.toString()).split(delimiter);
-    Database database = valueOf(tokenized[0]);
+    String[] tokenized = idNode.asText().split(delimiter);
+    Database database = Database.valueOf(tokenized[0]);
     String entryId = stream(tokenized)
         .skip(1)
         .collect(joining(delimiter));
@@ -145,14 +153,14 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
     if (isEmptyJsonNode(summary)) {
       return Optional.empty();
     }
-    return Optional.of(new Summary(trimJson(summary.toString())));
+    return Optional.of(new Summary(summary.asText()));
   }
 
   private static Optional<Details> readDetails(JsonNode details) {
     if (isEmptyJsonNode(details)) {
       return Optional.empty();
     }
-    return Optional.of(new Details(trimJson(details.toString())));
+    return Optional.of(new Details(details.asText()));
   }
 
   private static boolean isEmptyJsonNode(JsonNode relatedNode) {
@@ -160,10 +168,6 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
   }
 
   private static Instant readInstant(JsonNode jsonNode) {
-    return Instant.parse(trimJson(jsonNode.toString()));
-  }
-
-  private static String trimJson(@NonNull String json) {
-    return json.trim().replace("\"", "");
+    return Instant.parse(jsonNode.asText());
   }
 }

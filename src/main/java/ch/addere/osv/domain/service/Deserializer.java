@@ -10,16 +10,16 @@ import lombok.NonNull;
 /**
  * JSON deserializer.
  */
-public class Deserializer {
+class Deserializer {
 
   /**
    * Deserialize JSON representation of an open source vulnerability entry.
    *
    * @param json data of an open source vulnerability
    * @return Entry deserialized from the JSON data
-   * @throws ParserException an exception
+   * @throws OsvParserException an exception
    */
-  public static Entry fromJson(@NonNull String json) throws ParserException {
+  public static Entry fromJson(@NonNull String json) throws OsvParserException {
     final ObjectMapper mapper = new ObjectMapper();
     SimpleModule module = new SimpleModule(
         "EntryDeserializer",
@@ -29,7 +29,7 @@ public class Deserializer {
     try {
       return mapper.readValue(json, Entry.class);
     } catch (JsonProcessingException e) {
-      throw new ParserException("deserialization error", e);
+      throw new OsvParserException("deserialization error", e);
     }
   }
 }
