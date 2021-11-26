@@ -7,6 +7,7 @@ import static ch.addere.osv.domain.model.fields.IdAggregate.ALIASES_KEY;
 import static ch.addere.osv.domain.model.fields.IdAggregate.RELATED_KEY;
 import static ch.addere.osv.domain.model.fields.Modified.MODIFIED_KEY;
 import static ch.addere.osv.domain.model.fields.Published.PUBLISHED_KEY;
+import static ch.addere.osv.domain.model.fields.References.REFERENCES_KEY;
 import static ch.addere.osv.domain.model.fields.Summary.SUMMARY_KEY;
 import static ch.addere.osv.domain.model.fields.Withdrawn.WITHDRAWN_KEY;
 import static ch.addere.osv.domain.model.fields.affected.DatabaseSpecific.DATABASE_SPECIFIC_KEY;
@@ -18,7 +19,10 @@ import static ch.addere.osv.domain.model.fields.affected.pckg.Ecosystem.ECOSYSTE
 import static ch.addere.osv.domain.model.fields.affected.pckg.Name.NAME_KEY;
 import static ch.addere.osv.domain.model.fields.affected.pckg.Purl.PURL_KEY;
 import static ch.addere.osv.domain.model.fields.affected.ranges.Event.EVENTS_KEY;
+import static ch.addere.osv.domain.model.fields.affected.ranges.Repo.REPO_KEY;
 import static ch.addere.osv.domain.model.fields.affected.ranges.Type.TYPE_KEY;
+import static ch.addere.osv.domain.model.fields.reverences.ReferenceType.REFERENCE_TYPE_KEY;
+import static ch.addere.osv.domain.model.fields.reverences.ReferenceUrl.REFERENCE_URL_KEY;
 
 import ch.addere.osv.domain.model.Entry;
 import ch.addere.osv.domain.model.fields.Affected;
@@ -27,6 +31,7 @@ import ch.addere.osv.domain.model.fields.Id;
 import ch.addere.osv.domain.model.fields.IdAggregate;
 import ch.addere.osv.domain.model.fields.Modified;
 import ch.addere.osv.domain.model.fields.Published;
+import ch.addere.osv.domain.model.fields.References;
 import ch.addere.osv.domain.model.fields.Summary;
 import ch.addere.osv.domain.model.fields.Withdrawn;
 import ch.addere.osv.domain.model.fields.affected.DatabaseSpecific;
@@ -71,7 +76,7 @@ public class EntrySerializer extends StdSerializer<Entry> {
     if (entry.aliases().isPresent()) {
       writeAliases(entry, gen);
     }
-    if (entry.withdrawn().isPresent()) {
+    if (entry.related().isPresent()) {
       writeRelated(entry, gen);
     }
     if (entry.withdrawn().isPresent()) {
@@ -85,6 +90,9 @@ public class EntrySerializer extends StdSerializer<Entry> {
     }
     if (!entry.affected().isEmpty()) {
       writeAffected(entry, gen);
+    }
+    if (!entry.references().isEmpty()) {
+      writeReferences(entry, gen);
     }
     gen.writeEndObject();
   }
@@ -185,7 +193,7 @@ public class EntrySerializer extends StdSerializer<Entry> {
   }
 
   private static String writeEcosystem(Ecosystem ecosystem) {
-    return ecosystem.name();
+    return ecosystem.value();
   }
 
   private static String writeName(Name name) {
@@ -200,6 +208,10 @@ public class EntrySerializer extends StdSerializer<Entry> {
     gen.writeStartObject();
     gen.writeFieldName(TYPE_KEY);
     gen.writeString(ranges.type().name());
+    if (ranges.repo().isPresent()) {
+      gen.writeFieldName(REPO_KEY);
+      gen.writeString(ranges.repo().get().value());
+    }
     if (!ranges.events().isEmpty()) {
       gen.writeFieldName(EVENTS_KEY);
       gen.writeStartArray();
@@ -236,5 +248,24 @@ public class EntrySerializer extends StdSerializer<Entry> {
   private static void writeDatabaseSpecific(DatabaseSpecific databaseSpecific, JsonGenerator gen)
       throws IOException {
     gen.writeRawValue(databaseSpecific.value());
+  }
+
+  private static void writeReferences(Entry entry, JsonGenerator gen)
+      throws IOException {
+    gen.writeFieldName(REFERENCES_KEY);
+    gen.writeStartArray();
+    for (References r : entry.references()) {
+      writeReference(r, gen);
+    }
+    gen.writeEndArray();
+  }
+
+  private static void writeReference(References reference, JsonGenerator gen) throws IOException {
+    gen.writeStartObject();
+    gen.writeFieldName(REFERENCE_TYPE_KEY);
+    gen.writeString(reference.referenceType().name());
+    gen.writeFieldName(REFERENCE_URL_KEY);
+    gen.writeString(reference.referenceUrl().value());
+    gen.writeEndObject();
   }
 }

@@ -6,9 +6,12 @@ import ch.addere.osv.domain.model.fields.Id;
 import ch.addere.osv.domain.model.fields.IdAggregate;
 import ch.addere.osv.domain.model.fields.Modified;
 import ch.addere.osv.domain.model.fields.Published;
+import ch.addere.osv.domain.model.fields.References;
 import ch.addere.osv.domain.model.fields.Summary;
 import ch.addere.osv.domain.model.fields.Withdrawn;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -19,13 +22,14 @@ public final class Entry {
 
   private final Id id;
   private final Modified modified;
-  IdAggregate aliases;
-  IdAggregate related;
-  Published published;
-  Withdrawn withdrawn;
-  Summary summary;
-  Details details;
-  Set<Affected> affected;
+  private IdAggregate aliases;
+  private IdAggregate related;
+  private Published published;
+  private Withdrawn withdrawn;
+  private Summary summary;
+  private Details details;
+  private Set<Affected> affected;
+  private List<References> references;
 
   private Entry(Id id, Modified modified) {
     this.id = id;
@@ -80,6 +84,10 @@ public final class Entry {
     return new HashSet<>(affected);
   }
 
+  public List<References> references() {
+    return new LinkedList<>(references);
+  }
+
   /**
    * Builder for Entries.
    */
@@ -94,6 +102,7 @@ public final class Entry {
     private Summary summary = null;
     private Details details = null;
     private Set<Affected> affected = Set.of();
+    private List<References> references = null;
 
     public EntryBuilder(Id id, Modified modified) {
       this.id = id;
@@ -135,6 +144,11 @@ public final class Entry {
       return this;
     }
 
+    public EntryBuilder references(References... references) {
+      this.references = List.of(references);
+      return this;
+    }
+
     /**
      * Build a concrete entry.
      *
@@ -149,6 +163,7 @@ public final class Entry {
       entry.summary = summary;
       entry.details = details;
       entry.affected = affected;
+      entry.references = references;
       return entry;
     }
   }
