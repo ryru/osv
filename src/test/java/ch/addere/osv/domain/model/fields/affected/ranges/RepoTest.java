@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 import org.junit.jupiter.api.Test;
 
 class RepoTest {
@@ -22,8 +21,8 @@ class RepoTest {
   @Test
   void testValidRepoValue() throws MalformedURLException {
     Repo repo = Repo.of(VALID_URL);
-    URL url = repo.value();
-    assertThat(url).isEqualTo(new URL(VALID_URL));
+    String url = repo.value();
+    assertThat(url).isEqualTo(VALID_URL);
   }
 
   @Test

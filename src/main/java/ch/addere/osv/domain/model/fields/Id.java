@@ -31,7 +31,8 @@ public class Id {
     UVI("UVI"),
     CVE("CVE"),
     NPM("NPM"),
-    SNYK("SNYK");
+    SNYK("SNYK"),
+    GHSA("GHSA");
 
     private final String database;
 

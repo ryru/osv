@@ -1,14 +1,16 @@
 package ch.addere.osv.domain.service;
 
 import static java.nio.file.Files.readString;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.stream.Stream;
+import org.json.JSONException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
 
 class DeSerializationTest {
 
@@ -17,6 +19,13 @@ class DeSerializationTest {
   private static final String MINIMAL_OSV = "{\"id\":\"GO-2021-99998\","
       + "\"modified\":\"2021-03-10T23:20:53Z\"}";
   private static final String GO_OSV_PATH = "src/test/resources/go-osv.json";
+  private static final String GO_EXAMPLE_PATH = "src/test/resources/go-example.json";
+  private static final String GO_TOOL_EXAMPLE_PATH = "src/test/resources/go-tool-example.json";
+  private static final String NPM_EXAMPLE_PATH = "src/test/resources/npm-example.json";
+  private static final String OSV_EXAMPLE_PATH = "src/test/resources/osv-example.json";
+  private static final String RUST_EXAMPLE_PATH = "src/test/resources/rust-example.json";
+  private static final String PYTHON_EXAMPLE_PATH = "src/test/resources/python-example.json";
+  private static final String RUBY_EXAMPLE_PATH = "src/test/resources/ruby-example.json";
 
   @SuppressWarnings("PMD.UnusedPrivateMethod")
   private static Stream<String> nonParsableOpenSourceVulnerabilitiesReports() {
@@ -30,7 +39,14 @@ class DeSerializationTest {
   private static Stream<String> parsableOpenSourceVulnerabilitiesReports() {
     return Stream.of(
         MINIMAL_OSV,
-        readJsonFile(GO_OSV_PATH)
+        readJsonFile(GO_OSV_PATH),
+        readJsonFile(GO_EXAMPLE_PATH),
+        readJsonFile(GO_TOOL_EXAMPLE_PATH),
+        readJsonFile(NPM_EXAMPLE_PATH),
+        readJsonFile(OSV_EXAMPLE_PATH),
+        readJsonFile(RUST_EXAMPLE_PATH),
+        readJsonFile(PYTHON_EXAMPLE_PATH),
+        readJsonFile(RUBY_EXAMPLE_PATH)
     );
   }
 
@@ -44,9 +60,9 @@ class DeSerializationTest {
 
   @ParameterizedTest
   @MethodSource("parsableOpenSourceVulnerabilitiesReports")
-  void testValidOpenSourceVulnerabilityReport(String jsonData) throws IOException {
+  void testValidOpenSourceVulnerabilityReport(String jsonData) throws IOException, JSONException {
     String serialized = deserializeSerialize(jsonData);
-    assertThat(serialized).isEqualTo(jsonData);
+    JSONAssert.assertEquals(jsonData, serialized, JSONCompareMode.STRICT);
   }
 
   private static String deserializeSerialize(String jsonData) throws IOException {

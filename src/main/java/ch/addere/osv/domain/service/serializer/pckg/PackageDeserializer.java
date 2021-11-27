@@ -32,16 +32,16 @@ public final class PackageDeserializer {
   }
 
   private static Package readPackage(JsonNode pckg) {
-    Ecosystem ecosystem = readEcosystem(pckg.get(ECOSYSTEM_KEY)).orElse(null);
+    Ecosystem ecosystem = readEcosystem(pckg.get(ECOSYSTEM_KEY));
     Name name = readName(pckg.get(NAME_KEY));
     Optional<JsonNode> purlNode = Optional.ofNullable(pckg.get(PURL_KEY));
     return purlNode.map(jsonNode -> Package.of(ecosystem, name, readPurl(jsonNode)))
         .orElseGet(() -> Package.of(ecosystem, name));
   }
 
-  private static Optional<Ecosystem> readEcosystem(JsonNode ecosystem) {
-    final var name = ecosystem.asText();
-    return Optional.of(Ecosystem.valueOf(name));
+  private static Ecosystem readEcosystem(JsonNode ecosystem) {
+    final String name = ecosystem.asText();
+    return Ecosystem.value(name);
   }
 
   private static Name readName(JsonNode name) {

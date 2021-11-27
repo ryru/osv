@@ -31,8 +31,8 @@ public final class Repo {
     }
   }
 
-  public URL value() {
-    return url;
+  public String value() {
+    return url.toString();
   }
 
   @Override

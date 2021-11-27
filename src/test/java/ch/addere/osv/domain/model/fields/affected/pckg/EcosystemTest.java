@@ -21,7 +21,7 @@ class EcosystemTest {
 
   @Test
   void testNpmToString() {
-    Ecosystem ecosystem = Ecosystem.NPM;
+    Ecosystem ecosystem = Ecosystem.npm;
     String eco = ecosystem.toString();
     assertThat(eco).isEqualTo(ECOSYSTEM_KEY + ": npm");
   }
