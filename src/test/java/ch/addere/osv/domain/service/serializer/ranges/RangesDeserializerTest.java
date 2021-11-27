@@ -17,8 +17,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.MalformedURLException;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class RangesDeserializerTest {
@@ -42,7 +42,7 @@ class RangesDeserializerTest {
   @Test
   void testValidMinimalSemVerRange() throws JsonProcessingException, OsvParserException {
     Ranges range = semVerRange(null);
-    Set<Ranges> deserializedRange = deserialize(
+    List<Ranges> deserializedRange = deserialize(
         "[{\"type\":\"SEMVER\",\"events\":[{\"introduced\":\"0\"}]}]");
     assertThat(deserializedRange).containsExactly(range);
   }
@@ -51,7 +51,7 @@ class RangesDeserializerTest {
   void testValidSemVerRangeWithRepo()
       throws JsonProcessingException, OsvParserException, MalformedURLException {
     Ranges range = semVerRange(getRepo());
-    Set<Ranges> deserializedRange = deserialize(
+    List<Ranges> deserializedRange = deserialize(
         "[{\"type\":\"SEMVER\",\"repo\":\"https://test.repo\",\"events\":[{\"introduced\":\"0\"}]}]");
     assertThat(deserializedRange).containsExactly(range);
   }
@@ -60,7 +60,7 @@ class RangesDeserializerTest {
   void testValidMinimalGitRange()
       throws JsonProcessingException, OsvParserException, MalformedURLException {
     Ranges range = gitRange();
-    Set<Ranges> deserializedRange = deserialize(
+    List<Ranges> deserializedRange = deserialize(
         "[{\"type\":\"GIT\",\"repo\":\"https://test.repo\",\"events\":[{\"introduced\":\"0\"}]}]");
     assertThat(deserializedRange).containsExactly(range);
   }
@@ -76,7 +76,7 @@ class RangesDeserializerTest {
   @Test
   void testValidMinimalEcosystemRange() throws JsonProcessingException, OsvParserException {
     Ranges range = ecosystemRange(null);
-    Set<Ranges> deserializedRange = deserialize(
+    List<Ranges> deserializedRange = deserialize(
         "[{\"type\":\"ECOSYSTEM\",\"events\":[{\"introduced\":\"0\"}]}]");
     assertThat(deserializedRange).containsExactly(range);
   }
@@ -85,7 +85,7 @@ class RangesDeserializerTest {
   void testValidEcosystemRangeWithRepo()
       throws JsonProcessingException, OsvParserException, MalformedURLException {
     Ranges range = ecosystemRange(getRepo());
-    Set<Ranges> deserializedRange = deserialize(
+    List<Ranges> deserializedRange = deserialize(
         "[{\"type\":\"ECOSYSTEM\",\"repo\":\"https://test.repo\",\"events\":[{\"introduced\":\"0\"}]}]");
     assertThat(deserializedRange).containsExactly(range);
   }
@@ -110,7 +110,7 @@ class RangesDeserializerTest {
     return Repo.of("https://test.repo");
   }
 
-  private static Set<Ranges> deserialize(String jsonData)
+  private static List<Ranges> deserialize(String jsonData)
       throws JsonProcessingException, OsvParserException {
     return RangesDeserializer.deserialize(toJsonNode(jsonData));
   }

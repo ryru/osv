@@ -19,11 +19,9 @@ import ch.addere.osv.domain.model.fields.affected.ranges.events.SemVerEvent;
 import ch.addere.osv.domain.service.OsvParserException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * Deserialization helper class for affected range properties.
@@ -37,9 +35,9 @@ public final class RangesDeserializer {
    * @return Set of ranges
    * @throws OsvParserException if parser exception
    */
-  public static Set<Ranges> deserialize(JsonNode rangesNode) throws OsvParserException {
+  public static List<Ranges> deserialize(JsonNode rangesNode) throws OsvParserException {
     if (rangesNode.isArray()) {
-      Set<Ranges> rangesSet = new HashSet<>();
+      List<Ranges> rangesSet = new LinkedList<>();
       for (JsonNode jsonNode : rangesNode) {
         Optional<Ranges> range = readRange(jsonNode);
         range.ifPresent(rangesSet::add);

@@ -8,9 +8,9 @@ import ch.addere.osv.domain.model.fields.affected.EcosystemSpecific;
 import ch.addere.osv.domain.model.fields.affected.Package;
 import ch.addere.osv.domain.model.fields.affected.Ranges;
 import ch.addere.osv.domain.model.fields.affected.Versions;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Stream;
 
 /**
@@ -21,7 +21,7 @@ public final class Affected {
   public static final String AFFECTED_KEY = "affected";
 
   private final ch.addere.osv.domain.model.fields.affected.Package pckg;
-  private final Set<Ranges> ranges;
+  private final List<Ranges> ranges;
   private final Versions versions;
   private final EcosystemSpecific ecosystemSpecific;
   private final DatabaseSpecific databaseSpecific;
@@ -30,7 +30,7 @@ public final class Affected {
   //  versions list or at least one range in the ranges list of type SEMVER.
 
   private Affected(Package pckge,
-      Set<Ranges> ranges,
+      List<Ranges> ranges,
       Versions versions,
       EcosystemSpecific ecosystemSpecific,
       DatabaseSpecific databaseSpecific) {
@@ -45,8 +45,8 @@ public final class Affected {
     return pckg;
   }
 
-  public Set<Ranges> ranges() {
-    return Set.copyOf(ranges);
+  public List<Ranges> ranges() {
+    return List.copyOf(ranges);
   }
 
   public Optional<Versions> versions() {
@@ -101,7 +101,7 @@ public final class Affected {
   public static class AffectedBuilder {
 
     private final ch.addere.osv.domain.model.fields.affected.Package pckg;
-    private Set<Ranges> ranges = Set.of();
+    private List<Ranges> ranges = List.of();
     private Versions versions = null;
     private EcosystemSpecific ecosystemSpecific = null;
     private DatabaseSpecific databaseSpecific = null;
@@ -111,7 +111,7 @@ public final class Affected {
     }
 
     public AffectedBuilder ranges(Ranges... ranges) {
-      this.ranges = Set.of(ranges);
+      this.ranges = List.of(ranges);
       return this;
     }
 

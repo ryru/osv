@@ -51,7 +51,7 @@ public final class AffectedDeserializer {
 
   private static Optional<Affected> readAffected(JsonNode affected) throws OsvParserException {
     Package pckg = PackageDeserializer.deserialize(affected.get(PACKAGE_KEY));
-    Set<Ranges> ranges = Set.of();
+    List<Ranges> ranges = List.of();
     JsonNode rangesNode = affected.withArray(RANGES_KEY);
     if (!rangesNode.isNull()) {
       ranges = RangesDeserializer.deserialize(rangesNode);

@@ -49,7 +49,6 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Serializer for open source vulnerabilities.
@@ -155,7 +154,7 @@ public class EntrySerializer extends StdSerializer<Entry> {
         if (!aff.ranges().isEmpty()) {
           gen.writeFieldName(RANGES_KEY);
           gen.writeStartArray();
-          Set<Ranges> ranges = aff.ranges();
+          List<Ranges> ranges = aff.ranges();
           for (Ranges range : ranges) {
             writeRanges(range, gen);
           }

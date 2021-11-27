@@ -28,7 +28,7 @@ public final class Entry {
   private Withdrawn withdrawn;
   private Summary summary;
   private Details details;
-  private Set<Affected> affected;
+  private List<Affected> affected;
   private List<References> references;
 
   private Entry(Id id, Modified modified) {
@@ -101,7 +101,7 @@ public final class Entry {
     private Withdrawn withdrawn = null;
     private Summary summary = null;
     private Details details = null;
-    private Set<Affected> affected = Set.of();
+    private List<Affected> affected = List.of();
     private List<References> references = null;
 
     public EntryBuilder(Id id, Modified modified) {
@@ -140,7 +140,7 @@ public final class Entry {
     }
 
     public EntryBuilder affected(Affected... affected) {
-      this.affected = Set.of(affected);
+      this.affected = List.of(affected);
       return this;
     }
 
