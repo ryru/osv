@@ -19,6 +19,12 @@ class EcosystemSpecificTest {
   }
 
   @Test
+  void testValidEcosystemSpecific() {
+    EcosystemSpecific ecosystemSpecific = EcosystemSpecific.of(ECOSYSTEM_SPECIFIC1);
+    assertThat(ecosystemSpecific.value()).isEqualTo(ECOSYSTEM_SPECIFIC1);
+  }
+
+  @Test
   void testSameness() {
     EcosystemSpecific ecosystemSpecific = EcosystemSpecific.of(ECOSYSTEM_SPECIFIC1);
     EcosystemSpecific otherEcosystemSpecific = ecosystemSpecific;

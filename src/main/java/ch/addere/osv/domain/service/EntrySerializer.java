@@ -97,15 +97,15 @@ public class EntrySerializer extends StdSerializer<Entry> {
   }
 
   private static String writeId(Id id) {
-    return id.database().name() + "-" + id.entryId();
+    return id.value();
   }
 
   private static String writePublished(Published published) {
-    return published.published().toString();
+    return published.value().toString();
   }
 
   private static String writeModified(Modified modified) {
-    return modified.modified().toString();
+    return modified.value().toString();
   }
 
   private static void writeAliases(Entry value, JsonGenerator gen) throws IOException {
@@ -129,15 +129,15 @@ public class EntrySerializer extends StdSerializer<Entry> {
   }
 
   private static String writeWithdrawn(Withdrawn withdrawn) {
-    return withdrawn.withdrawn().toString();
+    return withdrawn.value().toString();
   }
 
   private static String writeSummary(Summary summary) {
-    return summary.summary();
+    return summary.value();
   }
 
   private static String writeDetails(Details details) {
-    return details.details().replace("\\n", "\n");
+    return details.value().replace("\\n", "\n");
   }
 
   private static void writeAffected(Entry value, JsonGenerator gen) throws IOException {

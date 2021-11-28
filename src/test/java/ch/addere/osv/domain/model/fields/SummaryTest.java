@@ -23,7 +23,7 @@ class SummaryTest {
     var summary = new Summary(text);
     assertThat(summary).satisfies(s -> {
       assertThat(s).isNotNull();
-      assertThat(s.summary()).isEqualTo(text);
+      assertThat(s.value()).isEqualTo(text);
     });
   }
 

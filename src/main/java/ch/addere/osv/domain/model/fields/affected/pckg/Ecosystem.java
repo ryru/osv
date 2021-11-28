@@ -41,7 +41,7 @@ public enum Ecosystem {
     return stream(Ecosystem.values())
         .filter(env -> env.ecosystem.equals(ecosystem))
         .findFirst().orElseThrow(() -> new IllegalArgumentException(
-            format("%s is not a valid ecosystem", ecosystem)));
+            format("'%s' is not a valid ecosystem", ecosystem)));
   }
 
   @Override

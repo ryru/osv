@@ -18,6 +18,12 @@ class DatabaseSpecificTest {
   }
 
   @Test
+  void testValidDatabaseSpecific() {
+    DatabaseSpecific databaseSpecific = DatabaseSpecific.of(DATABASE_SPECIFIC1);
+    assertThat(databaseSpecific.value()).isEqualTo(DATABASE_SPECIFIC1);
+  }
+
+  @Test
   void testSameness() {
     DatabaseSpecific databaseSpecific = DatabaseSpecific.of(DATABASE_SPECIFIC1);
     DatabaseSpecific otherDatabaseSpecific = databaseSpecific;

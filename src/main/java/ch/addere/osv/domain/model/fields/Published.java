@@ -1,27 +1,40 @@
 package ch.addere.osv.domain.model.fields;
 
 import java.time.Instant;
-import lombok.EqualsAndHashCode;
-import lombok.NonNull;
-import lombok.Value;
-import lombok.experimental.Accessors;
 
 /**
  * Published is the time an entry was published. Time is represented as an FRC3339-formatted
  * timestamp.
  */
-@EqualsAndHashCode(callSuper = true)
-@Value
-@Accessors(fluent = true)
-public class Published extends EntryDate {
+public final class Published extends EntryDate {
 
   public static final String PUBLISHED_KEY = "published";
 
-  public Published(@NonNull Instant date) {
-    this.date = date;
+  private Published(Instant date) {
+    super(date);
   }
 
-  public Instant published() {
-    return this.date;
+  public static Published of(Instant date) {
+    return new Published(date);
+  }
+
+  @Override
+  public Instant value() {
+    return super.value();
+  }
+
+  @Override
+  public int hashCode() {
+    return super.hashCode();
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    return super.equals(obj);
+  }
+
+  @Override
+  public String toString() {
+    return PUBLISHED_KEY + ": " + super.value().toString();
   }
 }

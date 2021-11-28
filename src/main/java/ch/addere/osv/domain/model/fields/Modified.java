@@ -1,27 +1,40 @@
 package ch.addere.osv.domain.model.fields;
 
 import java.time.Instant;
-import lombok.EqualsAndHashCode;
-import lombok.NonNull;
-import lombok.Value;
-import lombok.experimental.Accessors;
 
 /**
  * Modified is the time an entry was last modified. Time is represented as an FRC3339-formatted
  * timestamp.
  */
-@EqualsAndHashCode(callSuper = true)
-@Value
-@Accessors(fluent = true)
-public class Modified extends EntryDate {
+public final class Modified extends EntryDate {
 
   public static final String MODIFIED_KEY = "modified";
 
-  public Modified(@NonNull Instant date) {
-    this.date = date;
+  private Modified(Instant date) {
+    super(date);
   }
 
-  public Instant modified() {
-    return this.date;
+  public static Modified of(Instant date) {
+    return new Modified(date);
+  }
+
+  @Override
+  public Instant value() {
+    return super.value();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    return super.equals(o);
+  }
+
+  @Override
+  public int hashCode() {
+    return super.hashCode();
+  }
+
+  @Override
+  public String toString() {
+    return MODIFIED_KEY + ": " + super.value().toString();
   }
 }

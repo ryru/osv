@@ -9,9 +9,9 @@ import org.junit.jupiter.api.Test;
 
 class IdAggregateTest {
 
-  private static final Id ID_1 = new Id(GO, "id1");
-  private static final Id ID_2 = new Id(GO, "id2");
-  private static final Id ID_3 = new Id(GO, "id3");
+  private static final Id ID_1 = Id.of(GO, "id1");
+  private static final Id ID_2 = Id.of(GO, "id2");
+  private static final Id ID_3 = Id.of(GO, "id3");
 
   @Test
   void testInvalidEmptyArguments() {
@@ -22,7 +22,7 @@ class IdAggregateTest {
 
   @Test
   void testValidArugment() {
-    var id1 = new Id(GO, "anEntryId");
+    var id1 = Id.of(GO, "anEntryId");
     var alias = IdAggregate.of(id1);
     assertThat(alias).satisfies(a -> {
       assertThat(a.ids().size()).isEqualTo(1);
@@ -32,8 +32,8 @@ class IdAggregateTest {
 
   @Test
   void testValidArugments() {
-    var id1 = new Id(GO, "anEntryId");
-    var id2 = new Id(OSV, "anotherEntryId");
+    var id1 = Id.of(GO, "anEntryId");
+    var id2 = Id.of(OSV, "anotherEntryId");
     var alias = IdAggregate.of(id1, id2);
     assertThat(alias).satisfies(a -> {
       assertThat(a.ids().size()).isEqualTo(2);

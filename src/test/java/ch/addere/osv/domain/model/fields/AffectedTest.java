@@ -38,6 +38,23 @@ class AffectedTest {
   }
 
   @Test
+  void testValidAffected() {
+    Affected affected = new AffectedBuilder(pckg())
+        .ranges(ranges())
+        .versions(versions())
+        .databaseSpecific(databaseSpecific())
+        .ecosystemSpecific(ecosystemSpecific())
+        .build();
+    assertThat(affected).satisfies(aff -> {
+      assertThat(aff.pckge()).isEqualTo(pckg());
+      assertThat(aff.ranges().toArray()).containsExactly(ranges());
+      assertThat(aff.versions()).contains(versions());
+      assertThat(aff.databaseSpecific()).contains(databaseSpecific());
+      assertThat(aff.ecosystemSpecific()).contains(ecosystemSpecific());
+    });
+  }
+
+  @Test
   void testSameness() {
     Affected affected = new AffectedBuilder(pckg()).build();
     Affected otherAffected = affected;
@@ -91,6 +108,18 @@ class AffectedTest {
 
   private static Ranges ranges() {
     return TypeSemVer.of(SemVerEvent.of(EventSpecifier.introduced, "1.0.0"));
+  }
+
+  private static Versions versions() {
+    return Versions.of("1.0.0");
+  }
+
+  private static DatabaseSpecific databaseSpecific() {
+    return DatabaseSpecific.of("a database specific value");
+  }
+
+  private static EcosystemSpecific ecosystemSpecific() {
+    return EcosystemSpecific.of("an ecosystem specific value");
   }
 
   private static String packageToString() {

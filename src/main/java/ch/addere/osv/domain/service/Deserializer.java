@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import lombok.NonNull;
 
 /**
  * JSON deserializer.
@@ -19,7 +18,7 @@ class Deserializer {
    * @return Entry deserialized from the JSON data
    * @throws OsvParserException an exception
    */
-  public static Entry fromJson(@NonNull String json) throws OsvParserException {
+  public static Entry fromJson(String json) throws OsvParserException {
     final ObjectMapper mapper = new ObjectMapper();
     SimpleModule module = new SimpleModule(
         "EntryDeserializer",

@@ -105,12 +105,12 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
     String entryId = stream(tokenized)
         .skip(1)
         .collect(joining(delimiter));
-    return new Id(database, entryId);
+    return Id.of(database, entryId);
   }
 
   private static Modified readModified(JsonNode modifiedNode) {
     Instant instant = readInstant(modifiedNode);
-    return new Modified(instant);
+    return Modified.of(instant);
   }
 
   private static Optional<IdAggregate> readAliases(JsonNode aliasesNode) {
@@ -152,7 +152,7 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
       return Optional.empty();
     }
     Instant instant = readInstant(publishedNode);
-    return Optional.of(new Published(instant));
+    return Optional.of(Published.of(instant));
   }
 
   private static Optional<Withdrawn> readWithdrawn(JsonNode withdrawnNode) {
@@ -160,7 +160,7 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
       return Optional.empty();
     }
     Instant instant = readInstant(withdrawnNode);
-    return Optional.of(new Withdrawn(instant));
+    return Optional.of(Withdrawn.of(instant));
   }
 
   private static Optional<Summary> readSummary(JsonNode summary) {
@@ -174,7 +174,7 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
     if (isEmptyJsonNode(details)) {
       return Optional.empty();
     }
-    return Optional.of(new Details(details.asText()));
+    return Optional.of(Details.of(details.asText()));
   }
 
   private static List<References> readReferences(JsonNode references) throws OsvParserException {

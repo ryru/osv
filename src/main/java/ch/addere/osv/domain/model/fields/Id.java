@@ -1,23 +1,54 @@
 package ch.addere.osv.domain.model.fields;
 
-import lombok.Value;
-import lombok.experimental.Accessors;
+import static java.lang.String.join;
+
+import java.util.Objects;
 
 /**
  * ID is a unique identifier for a vulnerability entry.
  */
-@Value
-@Accessors(fluent = true)
-public class Id {
+public final class Id {
 
   public static final String ID_KEY = "id";
 
-  Database database;
-  String entryId;
+  private final Database database;
+  private final String entryId;
+
+  private Id(Database database, String entryId) {
+    this.database = database;
+    this.entryId = entryId;
+  }
+
+  public static Id of(Database database, String entryId) {
+    return new Id(database, entryId);
+  }
+
+  public String value() {
+    return database.toString() + '-' + entryId;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Id id = (Id) o;
+    return database == id.database && Objects.equals(entryId, id.entryId);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(database, entryId);
+  }
 
   @Override
   public String toString() {
-    return database.name() + "-" + entryId;
+    return ID_KEY + ": " + join(", ",
+        database.toString(),
+        entryId);
   }
 
   /**

@@ -2,6 +2,7 @@ package ch.addere.osv.domain.model.fields.affected.pckg;
 
 import static ch.addere.osv.domain.model.fields.affected.pckg.Ecosystem.ECOSYSTEM_KEY;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 
@@ -10,6 +11,25 @@ class EcosystemTest {
   @Test
   void testJsonKey() {
     assertThat(ECOSYSTEM_KEY).isEqualTo("ecosystem");
+  }
+
+  @Test
+  void testValidEcosystem() {
+    Ecosystem ecosystem = Ecosystem.Go;
+    assertThat(ecosystem.value()).isEqualTo("Go");
+  }
+
+  @Test
+  void testValidValueGo() {
+    Ecosystem ecosystem = Ecosystem.value("Go");
+    assertThat(ecosystem.value()).isEqualTo("Go");
+  }
+
+  @Test
+  void testInvalidValueNonExisting() {
+    assertThatThrownBy(() -> Ecosystem.value("NonExisting"))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("'NonExisting' is not a valid ecosystem");
   }
 
   @Test
