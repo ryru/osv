@@ -36,7 +36,7 @@ class AffectedDeserializerTest {
       "    \"package\": {"
           + "  \"ecosystem\": \"Go\","
           + "  \"name\": \"crypto/elliptic\","
-          + "  \"purl\": \"https://purl.url\""
+          + "  \"purl\": \"pkg:deb/debian/curl@7.50.3-1?arch=i386&distro=jessie\""
           + "}";
   private static final String RANGE =
       "    \"ranges\": ["
@@ -57,6 +57,7 @@ class AffectedDeserializerTest {
       "[" + "{" + PACKAGE_WITH_PURL + "," + RANGE + "}" + "]";
   private static final String AFFECTED_WITH_VERSION =
       "[" + "{" + PACKAGE + "," + VERSION + "}" + "]";
+  private static final String PURL_STRING = "pkg:deb/debian/curl@7.50.3-1?arch=i386&distro=jessie";
 
   @Test
   void testInvalidJsonInput() {
@@ -74,7 +75,7 @@ class AffectedDeserializerTest {
 
   @Test
   void testValidAffectedWithPurl() throws JsonProcessingException, OsvParserException {
-    Affected affected = affected(PurlImpl.of("https://purl.url"));
+    Affected affected = affected(PurlImpl.of(PURL_STRING));
     Set<Affected> deserializedAffected = deserialize(AFFECTED_WITH_PURL);
     assertThat(deserializedAffected).containsExactly(affected);
   }

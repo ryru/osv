@@ -20,8 +20,10 @@ class PackageImplTest {
   private static final Ecosystem LINUX_ECOSYSTEM = Ecosystem.LINUX;
   private static final Name NAME = of("aName");
   private static final Name ANOTHER_NAME = of("anotherName");
-  private static final Purl PURL = PurlImpl.of("aPurl");
-  private static final Purl ANOTHER_PURL = PurlImpl.of("anotherPurl");
+  private static final String PURL_STRING = "pkg:deb/debian/curl@7.50.3-1?arch=i386&distro=jessie";
+  private static final String OTHER_PURL_STRING = "pkg:docker/cassandra@sha256:244fd47e07d1004f9c";
+  private static final Purl PURL = PurlImpl.of(PURL_STRING);
+  private static final Purl OTHER_PURL = PurlImpl.of(OTHER_PURL_STRING);
 
   @Test
   void testJsonKey() {
@@ -64,7 +66,7 @@ class PackageImplTest {
   @Test
   void testNonEquality() {
     Package pckg = PackageImpl.of(LINUX_ECOSYSTEM, NAME, PURL);
-    Package otherPckg = PackageImpl.of(LINUX_ECOSYSTEM, ANOTHER_NAME, ANOTHER_PURL);
+    Package otherPckg = PackageImpl.of(LINUX_ECOSYSTEM, ANOTHER_NAME, OTHER_PURL);
     assertThat(pckg).isNotEqualTo(otherPckg);
   }
 
@@ -93,6 +95,6 @@ class PackageImplTest {
   }
 
   private static String purlToString() {
-    return PURL_KEY + ": " + "aPurl";
+    return PURL_KEY + ": " + PURL_STRING;
   }
 }

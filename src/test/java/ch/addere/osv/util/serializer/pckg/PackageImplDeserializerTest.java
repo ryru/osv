@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 class PackageImplDeserializerTest {
 
   private static final ObjectMapper mapper = new ObjectMapper();
+  private static final String PURL_STRING = "pkg:docker/cassandra@sha256:244fd47e07d1004f0aed9c";
 
   @Test
   void testInvalidJsonInput() {
@@ -36,9 +37,10 @@ class PackageImplDeserializerTest {
   @Test
   void testValidGoPackage() throws JsonProcessingException, OsvParserException {
     Package pckg = PackageImpl.of(Ecosystem.Go, NameImpl.of("crypto/elliptic"),
-        PurlImpl.of("https://osv.dev"));
+        PurlImpl.of(PURL_STRING));
     Package deserializedPackage = deserialize(
-        "{\"ecosystem\":\"Go\",\"name\":\"crypto/elliptic\",\"purl\":\"https://osv.dev\"}");
+        "{\"ecosystem\":\"Go\",\"name\":\"crypto/elliptic\",\"purl\":\""
+            + PURL_STRING + "\"}");
     assertThat(deserializedPackage).isEqualTo(pckg);
   }
 

@@ -109,7 +109,10 @@ class AffectedImplTest {
   }
 
   private static Package pckg() {
-    return PackageImpl.of(Ecosystem.Go, NameImpl.of("aName"), PurlImpl.of("aPurl"));
+    return PackageImpl.of(
+        Ecosystem.Go,
+        NameImpl.of("aName"),
+        PurlImpl.of("pkg:deb/debian/curl@7.50.3-1?arch=i386&distro=jessie"));
   }
 
   private static Ranges ranges() {
@@ -145,7 +148,7 @@ class AffectedImplTest {
   }
 
   private static String packagePurlToString() {
-    return PURL_KEY + ": " + "aPurl";
+    return PURL_KEY + ": " + "pkg:deb/debian/curl@7.50.3-1?arch=i386&distro=jessie";
   }
 
   private static String rangesToString() {

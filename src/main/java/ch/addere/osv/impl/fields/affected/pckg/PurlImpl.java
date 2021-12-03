@@ -1,6 +1,10 @@
 package ch.addere.osv.impl.fields.affected.pckg;
 
+import static java.lang.String.format;
+
 import ch.addere.osv.fields.affected.pckg.Purl;
+import com.github.packageurl.MalformedPackageURLException;
+import com.github.packageurl.PackageURL;
 import java.util.Objects;
 
 /**
@@ -10,12 +14,14 @@ public final class PurlImpl implements Purl {
 
   public static final String PURL_KEY = "purl";
 
-  // TODO this should be a purl objeckt
-  // following the spec: https://github.com/package-url/purl-spec
-  private final String purl;
+  private final PackageURL purl;
 
   private PurlImpl(String purl) {
-    this.purl = purl;
+    try {
+      this.purl = new PackageURL(purl);
+    } catch (MalformedPackageURLException e) {
+      throw new IllegalArgumentException(format("invalid purl: '%s'", purl), e);
+    }
   }
 
   public static PurlImpl of(String purl) {
@@ -24,7 +30,7 @@ public final class PurlImpl implements Purl {
 
   @Override
   public String value() {
-    return purl;
+    return purl.toString();
   }
 
   @Override
