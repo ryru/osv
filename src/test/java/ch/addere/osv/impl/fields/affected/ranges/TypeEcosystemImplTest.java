@@ -7,6 +7,7 @@ import static ch.addere.osv.impl.fields.affected.ranges.RepoImpl.of;
 import static ch.addere.osv.impl.fields.affected.ranges.Type.TYPE_KEY;
 import static java.lang.String.join;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ch.addere.osv.fields.affected.Ranges;
 import ch.addere.osv.fields.affected.ranges.Event;
@@ -18,6 +19,14 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 class TypeEcosystemImplTest {
+
+
+  @Test
+  void testOfEventsNull() {
+    assertThatThrownBy(() -> TypeEcosystemImpl.of(repo(), (EcosystemEvent[]) null))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("argument events must not be null");
+  }
 
   @Test
   void testType() {

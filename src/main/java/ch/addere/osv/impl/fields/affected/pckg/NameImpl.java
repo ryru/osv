@@ -13,6 +13,7 @@ public final class NameImpl implements Name {
   private final String name;
 
   private NameImpl(String name) {
+    Objects.requireNonNull(name, "argument name must not be null");
     this.name = name;
   }
 

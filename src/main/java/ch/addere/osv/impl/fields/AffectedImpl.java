@@ -112,26 +112,60 @@ public final class AffectedImpl implements Affected {
     private EcosystemSpecific ecosystemSpecific = null;
     private DatabaseSpecific databaseSpecific = null;
 
+    /**
+     * Affected builder.
+     *
+     * @param pckg valid Package
+     */
     public AffectedBuilder(Package pckg) {
+      Objects.requireNonNull(pckg, "argument package must not be null");
       this.pckg = pckg;
     }
 
+    /**
+     * Add multiple Ranges to Affected builder.
+     *
+     * @param ranges valid Ranges
+     * @return Affected builder
+     */
     public AffectedBuilder ranges(Ranges... ranges) {
+      Objects.requireNonNull(ranges, "argument ranges must not be null");
       this.ranges = List.of(ranges);
       return this;
     }
 
+    /**
+     * Add Versions to Affected builder.
+     *
+     * @param versions valid Versions
+     * @return Affected builder
+     */
     public AffectedBuilder versions(Versions versions) {
+      Objects.requireNonNull(versions, "argument versions must not be null");
       this.versions = versions;
       return this;
     }
 
+    /**
+     * Add EcosystemSpecific to Affected builder.
+     *
+     * @param ecosystemSpecific valid EcosystemSpecific
+     * @return Affected builder
+     */
     public AffectedBuilder ecosystemSpecific(EcosystemSpecific ecosystemSpecific) {
+      Objects.requireNonNull(ecosystemSpecific, "argument ecosystem specific must not be null");
       this.ecosystemSpecific = ecosystemSpecific;
       return this;
     }
 
+    /**
+     * Add DatabaseSpecific to Affected builder.
+     *
+     * @param databaseSpecific valid DatabaseSpecific
+     * @return Affected builder
+     */
     public AffectedBuilder databaseSpecific(DatabaseSpecific databaseSpecific) {
+      Objects.requireNonNull(databaseSpecific, "argument database specific must not be null");
       this.databaseSpecific = databaseSpecific;
       return this;
     }

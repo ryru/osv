@@ -19,6 +19,8 @@ public final class ReferencesImpl implements References {
 
   private ReferencesImpl(ReferenceType referenceType,
       ReferenceUrl referenceUrl) {
+    Objects.requireNonNull(referenceType, "argument referenceType must not be null");
+    Objects.requireNonNull(referenceUrl, "argument referenceUrl must not be null");
     this.referenceType = referenceType;
     this.referenceUrl = referenceUrl;
   }

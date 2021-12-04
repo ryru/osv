@@ -2,6 +2,7 @@ package ch.addere.osv.impl.fields.affected;
 
 import static ch.addere.osv.impl.fields.affected.EcosystemSpecificImpl.ECOSYSTEM_SPECIFIC_KEY;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import ch.addere.osv.fields.affected.EcosystemSpecific;
 import org.junit.jupiter.api.Test;
@@ -18,6 +19,13 @@ class EcosystemSpecificImplTest {
   void testJsonKey() {
     assertThat(ECOSYSTEM_SPECIFIC_KEY)
         .isEqualTo("ecosystem_specific");
+  }
+
+  @Test
+  void testOfNull() {
+    assertThatThrownBy(() -> EcosystemSpecificImpl.of(null))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("argument ecosystem specific must not be null");
   }
 
   @Test

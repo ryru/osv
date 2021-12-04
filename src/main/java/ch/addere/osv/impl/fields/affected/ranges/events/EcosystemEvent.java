@@ -12,6 +12,8 @@ public final class EcosystemEvent implements Event {
   private final String version;
 
   private EcosystemEvent(EventSpecifier event, String version) {
+    Objects.requireNonNull(event, "argument event must not be null");
+    Objects.requireNonNull(version, "argument version must not be null");
     this.event = event;
     this.version = version;
   }

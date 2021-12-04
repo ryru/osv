@@ -11,6 +11,7 @@ public abstract class EntryDate {
   private final Instant date;
 
   protected EntryDate(Instant date) {
+    Objects.requireNonNull(date, "argument date must not be null");
     this.date = date;
   }
 

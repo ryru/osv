@@ -16,6 +16,8 @@ public final class SemVerEvent implements Event {
   private final Version semVer;
 
   private SemVerEvent(EventSpecifier event, String semVer) {
+    Objects.requireNonNull(event, "argument event must not be null");
+    Objects.requireNonNull(semVer, "argument semVer must not be null");
     this.event = event;
     try {
       this.semVer = Version.parseVersion(semVer);

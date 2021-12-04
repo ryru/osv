@@ -2,6 +2,7 @@ package ch.addere.osv.impl.fields.affected.pckg;
 
 import static ch.addere.osv.impl.fields.affected.pckg.NameImpl.NAME_KEY;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import ch.addere.osv.fields.affected.pckg.Name;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,13 @@ class NameTest {
   @Test
   void testJsonKey() {
     assertThat(NAME_KEY).isEqualTo("name");
+  }
+
+  @Test
+  void testOfNull() {
+    assertThatThrownBy(() -> NameImpl.of(null))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("argument name must not be null");
   }
 
   @Test

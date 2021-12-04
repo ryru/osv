@@ -18,6 +18,7 @@ public final class ReferenceUrlImpl implements ReferenceUrl {
   }
 
   public static ReferenceUrlImpl of(URI url) {
+    Objects.requireNonNull(url, "argument url must not be null");
     return new ReferenceUrlImpl(url);
   }
 

@@ -20,6 +20,13 @@ class RepoImplTest {
   }
 
   @Test
+  void testOfNull() {
+    assertThatThrownBy(() -> RepoImpl.of(null))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("argument url must not be null");
+  }
+
+  @Test
   void testValidRepoValue() throws MalformedURLException {
     Repo repo = RepoImpl.of(VALID_URL);
     String url = repo.value();

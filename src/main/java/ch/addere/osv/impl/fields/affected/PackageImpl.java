@@ -22,6 +22,8 @@ public final class PackageImpl implements Package {
   private final Purl purl;
 
   private PackageImpl(Ecosystem ecosystem, Name name, Purl purl) {
+    Objects.requireNonNull(ecosystem, "argument ecosystem must not be null");
+    Objects.requireNonNull(name, "argument name must not be null");
     this.ecosystem = ecosystem;
     this.name = name;
     this.purl = purl;

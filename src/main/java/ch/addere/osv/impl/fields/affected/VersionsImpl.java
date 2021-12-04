@@ -17,8 +17,8 @@ public final class VersionsImpl implements Versions {
   private final List<String> versions;
 
   private VersionsImpl(String... versions) {
-    this.versions = new LinkedList<>();
-    this.versions.addAll(List.of(versions));
+    Objects.requireNonNull(versions, "argument versions must not be null");
+    this.versions = new LinkedList<>(List.of(versions));
   }
 
   /**

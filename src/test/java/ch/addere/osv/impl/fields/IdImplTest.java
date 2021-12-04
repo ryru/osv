@@ -11,6 +11,7 @@ import static ch.addere.osv.impl.fields.IdImpl.Database.UVI;
 import static ch.addere.osv.impl.fields.IdImpl.ID_KEY;
 import static java.lang.String.join;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ch.addere.osv.fields.Id;
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,20 @@ class IdImplTest {
   @Test
   void testJsonKey() {
     assertThat(ID_KEY).isEqualTo("id");
+  }
+
+  @Test
+  void testOfDatabaseNull() {
+    assertThatThrownBy(() -> IdImpl.of(null, ENTRY_ID))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("argument database must not be null");
+  }
+
+  @Test
+  void testOfEntryIdNull() {
+    assertThatThrownBy(() -> IdImpl.of(GO, null))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("argument entryId must not be null");
   }
 
   @Test

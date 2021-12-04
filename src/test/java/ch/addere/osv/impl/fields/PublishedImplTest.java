@@ -2,6 +2,7 @@ package ch.addere.osv.impl.fields;
 
 import static ch.addere.osv.impl.fields.PublishedImpl.PUBLISHED_KEY;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import ch.addere.osv.fields.Published;
 import java.time.Instant;
@@ -15,6 +16,13 @@ class PublishedImplTest {
   @Test
   void testJsonKey() {
     assertThat(PUBLISHED_KEY).isEqualTo("published");
+  }
+
+  @Test
+  void testOfNull() {
+    assertThatThrownBy(() -> PublishedImpl.of(null))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("argument date must not be null");
   }
 
   @Test

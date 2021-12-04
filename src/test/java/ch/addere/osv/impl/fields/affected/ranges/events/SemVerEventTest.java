@@ -12,6 +12,20 @@ class SemVerEventTest {
   private static final String VERSION = "1.0.0";
 
   @Test
+  void testOfEventNull() {
+    assertThatThrownBy(() -> SemVerEvent.of(null, VERSION))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("argument event must not be null");
+  }
+
+  @Test
+  void testOfVersionNull() {
+    assertThatThrownBy(() -> SemVerEvent.of(EventSpecifier.introduced, null))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("argument semVer must not be null");
+  }
+
+  @Test
   void testInvalidSemVer() {
     assertThatThrownBy(() -> SemVerEvent.of(EventSpecifier.fixed, "not-a-semantic-version"))
         .isInstanceOf(IllegalArgumentException.class)

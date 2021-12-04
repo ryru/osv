@@ -18,6 +18,13 @@ class PurlImplTest {
   }
 
   @Test
+  void testOfNull() {
+    assertThatThrownBy(() -> PurlImpl.of(null))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("argument purl must not be null");
+  }
+
+  @Test
   void testInvalidPurl() {
     assertThatThrownBy(() -> {
       PurlImpl.of("not-valid-purl");

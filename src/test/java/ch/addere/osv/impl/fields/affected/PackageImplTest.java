@@ -6,6 +6,7 @@ import static ch.addere.osv.impl.fields.affected.pckg.NameImpl.NAME_KEY;
 import static ch.addere.osv.impl.fields.affected.pckg.NameImpl.of;
 import static ch.addere.osv.impl.fields.affected.pckg.PurlImpl.PURL_KEY;
 import static java.lang.String.join;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import ch.addere.osv.fields.affected.Package;
@@ -28,6 +29,20 @@ class PackageImplTest {
   @Test
   void testJsonKey() {
     assertThat(PACKAGE_KEY).isEqualTo("package");
+  }
+
+  @Test
+  void testOfEcosystemNull() {
+    assertThatThrownBy(() -> PackageImpl.of(null, NAME))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("argument ecosystem must not be null");
+  }
+
+  @Test
+  void testOfNameNull() {
+    assertThatThrownBy(() -> PackageImpl.of(LINUX_ECOSYSTEM, null))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("argument name must not be null");
   }
 
   @Test

@@ -18,6 +18,13 @@ class SummaryImplTest {
   }
 
   @Test
+  void testOfNull() {
+    assertThatThrownBy(() -> SummaryImpl.of(null))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("argument summary must not be null");
+  }
+
+  @Test
   void testInvalidSummaryLength() {
     var text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque condimentum, est a"
         + " interdum lobortis, ante tortor gravid";

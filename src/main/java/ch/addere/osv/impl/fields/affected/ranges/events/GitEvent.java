@@ -12,6 +12,8 @@ public final class GitEvent implements Event {
   private final String gitCommit;
 
   private GitEvent(EventSpecifier event, String gitCommit) {
+    Objects.requireNonNull(event, "argument event must not be null");
+    Objects.requireNonNull(gitCommit, "argument gitCommit must not be null");
     this.event = event;
     this.gitCommit = gitCommit;
   }

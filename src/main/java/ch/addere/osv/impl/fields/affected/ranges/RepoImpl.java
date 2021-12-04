@@ -14,8 +14,13 @@ public final class RepoImpl implements Repo {
 
   private final URL url;
 
-  private RepoImpl(URL url) {
-    this.url = url;
+  private RepoImpl(String url) {
+    Objects.requireNonNull(url, "argument url must not be null");
+    try {
+      this.url = new URL(url);
+    } catch (MalformedURLException e) {
+      throw new IllegalArgumentException("invalid URL: '" + url + "'", e);
+    }
   }
 
   /**
@@ -25,11 +30,7 @@ public final class RepoImpl implements Repo {
    * @return valid Repo
    */
   public static RepoImpl of(String url) {
-    try {
-      return new RepoImpl(new URL(url));
-    } catch (MalformedURLException e) {
-      throw new IllegalArgumentException("invalid URL: '" + url + "'", e);
-    }
+    return new RepoImpl(url);
   }
 
   @Override

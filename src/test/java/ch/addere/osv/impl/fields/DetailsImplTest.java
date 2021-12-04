@@ -2,6 +2,7 @@ package ch.addere.osv.impl.fields;
 
 import static ch.addere.osv.impl.fields.DetailsImpl.DETAILS_KEY;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import ch.addere.osv.fields.Details;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,13 @@ class DetailsImplTest {
   @Test
   void testJsonKey() {
     assertThat(DETAILS_KEY).isEqualTo("details");
+  }
+
+  @Test
+  void testOfNull() {
+    assertThatThrownBy(() -> DetailsImpl.of(null))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("argument details must not be null");
   }
 
   @Test

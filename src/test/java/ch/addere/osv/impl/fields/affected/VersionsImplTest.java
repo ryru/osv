@@ -2,6 +2,7 @@ package ch.addere.osv.impl.fields.affected;
 
 import static ch.addere.osv.impl.fields.affected.VersionsImpl.VERSIONS_KEY;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import ch.addere.osv.fields.affected.Versions;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,13 @@ class VersionsImplTest {
   @Test
   void testJsonKey() {
     assertThat(VERSIONS_KEY).isEqualTo("versions");
+  }
+
+  @Test
+  void testOfNull() {
+    assertThatThrownBy(() -> VersionsImpl.of((String[]) null))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("argument versions must not be null");
   }
 
   @Test

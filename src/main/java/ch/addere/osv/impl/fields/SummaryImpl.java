@@ -19,6 +19,7 @@ public final class SummaryImpl implements Summary {
    * @param summary sum up of the vulnerability
    */
   private SummaryImpl(String summary) {
+    Objects.requireNonNull(summary, "argument summary must not be null");
     if (summary.length() > MAX_LENGTH) {
       throw new IllegalArgumentException(
           "summary must not exceed 120 characters, was " + summary.length());

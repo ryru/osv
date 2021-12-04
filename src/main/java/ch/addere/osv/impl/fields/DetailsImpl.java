@@ -13,6 +13,7 @@ public final class DetailsImpl implements Details {
   private final String details;
 
   private DetailsImpl(String details) {
+    Objects.requireNonNull(details, "argument details must not be null");
     this.details = details;
   }
 

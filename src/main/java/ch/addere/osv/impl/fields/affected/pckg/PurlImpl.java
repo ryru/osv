@@ -17,6 +17,7 @@ public final class PurlImpl implements Purl {
   private final PackageURL purl;
 
   private PurlImpl(String purl) {
+    Objects.requireNonNull(purl, "argument purl must not be null");
     try {
       this.purl = new PackageURL(purl);
     } catch (MalformedPackageURLException e) {

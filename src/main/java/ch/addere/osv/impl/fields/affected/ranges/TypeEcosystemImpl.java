@@ -22,6 +22,7 @@ public final class TypeEcosystemImpl implements Ranges {
   private final List<EcosystemEvent> events;
 
   private TypeEcosystemImpl(Repo repo, EcosystemEvent... events) {
+    Objects.requireNonNull(events, "argument events must not be null");
     this.type = Type.ECOSYSTEM;
     this.repo = repo;
     this.events = List.of(events);

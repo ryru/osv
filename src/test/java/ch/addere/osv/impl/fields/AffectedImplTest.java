@@ -13,6 +13,7 @@ import static ch.addere.osv.impl.fields.affected.pckg.PurlImpl.PURL_KEY;
 import static ch.addere.osv.impl.fields.affected.ranges.Type.TYPE_KEY;
 import static java.lang.String.join;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import ch.addere.osv.fields.Affected;
 import ch.addere.osv.fields.affected.DatabaseSpecific;
@@ -40,6 +41,41 @@ class AffectedImplTest {
   @Test
   void testJsonKey() {
     assertThat(AFFECTED_KEY).isEqualTo("affected");
+  }
+
+  @Test
+  void testOfPackageNull() {
+    assertThatThrownBy(() -> new AffectedBuilder(null))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("argument package must not be null");
+  }
+
+  @Test
+  void testOfRangesNull() {
+    assertThatThrownBy(() -> new AffectedBuilder(pckg()).ranges((Ranges[]) null))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("argument ranges must not be null");
+  }
+
+  @Test
+  void testOfVersionsNull() {
+    assertThatThrownBy(() -> new AffectedBuilder(pckg()).versions(null))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("argument versions must not be null");
+  }
+
+  @Test
+  void testOfEcosystemSpecificNull() {
+    assertThatThrownBy(() -> new AffectedBuilder(pckg()).ecosystemSpecific(null))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("argument ecosystem specific must not be null");
+  }
+
+  @Test
+  void testOfDatabaseSpecificNull() {
+    assertThatThrownBy(() -> new AffectedBuilder(pckg()).databaseSpecific(null))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("argument database specific must not be null");
   }
 
   @Test

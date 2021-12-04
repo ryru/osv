@@ -13,6 +13,7 @@ public final class EcosystemSpecificImpl implements EcosystemSpecific {
   private final String ecosystemSpecific;
 
   private EcosystemSpecificImpl(String ecosystemSpecific) {
+    Objects.requireNonNull(ecosystemSpecific, "argument ecosystem specific must not be null");
     this.ecosystemSpecific = ecosystemSpecific;
   }
 

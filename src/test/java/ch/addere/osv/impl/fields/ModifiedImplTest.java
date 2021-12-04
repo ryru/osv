@@ -2,6 +2,7 @@ package ch.addere.osv.impl.fields;
 
 import static ch.addere.osv.impl.fields.ModifiedImpl.MODIFIED_KEY;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import ch.addere.osv.fields.Modified;
 import java.time.Instant;
@@ -15,6 +16,13 @@ class ModifiedImplTest {
   @Test
   void testJsonKey() {
     assertThat(MODIFIED_KEY).isEqualTo("modified");
+  }
+
+  @Test
+  void testOfNull() {
+    assertThatThrownBy(() -> ModifiedImpl.of(null))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("argument date must not be null");
   }
 
   @Test

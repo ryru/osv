@@ -2,6 +2,7 @@ package ch.addere.osv.impl.fields.affected.ranges.events;
 
 import static ch.addere.osv.fields.affected.ranges.Event.EVENTS_KEY;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import ch.addere.osv.fields.affected.ranges.Event;
 import org.junit.jupiter.api.Test;
@@ -9,6 +10,20 @@ import org.junit.jupiter.api.Test;
 class EcosystemEventTest {
 
   private static final String VERSION = "aVersion";
+
+  @Test
+  void testOfEventNull() {
+    assertThatThrownBy(() -> EcosystemEvent.of(null, VERSION))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("argument event must not be null");
+  }
+
+  @Test
+  void testOfVersionNull() {
+    assertThatThrownBy(() -> EcosystemEvent.of(EventSpecifier.introduced, null))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("argument version must not be null");
+  }
 
   @Test
   void testIntroducedEvent() {

@@ -22,6 +22,8 @@ public final class TypeGitImpl implements Ranges {
   private final List<GitEvent> events;
 
   private TypeGitImpl(Repo repo, GitEvent... events) {
+    Objects.requireNonNull(repo, "argument repo must not be null");
+    Objects.requireNonNull(events, "argument events must not be null");
     this.type = Type.GIT;
     this.repo = repo;
     this.events = List.of(events);

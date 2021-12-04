@@ -2,6 +2,7 @@ package ch.addere.osv.impl.fields;
 
 import static ch.addere.osv.impl.fields.WithdrawnImpl.WITHDRAWN_KEY;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import ch.addere.osv.fields.Withdrawn;
 import java.time.Instant;
@@ -15,6 +16,13 @@ class WithdrawnImplTest {
   @Test
   void testJsonKey() {
     assertThat(WITHDRAWN_KEY).isEqualTo("withdrawn");
+  }
+
+  @Test
+  void testOfNull() {
+    assertThatThrownBy(() -> WithdrawnImpl.of(null))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("argument date must not be null");
   }
 
   @Test

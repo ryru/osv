@@ -6,6 +6,7 @@ import static ch.addere.osv.impl.fields.affected.ranges.RepoImpl.REPO_KEY;
 import static ch.addere.osv.impl.fields.affected.ranges.Type.TYPE_KEY;
 import static java.lang.String.join;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ch.addere.osv.fields.affected.Ranges;
 import ch.addere.osv.fields.affected.ranges.Event;
@@ -17,6 +18,20 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 class TypeGitImplTest {
+
+  @Test
+  void testOfRepoNull() {
+    assertThatThrownBy(() -> TypeGitImpl.of(null, introducedEvent()))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("argument repo must not be null");
+  }
+
+  @Test
+  void testOfEventsNull() {
+    assertThatThrownBy(() -> TypeGitImpl.of(repo(), (GitEvent[]) null))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("argument events must not be null");
+  }
 
   @Test
   void testType() {

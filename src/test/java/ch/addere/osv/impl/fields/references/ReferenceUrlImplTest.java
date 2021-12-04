@@ -1,6 +1,7 @@
 package ch.addere.osv.impl.fields.references;
 
 import static ch.addere.osv.impl.fields.references.ReferenceUrlImpl.REFERENCE_URL_KEY;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import ch.addere.osv.fields.references.ReferenceUrl;
@@ -15,6 +16,13 @@ class ReferenceUrlImplTest {
   @Test
   void testJsonKey() {
     assertThat(REFERENCE_URL_KEY).isEqualTo("url");
+  }
+
+  @Test
+  void testOfNull() {
+    assertThatThrownBy(() -> ReferenceUrlImpl.of(null))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("argument url must not be null");
   }
 
   @Test

@@ -15,6 +15,13 @@ class IdAggregateTest {
   private static final Id ID_3 = IdImpl.of(GO, "id3");
 
   @Test
+  void testOfNull() {
+    assertThatThrownBy(() -> IdAggregate.of((Id[]) null))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("argument ids must not be null");
+  }
+
+  @Test
   void testInvalidEmptyArguments() {
     assertThatThrownBy(IdAggregate::of)
         .isInstanceOf(IllegalArgumentException.class)

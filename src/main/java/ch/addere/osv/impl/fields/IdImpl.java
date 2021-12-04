@@ -16,6 +16,8 @@ public final class IdImpl implements Id {
   private final String entryId;
 
   private IdImpl(Database database, String entryId) {
+    Objects.requireNonNull(database, "argument database must not be null");
+    Objects.requireNonNull(entryId, "argument entryId must not be null");
     this.database = database;
     this.entryId = entryId;
   }

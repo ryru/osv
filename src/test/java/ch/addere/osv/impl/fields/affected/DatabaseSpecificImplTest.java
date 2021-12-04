@@ -2,6 +2,7 @@ package ch.addere.osv.impl.fields.affected;
 
 import static ch.addere.osv.impl.fields.affected.DatabaseSpecificImpl.DATABASE_SPECIFIC_KEY;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import ch.addere.osv.fields.affected.DatabaseSpecific;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,13 @@ class DatabaseSpecificImplTest {
   void testJsonKey() {
     assertThat(DATABASE_SPECIFIC_KEY)
         .isEqualTo("database_specific");
+  }
+
+  @Test
+  void testOfNull() {
+    assertThatThrownBy(() -> DatabaseSpecificImpl.of(null))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("argument database specific must not be null");
   }
 
   @Test

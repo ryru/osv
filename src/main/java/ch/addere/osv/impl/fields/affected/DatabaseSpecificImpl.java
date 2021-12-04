@@ -13,6 +13,7 @@ public final class DatabaseSpecificImpl implements DatabaseSpecific {
   private final String databaseSpecific;
 
   private DatabaseSpecificImpl(String databaseSpecific) {
+    Objects.requireNonNull(databaseSpecific, "argument database specific must not be null");
     this.databaseSpecific = databaseSpecific;
   }
 

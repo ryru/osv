@@ -21,10 +21,11 @@ public final class TypeSemVerImpl implements Ranges {
   private final Repo repo;
   private final List<SemVerEvent> events;
 
-  private TypeSemVerImpl(Repo repo, SemVerEvent... event) {
+  private TypeSemVerImpl(Repo repo, SemVerEvent... events) {
+    Objects.requireNonNull(events, "argument events must not be null");
     this.type = Type.SEMVER;
     this.repo = repo;
-    this.events = List.of(event);
+    this.events = List.of(events);
   }
 
   public static TypeSemVerImpl of(SemVerEvent... events) {

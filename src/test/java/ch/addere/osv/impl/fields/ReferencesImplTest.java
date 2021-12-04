@@ -1,8 +1,8 @@
 package ch.addere.osv.impl.fields;
 
 import static ch.addere.osv.impl.fields.ReferencesImpl.REFERENCES_KEY;
-import static ch.addere.osv.impl.fields.ReferencesImpl.of;
 import static java.lang.String.join;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import ch.addere.osv.fields.References;
@@ -23,8 +23,22 @@ class ReferencesImplTest {
   }
 
   @Test
+  void testOfReferenceTypeNull() {
+    assertThatThrownBy(() -> ReferencesImpl.of(null, url()))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("argument referenceType must not be null");
+  }
+
+  @Test
+  void testOfReferenceUrlNull() {
+    assertThatThrownBy(() -> ReferencesImpl.of(type(), null))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("argument referenceUrl must not be null");
+  }
+
+  @Test
   void testValidReference() {
-    References references = of(type(), url());
+    References references = ReferencesImpl.of(type(), url());
     assertThat(references).satisfies(ref -> {
       assertThat(ref.referenceType()).isEqualTo(ReferenceTypeImpl.ARTICLE);
       assertThat(ref.referenceUrl().value()).isEqualTo(VALID_URL);
@@ -33,35 +47,35 @@ class ReferencesImplTest {
 
   @Test
   void testSameness() {
-    References references = of(type(), url());
+    References references = ReferencesImpl.of(type(), url());
     References otherReferences = references;
     assertThat(references).isEqualTo(otherReferences);
   }
 
   @Test
   void testEquality() {
-    References references = of(type(), url());
-    References otherReferences = of(type(), url());
+    References references = ReferencesImpl.of(type(), url());
+    References otherReferences = ReferencesImpl.of(type(), url());
     assertThat(references).isEqualTo(otherReferences);
   }
 
   @Test
   void testNonEquality() {
-    References references = of(type(), url());
-    References otherReferences = of(ReferenceTypeImpl.FIX, url());
+    References references = ReferencesImpl.of(type(), url());
+    References otherReferences = ReferencesImpl.of(ReferenceTypeImpl.FIX, url());
     assertThat(references).isNotEqualTo(otherReferences);
   }
 
   @Test
   void testHashCode() {
-    References references = of(type(), url());
-    References otherReferences = of(type(), url());
+    References references = ReferencesImpl.of(type(), url());
+    References otherReferences = ReferencesImpl.of(type(), url());
     assertThat(references.hashCode()).isEqualTo(otherReferences.hashCode());
   }
 
   @Test
   void testToString() {
-    References references = of(type(), url());
+    References references = ReferencesImpl.of(type(), url());
     assertThat(references.toString()).isEqualTo(REFERENCES_KEY + ": " + join(", ",
         typeToString(),
         urlToString()));

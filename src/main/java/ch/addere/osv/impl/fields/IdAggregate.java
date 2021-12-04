@@ -5,6 +5,7 @@ import ch.addere.osv.fields.Id;
 import ch.addere.osv.fields.Related;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Aggregate of IDs representing other vulnerability entries.
@@ -14,10 +15,14 @@ public final class IdAggregate implements Aliases, Related {
   public static final String ALIASES_KEY = "aliases";
   public static final String RELATED_KEY = "related";
 
-  private final List<Id> related;
+  private final List<Id> ids;
 
-  private IdAggregate(List<Id> related) {
-    this.related = related;
+  private IdAggregate(Id... ids) {
+    Objects.requireNonNull(ids, "argument ids must not be null");
+    this.ids = List.of(ids);
+    if (ids.length == 0) {
+      throw new IllegalArgumentException("no ID, at least one ID must be provided");
+    }
   }
 
   /**
@@ -27,10 +32,7 @@ public final class IdAggregate implements Aliases, Related {
    * @return a new aggregate with all ids
    */
   public static IdAggregate of(Id... ids) {
-    if (ids.length == 0) {
-      throw new IllegalArgumentException("no ID, at least one ID must be provided");
-    }
-    return new IdAggregate(List.of(ids));
+    return new IdAggregate(ids);
   }
 
   /**
@@ -40,7 +42,7 @@ public final class IdAggregate implements Aliases, Related {
    */
   @Override
   public List<Id> ids() {
-    return List.copyOf(related);
+    return List.copyOf(ids);
   }
 
   /**
@@ -54,7 +56,7 @@ public final class IdAggregate implements Aliases, Related {
     if (contains(id)) {
       return this;
     } else {
-      List<Id> tmpIds = new LinkedList<>(related);
+      List<Id> tmpIds = new LinkedList<>(ids);
       tmpIds.add(id);
       return of(tmpIds.toArray(new Id[0]));
     }
@@ -68,7 +70,7 @@ public final class IdAggregate implements Aliases, Related {
    */
   public IdAggregate remove(Id id) {
     if (contains(id)) {
-      List<Id> tmpIds = new LinkedList<>(related);
+      List<Id> tmpIds = new LinkedList<>(ids);
       tmpIds.remove(id);
       return of(tmpIds.toArray(new Id[0]));
     } else {
@@ -83,6 +85,6 @@ public final class IdAggregate implements Aliases, Related {
    * @return ture if ID is included
    */
   public boolean contains(Id id) {
-    return related.contains(id);
+    return ids.contains(id);
   }
 }
