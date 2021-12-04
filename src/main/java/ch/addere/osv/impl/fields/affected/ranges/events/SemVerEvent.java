@@ -1,6 +1,10 @@
 package ch.addere.osv.impl.fields.affected.ranges.events;
 
+import static java.lang.String.format;
+
 import ch.addere.osv.fields.affected.ranges.Event;
+import de.skuzzle.semantic.Version;
+import de.skuzzle.semantic.Version.VersionFormatException;
 import java.util.Objects;
 
 /**
@@ -9,12 +13,15 @@ import java.util.Objects;
 public final class SemVerEvent implements Event {
 
   private final EventSpecifier event;
-  // TODO this should be of type Semantic Version
-  private final String semVer;
+  private final Version semVer;
 
   private SemVerEvent(EventSpecifier event, String semVer) {
     this.event = event;
-    this.semVer = semVer;
+    try {
+      this.semVer = Version.parseVersion(semVer);
+    } catch (VersionFormatException e) {
+      throw new IllegalArgumentException(format("invalid semantic version: '%s'", semVer), e);
+    }
   }
 
   public static SemVerEvent of(EventSpecifier event, String semVer) {
@@ -28,7 +35,7 @@ public final class SemVerEvent implements Event {
 
   @Override
   public String release() {
-    return semVer;
+    return semVer.toString();
   }
 
   @Override

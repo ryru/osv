@@ -17,7 +17,6 @@ import ch.addere.osv.util.OsvParserException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -25,6 +24,7 @@ import org.junit.jupiter.api.Test;
 class RangesDeserializerTest {
 
   private static final ObjectMapper mapper = new ObjectMapper();
+  private static final String SEM_VER = "1.2.3";
 
   @Test
   void testInvalidJsonInput() {
@@ -44,22 +44,22 @@ class RangesDeserializerTest {
   void testValidMinimalSemVerRange() throws JsonProcessingException, OsvParserException {
     Ranges range = semVerRange(null);
     List<Ranges> deserializedRange = deserialize(
-        "[{\"type\":\"SEMVER\",\"events\":[{\"introduced\":\"0\"}]}]");
+        "[{\"type\":\"SEMVER\",\"events\":[{\"introduced\":\"1.2.3\"}]}]");
     assertThat(deserializedRange).containsExactly(range);
   }
 
   @Test
   void testValidSemVerRangeWithRepo()
-      throws JsonProcessingException, OsvParserException, MalformedURLException {
+      throws JsonProcessingException, OsvParserException {
     Ranges range = semVerRange(getRepo());
     List<Ranges> deserializedRange = deserialize(
-        "[{\"type\":\"SEMVER\",\"repo\":\"https://test.repo\",\"events\":[{\"introduced\":\"0\"}]}]");
+        "[{\"type\":\"SEMVER\",\"repo\":\"https://test.repo\",\"events\":[{\"introduced\":\"1.2.3\"}]}]");
     assertThat(deserializedRange).containsExactly(range);
   }
 
   @Test
   void testValidMinimalGitRange()
-      throws JsonProcessingException, OsvParserException, MalformedURLException {
+      throws JsonProcessingException, OsvParserException {
     Ranges range = gitRange();
     List<Ranges> deserializedRange = deserialize(
         "[{\"type\":\"GIT\",\"repo\":\"https://test.repo\",\"events\":[{\"introduced\":\"0\"}]}]");
@@ -84,7 +84,7 @@ class RangesDeserializerTest {
 
   @Test
   void testValidEcosystemRangeWithRepo()
-      throws JsonProcessingException, OsvParserException, MalformedURLException {
+      throws JsonProcessingException, OsvParserException {
     Ranges range = ecosystemRange(getRepo());
     List<Ranges> deserializedRange = deserialize(
         "[{\"type\":\"ECOSYSTEM\",\"repo\":\"https://test.repo\",\"events\":[{\"introduced\":\"0\"}]}]");
@@ -93,11 +93,11 @@ class RangesDeserializerTest {
 
   private static Ranges semVerRange(Repo repo) {
     return Optional.ofNullable(repo)
-        .map(value -> TypeSemVerImpl.of(value, SemVerEvent.of(EventSpecifier.introduced, "0")))
-        .orElseGet(() -> TypeSemVerImpl.of(SemVerEvent.of(EventSpecifier.introduced, "0")));
+        .map(value -> TypeSemVerImpl.of(value, SemVerEvent.of(EventSpecifier.introduced, SEM_VER)))
+        .orElseGet(() -> TypeSemVerImpl.of(SemVerEvent.of(EventSpecifier.introduced, SEM_VER)));
   }
 
-  private static Ranges gitRange() throws MalformedURLException {
+  private static Ranges gitRange() {
     return TypeGitImpl.of(getRepo(), GitEvent.of(EventSpecifier.introduced, "0"));
   }
 
@@ -107,7 +107,7 @@ class RangesDeserializerTest {
         .orElseGet(() -> TypeEcosystemImpl.of(EcosystemEvent.of(EventSpecifier.introduced, "0")));
   }
 
-  private static Repo getRepo() throws MalformedURLException {
+  private static Repo getRepo() {
     return RepoImpl.of("https://test.repo");
   }
 

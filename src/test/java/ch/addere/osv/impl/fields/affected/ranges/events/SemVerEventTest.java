@@ -2,13 +2,21 @@ package ch.addere.osv.impl.fields.affected.ranges.events;
 
 import static ch.addere.osv.fields.affected.ranges.Event.EVENTS_KEY;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import ch.addere.osv.fields.affected.ranges.Event;
 import org.junit.jupiter.api.Test;
 
 class SemVerEventTest {
 
-  private static final String VERSION = "aVersion";
+  private static final String VERSION = "1.0.0";
+
+  @Test
+  void testInvalidSemVer() {
+    assertThatThrownBy(() -> SemVerEvent.of(EventSpecifier.fixed, "not-a-semantic-version"))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("invalid semantic version: 'not-a-semantic-version'");
+  }
 
   @Test
   void testIntroducedEvent() {
