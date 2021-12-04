@@ -9,6 +9,7 @@ import ch.addere.osv.fields.affected.EcosystemSpecific;
 import ch.addere.osv.fields.affected.Package;
 import ch.addere.osv.fields.affected.Ranges;
 import ch.addere.osv.fields.affected.Versions;
+import ch.addere.osv.impl.fields.affected.ranges.Type;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -26,9 +27,6 @@ public final class AffectedImpl implements Affected {
   private final Versions versions;
   private final EcosystemSpecific ecosystemSpecific;
   private final DatabaseSpecific databaseSpecific;
-
-  // TODO constrain: In short, each object in the affected array must contain either a non-empty
-  //  versions list or at least one range in the ranges list of type SEMVER.
 
   private AffectedImpl(Package pckge,
       List<Ranges> ranges,
@@ -176,7 +174,23 @@ public final class AffectedImpl implements Affected {
      * @return valid Affected
      */
     public AffectedImpl build() {
-      return new AffectedImpl(pckg, ranges, versions, ecosystemSpecific, databaseSpecific);
+      if (validate()) {
+        return new AffectedImpl(pckg, ranges, versions, ecosystemSpecific, databaseSpecific);
+      } else {
+        throw new IllegalStateException("no versions or no range of type semantic version");
+      }
+    }
+
+    private boolean validate() {
+      return hasVersions() || hasRangeOfSemVer();
+    }
+
+    private boolean hasVersions() {
+      return versions != null && versions.value().stream().findAny().isPresent();
+    }
+
+    private boolean hasRangeOfSemVer() {
+      return ranges.stream().anyMatch(range -> range.type() == Type.SEMVER);
     }
   }
 }

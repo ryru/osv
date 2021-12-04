@@ -96,16 +96,45 @@ class AffectedImplTest {
   }
 
   @Test
+  void testValidAffectedWithVersion() {
+    Affected affected = new AffectedBuilder(pckg())
+        .versions(versions())
+        .build();
+    assertThat(affected).satisfies(aff -> {
+      assertThat(aff.pckg()).isEqualTo(pckg());
+      assertThat(aff.versions()).contains(versions());
+    });
+  }
+
+  @Test
+  void testValidAffectedWithSemVerRange() {
+    Affected affected = new AffectedBuilder(pckg())
+        .ranges(ranges())
+        .build();
+    assertThat(affected).satisfies(aff -> {
+      assertThat(aff.pckg()).isEqualTo(pckg());
+      assertThat(aff.ranges().toArray()).containsExactly(ranges());
+    });
+  }
+
+  @Test
+  void testInvalidAffectedWithoutVersionOrSemVerRange() {
+    assertThatThrownBy(() -> new AffectedBuilder(pckg()).build())
+        .isInstanceOf(IllegalStateException.class)
+        .hasMessageContaining("no versions or no range of type semantic version");
+  }
+
+  @Test
   void testSameness() {
-    Affected affected = new AffectedBuilder(pckg()).build();
+    Affected affected = new AffectedBuilder(pckg()).versions(VersionsImpl.of(VERSION)).build();
     Affected otherAffected = affected;
     assertThat(affected).isEqualTo(otherAffected);
   }
 
   @Test
   void testEquality() {
-    Affected affected = new AffectedBuilder(pckg()).build();
-    Affected otherAffected = new AffectedBuilder(pckg()).build();
+    Affected affected = new AffectedBuilder(pckg()).versions(VersionsImpl.of(VERSION)).build();
+    Affected otherAffected = new AffectedBuilder(pckg()).versions(VersionsImpl.of(VERSION)).build();
     assertThat(affected).isEqualTo(otherAffected);
   }
 
