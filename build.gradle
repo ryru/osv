@@ -1,6 +1,7 @@
 plugins {
     id "com.github.spotbugs" version "5.0.0-beta.1"
     id 'checkstyle'
+    id 'jacoco'
     id 'java'
     id 'pmd'
 }
@@ -26,6 +27,7 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    finalizedBy(jacocoTestReport)
 }
 
 checkstyle {
@@ -42,4 +44,17 @@ checkstyleTest {
 pmd {
     ruleSets = []
     ruleSetFiles = files("config/pmd/ruleset.xml")
+}
+
+jacoco {
+    toolVersion = "0.8.7"
+    reportsDirectory = layout.buildDirectory.dir('reports/coverage')
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required = true
+        csv.required = false
+    }
 }
