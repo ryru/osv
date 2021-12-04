@@ -101,4 +101,11 @@ class EcosystemTest {
     String eco = ecosystem.toString();
     assertThat(eco).isEqualTo(ECOSYSTEM_KEY + ": Linux");
   }
+
+  @Test
+  void testDebianToString() {
+    Ecosystem ecosystem = Ecosystem.DEBIAN;
+    String eco = ecosystem.toString();
+    assertThat(eco).isEqualTo(ECOSYSTEM_KEY + ": Debian");
+  }
 }

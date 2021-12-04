@@ -17,7 +17,8 @@ public enum Ecosystem {
   PACKAGIST("packagist"),
   MAVEN("Maven"),
   NU_GET("NuGet"),
-  LINUX("Linux");
+  LINUX("Linux"),
+  DEBIAN("Debian");
 
   public static final String ECOSYSTEM_KEY = "ecosystem";
 
