@@ -26,11 +26,13 @@ import static ch.addere.osv.impl.fields.references.ReferenceUrlImpl.REFERENCE_UR
 
 import ch.addere.osv.Entry;
 import ch.addere.osv.fields.Affected;
+import ch.addere.osv.fields.Aliases;
 import ch.addere.osv.fields.Details;
 import ch.addere.osv.fields.Id;
 import ch.addere.osv.fields.Modified;
 import ch.addere.osv.fields.Published;
 import ch.addere.osv.fields.References;
+import ch.addere.osv.fields.Related;
 import ch.addere.osv.fields.Summary;
 import ch.addere.osv.fields.Withdrawn;
 import ch.addere.osv.fields.affected.DatabaseSpecific;
@@ -41,7 +43,6 @@ import ch.addere.osv.fields.affected.Versions;
 import ch.addere.osv.fields.affected.pckg.Name;
 import ch.addere.osv.fields.affected.pckg.Purl;
 import ch.addere.osv.fields.affected.ranges.Event;
-import ch.addere.osv.impl.fields.IdAggregate;
 import ch.addere.osv.impl.fields.affected.pckg.Ecosystem;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -111,7 +112,7 @@ public class EntrySerializer extends StdSerializer<Entry> {
   private static void writeAliases(Entry value, JsonGenerator gen) throws IOException {
     gen.writeFieldName(ALIASES_KEY);
     gen.writeStartArray();
-    var ids = value.aliases().map(IdAggregate::ids).orElse(List.of());
+    var ids = value.aliases().map(Aliases::ids).orElse(List.of());
     for (var id : ids) {
       gen.writeString(writeId(id));
     }
@@ -121,7 +122,7 @@ public class EntrySerializer extends StdSerializer<Entry> {
   private static void writeRelated(Entry value, JsonGenerator gen) throws IOException {
     gen.writeFieldName(RELATED_KEY);
     gen.writeStartArray();
-    var ids = value.related().map(IdAggregate::ids).orElse(List.of());
+    var ids = value.related().map(Related::ids).orElse(List.of());
     for (var id : ids) {
       gen.writeString(writeId(id));
     }

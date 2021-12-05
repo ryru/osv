@@ -2,17 +2,19 @@ package ch.addere.osv.impl;
 
 import ch.addere.osv.Entry;
 import ch.addere.osv.fields.Affected;
+import ch.addere.osv.fields.Aliases;
 import ch.addere.osv.fields.Details;
 import ch.addere.osv.fields.Id;
 import ch.addere.osv.fields.Modified;
 import ch.addere.osv.fields.Published;
 import ch.addere.osv.fields.References;
+import ch.addere.osv.fields.Related;
 import ch.addere.osv.fields.Summary;
 import ch.addere.osv.fields.Withdrawn;
-import ch.addere.osv.impl.fields.IdAggregate;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -23,8 +25,8 @@ public final class EntryImpl implements Entry {
 
   private final Id id;
   private final Modified modified;
-  private IdAggregate aliases;
-  private IdAggregate related;
+  private Aliases aliases;
+  private Related related;
   private Published published;
   private Withdrawn withdrawn;
   private Summary summary;
@@ -60,12 +62,12 @@ public final class EntryImpl implements Entry {
   }
 
   @Override
-  public Optional<IdAggregate> aliases() {
+  public Optional<Aliases> aliases() {
     return Optional.ofNullable(aliases);
   }
 
   @Override
-  public Optional<IdAggregate> related() {
+  public Optional<Related> related() {
     return Optional.ofNullable(related);
   }
 
@@ -99,6 +101,45 @@ public final class EntryImpl implements Entry {
     return new LinkedList<>(references);
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    EntryImpl entry = (EntryImpl) o;
+    return id.equals(entry.id) && modified.equals(entry.modified) && Objects.equals(aliases,
+        entry.aliases) && Objects.equals(related, entry.related)
+        && Objects.equals(published, entry.published) && Objects.equals(withdrawn,
+        entry.withdrawn) && Objects.equals(summary, entry.summary)
+        && Objects.equals(details, entry.details) && Objects.equals(affected,
+        entry.affected) && Objects.equals(references, entry.references);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, modified, aliases, related, published, withdrawn, summary, details,
+        affected, references);
+  }
+
+  @Override
+  public String toString() {
+    return "EntryImpl{" +
+        "id=" + id +
+        ", modified=" + modified +
+        ", aliases=" + aliases +
+        ", related=" + related +
+        ", published=" + published +
+        ", withdrawn=" + withdrawn +
+        ", summary=" + summary +
+        ", details=" + details +
+        ", affected=" + affected +
+        ", references=" + references +
+        '}';
+  }
+
   /**
    * Builder for Entries.
    */
@@ -106,26 +147,26 @@ public final class EntryImpl implements Entry {
 
     private final Id id;
     private final Modified modified;
-    private IdAggregate aliases = null;
-    private IdAggregate related = null;
+    private Aliases aliases = null;
+    private Related related = null;
     private Published published = null;
     private Withdrawn withdrawn = null;
     private Summary summary = null;
     private Details details = null;
     private List<Affected> affected = List.of();
-    private List<References> references = null;
+    private List<References> references = List.of();
 
     public EntryBuilder(Id id, Modified modified) {
       this.id = id;
       this.modified = modified;
     }
 
-    public EntryBuilder aliases(IdAggregate aliases) {
+    public EntryBuilder aliases(Aliases aliases) {
       this.aliases = aliases;
       return this;
     }
 
-    public EntryBuilder related(IdAggregate related) {
+    public EntryBuilder related(Related related) {
       this.related = related;
       return this;
     }

@@ -1,14 +1,15 @@
 package ch.addere.osv;
 
 import ch.addere.osv.fields.Affected;
+import ch.addere.osv.fields.Aliases;
 import ch.addere.osv.fields.Details;
 import ch.addere.osv.fields.Id;
 import ch.addere.osv.fields.Modified;
 import ch.addere.osv.fields.Published;
 import ch.addere.osv.fields.References;
+import ch.addere.osv.fields.Related;
 import ch.addere.osv.fields.Summary;
 import ch.addere.osv.fields.Withdrawn;
-import ch.addere.osv.impl.fields.IdAggregate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -22,9 +23,9 @@ public interface Entry {
 
   Modified modified();
 
-  Optional<IdAggregate> aliases();
+  Optional<Aliases> aliases();
 
-  Optional<IdAggregate> related();
+  Optional<Related> related();
 
   Optional<Published> published();
 

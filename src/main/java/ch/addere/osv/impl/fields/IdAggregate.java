@@ -87,4 +87,21 @@ public final class IdAggregate implements Aliases, Related {
   public boolean contains(Id id) {
     return ids.contains(id);
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    IdAggregate that = (IdAggregate) o;
+    return Objects.equals(ids, that.ids);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(ids);
+  }
 }
