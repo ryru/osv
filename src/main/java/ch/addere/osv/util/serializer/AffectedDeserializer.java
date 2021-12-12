@@ -19,10 +19,9 @@ import ch.addere.osv.util.serializer.pckg.PackageDeserializer;
 import ch.addere.osv.util.serializer.ranges.RangesDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * Deserialization helper class for affected properties.
@@ -36,9 +35,9 @@ public final class AffectedDeserializer {
    * @return Set of affected
    * @throws OsvParserException if parser exception
    */
-  public static Set<Affected> deserialize(JsonNode affectedNode) throws OsvParserException {
+  public static List<Affected> deserialize(JsonNode affectedNode) throws OsvParserException {
     if (affectedNode.isArray()) {
-      Set<Affected> affectedSet = new HashSet<>();
+      List<Affected> affectedSet = new LinkedList<>();
       for (JsonNode jsonNode : affectedNode) {
         Optional<Affected> affected = readAffected(jsonNode);
         affected.ifPresent(affectedSet::add);

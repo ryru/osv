@@ -1,5 +1,7 @@
 package ch.addere.osv.impl;
 
+import static java.util.stream.Collectors.joining;
+
 import ch.addere.osv.Entry;
 import ch.addere.osv.fields.Affected;
 import ch.addere.osv.fields.Aliases;
@@ -15,6 +17,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * Entry is an open source vulnerability.
@@ -91,12 +94,20 @@ public final class EntryImpl implements Entry {
 
   @Override
   public List<Affected> affected() {
-    return new LinkedList<>(affected);
+    if (affected != null) {
+      return new LinkedList<>(affected);
+    } else {
+      return List.of();
+    }
   }
 
   @Override
   public List<References> references() {
-    return new LinkedList<>(references);
+    if (references != null) {
+      return new LinkedList<>(references);
+    } else {
+      return List.of();
+    }
   }
 
   @Override
@@ -124,18 +135,22 @@ public final class EntryImpl implements Entry {
 
   @Override
   public String toString() {
-    return "EntryImpl{"
-        + "id=" + id
-        + ", modified=" + modified
-        + ", aliases=" + aliases
-        + ", related=" + related
-        + ", published=" + published
-        + ", withdrawn=" + withdrawn
-        + ", summary=" + summary
-        + ", details=" + details
-        + ", affected=" + affected
-        + ", references=" + references
-        + '}';
+    return Stream.of(
+        id,
+        modified,
+        aliases,
+        related,
+        published,
+        withdrawn,
+        summary,
+        details,
+        affected,
+        references
+    )
+        .filter(Objects::nonNull)
+        .map(Objects::toString)
+        .filter(s -> !s.isEmpty())
+        .collect(joining(", "));
   }
 
   /**
@@ -151,10 +166,12 @@ public final class EntryImpl implements Entry {
     private Withdrawn withdrawn = null;
     private Summary summary = null;
     private Details details = null;
-    private List<Affected> affected = List.of();
-    private List<References> references = List.of();
+    private List<Affected> affected = null;
+    private List<References> references = null;
 
     public EntryBuilder(Id id, Modified modified) {
+      Objects.requireNonNull(id, "argument id must not be null");
+      Objects.requireNonNull(modified, "argument modified must not be null");
       this.id = id;
       this.modified = modified;
     }

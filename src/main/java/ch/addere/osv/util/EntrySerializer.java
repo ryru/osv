@@ -88,10 +88,10 @@ public class EntrySerializer extends StdSerializer<Entry> {
     if (entry.details().isPresent()) {
       gen.writeStringField(DETAILS_KEY, writeDetails(entry.details().get()));
     }
-    if (!entry.affected().isEmpty()) {
+    if (entry.affected() != null && !entry.affected().isEmpty()) {
       writeAffected(entry, gen);
     }
-    if (!entry.references().isEmpty()) {
+    if (entry.references() != null && !entry.references().isEmpty()) {
       writeReferences(entry, gen);
     }
     gen.writeEndObject();

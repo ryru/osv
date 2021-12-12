@@ -51,7 +51,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * Deserializer for open source vulnerabilities.
@@ -64,48 +63,6 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
 
   protected EntryDeserializer(Class<?> vc) {
     super(vc);
-  }
-
-  @Override
-  public Entry deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-    ObjectCodec codec = p.getCodec();
-    JsonNode node = codec.readTree(p);
-
-    if (node.get(ID_KEY) == null) {
-      throw new OsvParserException("deserialization error");
-    }
-    final Id id = readId(node.get(ID_KEY));
-    if (node.get(MODIFIED_KEY) == null) {
-      throw new OsvParserException("deserialization error");
-    }
-    Modified modified = readModified(node.get(MODIFIED_KEY));
-    Optional<IdAggregate> aliases = readAliases(node.get(ALIASES_KEY));
-    Optional<IdAggregate> related = readRelated(node.get(RELATED_KEY));
-    Optional<Published> published = readPublished(node.get(PUBLISHED_KEY));
-    Optional<Withdrawn> withdrawn = readWithdrawn(node.get(WITHDRAWN_KEY));
-    Optional<Summary> summary = readSummary(node.get(SUMMARY_KEY));
-    Optional<Details> details = readDetails(node.get(DETAILS_KEY));
-    Set<Affected> affected = Set.of();
-    JsonNode affecedNode = node.get(AFFECTED_KEY);
-    if (affecedNode != null && !affecedNode.isNull()) {
-      affected = AffectedDeserializer.deserialize(affecedNode);
-    }
-    List<References> references = List.of();
-    JsonNode referenceNode = node.get(REFERENCES_KEY);
-    if (referenceNode != null && !referenceNode.isNull()) {
-      references = readReferences(referenceNode);
-    }
-
-    return EntryImpl.builder(id, modified)
-        .published(published.orElse(null))
-        .withdrawn(withdrawn.orElse(null))
-        .aliases(aliases.orElse(null))
-        .related(related.orElse(null))
-        .summary(summary.orElse(null))
-        .details(details.orElse(null))
-        .affected(affected.toArray(new Affected[0]))
-        .references(references.toArray(new References[0]))
-        .build();
   }
 
   private static Id readId(JsonNode idNode) {
@@ -214,12 +171,58 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
     }
   }
 
-
   private static boolean isEmptyJsonNode(JsonNode relatedNode) {
     return relatedNode == null || relatedNode.isNull();
   }
 
   private static Instant readInstant(JsonNode jsonNode) {
     return Instant.parse(jsonNode.asText());
+  }
+
+  @Override
+  public Entry deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+    ObjectCodec codec = p.getCodec();
+    JsonNode node = codec.readTree(p);
+
+    if (node.get(ID_KEY) == null) {
+      throw new OsvParserException("deserialization error");
+    }
+    final Id id = readId(node.get(ID_KEY));
+    if (node.get(MODIFIED_KEY) == null) {
+      throw new OsvParserException("deserialization error");
+    }
+    Modified modified = readModified(node.get(MODIFIED_KEY));
+    Optional<IdAggregate> aliases = readAliases(node.get(ALIASES_KEY));
+    Optional<IdAggregate> related = readRelated(node.get(RELATED_KEY));
+    Optional<Published> published = readPublished(node.get(PUBLISHED_KEY));
+    Optional<Withdrawn> withdrawn = readWithdrawn(node.get(WITHDRAWN_KEY));
+    Optional<Summary> summary = readSummary(node.get(SUMMARY_KEY));
+    Optional<Details> details = readDetails(node.get(DETAILS_KEY));
+    List<Affected> affected = null;
+    JsonNode affecedNode = node.get(AFFECTED_KEY);
+    if (affecedNode != null && !affecedNode.isNull()) {
+      affected = AffectedDeserializer.deserialize(affecedNode);
+    }
+    List<References> references = null;
+    JsonNode referenceNode = node.get(REFERENCES_KEY);
+    if (referenceNode != null && !referenceNode.isNull()) {
+      references = readReferences(referenceNode);
+    }
+
+    EntryImpl.EntryBuilder builder = EntryImpl.builder(id, modified)
+        .published(published.orElse(null))
+        .withdrawn(withdrawn.orElse(null))
+        .aliases(aliases.orElse(null))
+        .related(related.orElse(null))
+        .summary(summary.orElse(null))
+        .details(details.orElse(null));
+    if (affected != null) {
+      builder.affected(affected.toArray(new Affected[0]));
+    }
+
+    if (references != null) {
+      builder.references(references.toArray(new References[0]));
+    }
+    return builder.build();
   }
 }

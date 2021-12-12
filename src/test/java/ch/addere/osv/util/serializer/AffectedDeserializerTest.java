@@ -21,7 +21,7 @@ import ch.addere.osv.util.OsvParserException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.Set;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class AffectedDeserializerTest {
@@ -69,21 +69,21 @@ class AffectedDeserializerTest {
   @Test
   void testValidAffected() throws JsonProcessingException, OsvParserException {
     Affected affected = affected(null);
-    Set<Affected> deserializedAffected = deserialize(AFFECTED);
+    List<Affected> deserializedAffected = deserialize(AFFECTED);
     assertThat(deserializedAffected).containsExactly(affected);
   }
 
   @Test
   void testValidAffectedWithPurl() throws JsonProcessingException, OsvParserException {
     Affected affected = affected(PurlImpl.of(PURL_STRING));
-    Set<Affected> deserializedAffected = deserialize(AFFECTED_WITH_PURL);
+    List<Affected> deserializedAffected = deserialize(AFFECTED_WITH_PURL);
     assertThat(deserializedAffected).containsExactly(affected);
   }
 
   @Test
   void testValidAffectedWithVerson() throws JsonProcessingException, OsvParserException {
     Affected affected = affectedWithVersion();
-    Set<Affected> deserializedAffected = deserialize(AFFECTED_WITH_VERSION);
+    List<Affected> deserializedAffected = deserialize(AFFECTED_WITH_VERSION);
     assertThat(deserializedAffected).containsExactly(affected);
   }
 
@@ -104,7 +104,7 @@ class AffectedDeserializerTest {
     return new AffectedBuilder(pckg).versions(version).build();
   }
 
-  private static Set<Affected> deserialize(String jsonData)
+  private static List<Affected> deserialize(String jsonData)
       throws JsonProcessingException, OsvParserException {
     return AffectedDeserializer.deserialize(toJsonNode(jsonData));
   }
