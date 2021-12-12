@@ -11,12 +11,10 @@ import ch.addere.osv.fields.References;
 import ch.addere.osv.fields.Related;
 import ch.addere.osv.fields.Summary;
 import ch.addere.osv.fields.Withdrawn;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * Entry is an open source vulnerability.
@@ -92,8 +90,8 @@ public final class EntryImpl implements Entry {
   }
 
   @Override
-  public Set<Affected> affected() {
-    return new HashSet<>(affected);
+  public List<Affected> affected() {
+    return new LinkedList<>(affected);
   }
 
   @Override
@@ -126,18 +124,18 @@ public final class EntryImpl implements Entry {
 
   @Override
   public String toString() {
-    return "EntryImpl{" +
-        "id=" + id +
-        ", modified=" + modified +
-        ", aliases=" + aliases +
-        ", related=" + related +
-        ", published=" + published +
-        ", withdrawn=" + withdrawn +
-        ", summary=" + summary +
-        ", details=" + details +
-        ", affected=" + affected +
-        ", references=" + references +
-        '}';
+    return "EntryImpl{"
+        + "id=" + id
+        + ", modified=" + modified
+        + ", aliases=" + aliases
+        + ", related=" + related
+        + ", published=" + published
+        + ", withdrawn=" + withdrawn
+        + ", summary=" + summary
+        + ", details=" + details
+        + ", affected=" + affected
+        + ", references=" + references
+        + '}';
   }
 
   /**

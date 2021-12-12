@@ -12,7 +12,6 @@ import ch.addere.osv.fields.Summary;
 import ch.addere.osv.fields.Withdrawn;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * Entry is an open source vulnerability.
@@ -35,7 +34,7 @@ public interface Entry {
 
   Optional<Details> details();
 
-  Set<Affected> affected();
+  List<Affected> affected();
 
   List<References> references();
 }
