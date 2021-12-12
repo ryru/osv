@@ -37,8 +37,7 @@ class EcosystemSpecificImplTest {
   @Test
   void testSameness() {
     EcosystemSpecific ecosystemSpecific = EcosystemSpecificImpl.of(ECOSYSTEM_SPECIFIC1);
-    EcosystemSpecific otherEcosystemSpecific = ecosystemSpecific;
-    assertThat(ecosystemSpecific).isEqualTo(otherEcosystemSpecific);
+    assertThat(ecosystemSpecific).isEqualTo(ecosystemSpecific);
   }
 
   @Test
@@ -59,7 +58,7 @@ class EcosystemSpecificImplTest {
   void testHashCode() {
     EcosystemSpecific ecosystemSpecific = EcosystemSpecificImpl.of(ECOSYSTEM_SPECIFIC1);
     EcosystemSpecific otherEcosystemSpecific = EcosystemSpecificImpl.of(ECOSYSTEM_SPECIFIC1);
-    assertThat(ecosystemSpecific.hashCode()).isEqualTo(otherEcosystemSpecific.hashCode());
+    assertThat(ecosystemSpecific).hasSameHashCodeAs(otherEcosystemSpecific);
   }
 
   @Test

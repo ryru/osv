@@ -47,8 +47,7 @@ class SummaryImplTest {
   @Test
   void testSameness() {
     Summary summary = SummaryImpl.of(SUMMARY);
-    Summary otherSummary = summary;
-    assertThat(summary).isEqualTo(otherSummary);
+    assertThat(summary).isEqualTo(summary);
   }
 
   @Test
@@ -69,7 +68,7 @@ class SummaryImplTest {
   void testHashCode() {
     Summary summary = SummaryImpl.of(SUMMARY);
     Summary otherSummary = SummaryImpl.of(SUMMARY);
-    assertThat(summary.hashCode()).isEqualTo(otherSummary.hashCode());
+    assertThat(summary).hasSameHashCodeAs(otherSummary);
   }
 
   @Test

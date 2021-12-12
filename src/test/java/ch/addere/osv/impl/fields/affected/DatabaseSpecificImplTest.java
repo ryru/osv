@@ -36,8 +36,7 @@ class DatabaseSpecificImplTest {
   @Test
   void testSameness() {
     DatabaseSpecific databaseSpecific = DatabaseSpecificImpl.of(DATABASE_SPECIFIC1);
-    DatabaseSpecific otherDatabaseSpecific = databaseSpecific;
-    assertThat(databaseSpecific).isEqualTo(otherDatabaseSpecific);
+    assertThat(databaseSpecific).isEqualTo(databaseSpecific);
   }
 
   @Test
@@ -58,7 +57,7 @@ class DatabaseSpecificImplTest {
   void testHashCode() {
     DatabaseSpecific databaseSpecific = DatabaseSpecificImpl.of(DATABASE_SPECIFIC1);
     DatabaseSpecific otherDatabaseSpecific = DatabaseSpecificImpl.of(DATABASE_SPECIFIC1);
-    assertThat(databaseSpecific.hashCode()).isEqualTo(otherDatabaseSpecific.hashCode());
+    assertThat(databaseSpecific).hasSameHashCodeAs(otherDatabaseSpecific);
   }
 
   @Test

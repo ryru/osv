@@ -48,8 +48,7 @@ class EntryImplTest {
   @Test
   void testSameness() {
     Entry entry = minimalEntry();
-    Entry otherEntry = entry;
-    assertThat(entry).isEqualTo(otherEntry);
+    assertThat(entry).isEqualTo(entry);
   }
 
   @Test
@@ -71,7 +70,7 @@ class EntryImplTest {
   void testHashCode() {
     Entry entry = minimalEntry();
     Entry otherEntry = minimalEntry();
-    assertThat(entry.hashCode()).isEqualTo(otherEntry.hashCode());
+    assertThat(entry).hasSameHashCodeAs(otherEntry);
   }
 
   @Test

@@ -60,15 +60,14 @@ class PackageImplTest {
     assertThat(pckg).satisfies(p -> {
       assertThat(p.ecosystem()).isEqualTo(LINUX_ECOSYSTEM);
       assertThat(p.name()).isEqualTo(NAME);
-      assertThat(p.purl().get()).isEqualTo(PURL);
+      assertThat(p.purl()).contains(PURL);
     });
   }
 
   @Test
   void testSameness() {
     Package pckg = PackageImpl.of(LINUX_ECOSYSTEM, NAME, PURL);
-    Package otherPckg = pckg;
-    assertThat(pckg).isEqualTo(otherPckg);
+    assertThat(pckg).isEqualTo(pckg);
   }
 
   @Test
@@ -89,7 +88,7 @@ class PackageImplTest {
   void testHashCode() {
     Package pckg = PackageImpl.of(LINUX_ECOSYSTEM, NAME, PURL);
     Package otherPckg = PackageImpl.of(LINUX_ECOSYSTEM, NAME, PURL);
-    assertThat(pckg.hashCode()).isEqualTo(otherPckg.hashCode());
+    assertThat(pckg).hasSameHashCodeAs(otherPckg);
   }
 
   @Test

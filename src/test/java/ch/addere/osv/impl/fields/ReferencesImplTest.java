@@ -48,8 +48,7 @@ class ReferencesImplTest {
   @Test
   void testSameness() {
     References references = ReferencesImpl.of(type(), url());
-    References otherReferences = references;
-    assertThat(references).isEqualTo(otherReferences);
+    assertThat(references).isEqualTo(references);
   }
 
   @Test
@@ -70,7 +69,7 @@ class ReferencesImplTest {
   void testHashCode() {
     References references = ReferencesImpl.of(type(), url());
     References otherReferences = ReferencesImpl.of(type(), url());
-    assertThat(references.hashCode()).isEqualTo(otherReferences.hashCode());
+    assertThat(references).hasSameHashCodeAs(otherReferences);
   }
 
   @Test

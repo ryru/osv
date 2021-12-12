@@ -55,8 +55,7 @@ class GitEventTest {
   @Test
   void testSameness() {
     Event gitEvent = GitEvent.of(EventSpecifier.introduced, VERSION);
-    Event otherGitEvent = gitEvent;
-    assertThat(gitEvent).isEqualTo(otherGitEvent);
+    assertThat(gitEvent).isEqualTo(gitEvent);
   }
 
   @Test
@@ -77,7 +76,7 @@ class GitEventTest {
   void testHashCode() {
     Event gitEvent = GitEvent.of(EventSpecifier.introduced, VERSION);
     Event otherGitEvent = GitEvent.of(EventSpecifier.introduced, VERSION);
-    assertThat(gitEvent.hashCode()).isEqualTo(otherGitEvent.hashCode());
+    assertThat(gitEvent).hasSameHashCodeAs(otherGitEvent);
   }
 
   @Test

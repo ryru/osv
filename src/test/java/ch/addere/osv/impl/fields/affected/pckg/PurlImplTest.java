@@ -26,9 +26,7 @@ class PurlImplTest {
 
   @Test
   void testInvalidPurl() {
-    assertThatThrownBy(() -> {
-      PurlImpl.of("not-valid-purl");
-    })
+    assertThatThrownBy(() -> PurlImpl.of("not-valid-purl"))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("invalid purl: 'not-valid-purl'");
   }
@@ -42,8 +40,7 @@ class PurlImplTest {
   @Test
   void testSameness() {
     Purl purl = PurlImpl.of(PURL);
-    Purl otherPurl = purl;
-    assertThat(purl).isEqualTo(otherPurl);
+    assertThat(purl).isEqualTo(purl);
   }
 
   @Test
@@ -64,7 +61,7 @@ class PurlImplTest {
   void testHashCode() {
     Purl purl = PurlImpl.of(PURL);
     Purl otherPurl = PurlImpl.of(PURL);
-    assertThat(purl.hashCode()).isEqualTo(otherPurl.hashCode());
+    assertThat(purl).hasSameHashCodeAs(otherPurl);
   }
 
   @Test

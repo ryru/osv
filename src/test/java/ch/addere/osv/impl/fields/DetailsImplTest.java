@@ -33,8 +33,7 @@ class DetailsImplTest {
   @Test
   void testSameness() {
     Details details = DetailsImpl.of(DETAILS);
-    Details otherDetails = details;
-    assertThat(details).isEqualTo(otherDetails);
+    assertThat(details).isEqualTo(details);
   }
 
   @Test
@@ -55,7 +54,7 @@ class DetailsImplTest {
   void testHashCode() {
     Details details = DetailsImpl.of(DETAILS);
     Details otherDetails = DetailsImpl.of(DETAILS);
-    assertThat(details.hashCode()).isEqualTo(otherDetails.hashCode());
+    assertThat(details).hasSameHashCodeAs(otherDetails);
   }
 
   @Test

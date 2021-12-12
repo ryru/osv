@@ -58,8 +58,7 @@ class TypeGitImplTest {
   @Test
   void testSameness() {
     Ranges type = TypeGitImpl.of(repo(), introducedEvent());
-    Ranges otherType = type;
-    assertThat(type).isEqualTo(otherType);
+    assertThat(type).isEqualTo(type);
   }
 
   @Test
@@ -80,7 +79,7 @@ class TypeGitImplTest {
   void testHashCode() {
     Ranges type = TypeGitImpl.of(repo(), introducedEvent());
     Ranges otherType = TypeGitImpl.of(repo(), introducedEvent());
-    assertThat(type.hashCode()).isEqualTo(otherType.hashCode());
+    assertThat(type).hasSameHashCodeAs(otherType);
   }
 
   @Test

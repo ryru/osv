@@ -35,8 +35,7 @@ class ReferenceUrlImplTest {
   @Test
   void testSameness() {
     ReferenceUrl url = ReferenceUrlImpl.of(URI.create(VALID_URL));
-    ReferenceUrl otherUrl = url;
-    assertThat(url).isEqualTo(otherUrl);
+    assertThat(url).isEqualTo(url);
   }
 
   @Test
@@ -57,7 +56,7 @@ class ReferenceUrlImplTest {
   void testHashCode() {
     ReferenceUrl url = ReferenceUrlImpl.of(URI.create(VALID_URL));
     ReferenceUrl otherUrl = ReferenceUrlImpl.of(URI.create(VALID_URL));
-    assertThat(url.hashCode()).isEqualTo(otherUrl.hashCode());
+    assertThat(url).hasSameHashCodeAs(otherUrl);
   }
 
   @Test

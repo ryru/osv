@@ -43,7 +43,7 @@ class TypeEcosystemImplTest {
   }
 
   @Test
-  void testWitoutRepo() {
+  void testWithoutRepo() {
     Ranges typeEcosystem = TypeEcosystemImpl.of(introducedEvent());
     Optional<Repo> repo = typeEcosystem.repo();
     assertThat(repo).isEmpty();
@@ -60,8 +60,7 @@ class TypeEcosystemImplTest {
   @Test
   void testSameness() {
     Ranges type = TypeEcosystemImpl.of(introducedEvent());
-    Ranges otherType = type;
-    assertThat(type).isEqualTo(otherType);
+    assertThat(type).isEqualTo(type);
   }
 
   @Test
@@ -82,7 +81,7 @@ class TypeEcosystemImplTest {
   void testHashCode() {
     Ranges type = TypeEcosystemImpl.of(introducedEvent());
     Ranges otherType = TypeEcosystemImpl.of(introducedEvent());
-    assertThat(type.hashCode()).isEqualTo(otherType.hashCode());
+    assertThat(type).hasSameHashCodeAs(otherType);
   }
 
   @Test

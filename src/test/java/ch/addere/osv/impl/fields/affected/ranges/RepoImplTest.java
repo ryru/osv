@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ch.addere.osv.fields.affected.ranges.Repo;
-import java.net.MalformedURLException;
 import org.junit.jupiter.api.Test;
 
 class RepoImplTest {
@@ -27,7 +26,7 @@ class RepoImplTest {
   }
 
   @Test
-  void testValidRepoValue() throws MalformedURLException {
+  void testValidRepoValue() {
     Repo repo = RepoImpl.of(VALID_URL);
     String url = repo.value();
     assertThat(url).isEqualTo(VALID_URL);
@@ -43,8 +42,7 @@ class RepoImplTest {
   @Test
   void testSameness() {
     Repo repo = RepoImpl.of(VALID_URL);
-    Repo otherRepo = repo;
-    assertThat(repo).isEqualTo(otherRepo);
+    assertThat(repo).isEqualTo(repo);
   }
 
   @Test
@@ -65,7 +63,7 @@ class RepoImplTest {
   void testHashCode() {
     Repo repo = RepoImpl.of(VALID_URL);
     Repo otherRepo = RepoImpl.of(VALID_URL);
-    assertThat(repo.hashCode()).isEqualTo(otherRepo.hashCode());
+    assertThat(repo).hasSameHashCodeAs(otherRepo);
   }
 
   @Test

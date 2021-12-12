@@ -55,8 +55,7 @@ class EcosystemEventTest {
   @Test
   void testSameness() {
     Event ecoEvent = EcosystemEvent.of(EventSpecifier.introduced, VERSION);
-    Event otherEcoEvent = ecoEvent;
-    assertThat(ecoEvent).isEqualTo(otherEcoEvent);
+    assertThat(ecoEvent).isEqualTo(ecoEvent);
   }
 
   @Test
@@ -77,7 +76,7 @@ class EcosystemEventTest {
   void testHashCode() {
     Event ecoEvent = EcosystemEvent.of(EventSpecifier.introduced, VERSION);
     Event otherEcoEvent = EcosystemEvent.of(EventSpecifier.introduced, VERSION);
-    assertThat(ecoEvent.hashCode()).isEqualTo(otherEcoEvent.hashCode());
+    assertThat(ecoEvent).hasSameHashCodeAs(otherEcoEvent);
   }
 
   @Test

@@ -34,8 +34,7 @@ class WithdrawnImplTest {
   @Test
   void testSameness() {
     Withdrawn withdrawn = WithdrawnImpl.of(NOW);
-    Withdrawn otherWithdrawn = withdrawn;
-    assertThat(withdrawn).isEqualTo(otherWithdrawn);
+    assertThat(withdrawn).isEqualTo(withdrawn);
   }
 
   @Test
@@ -56,7 +55,7 @@ class WithdrawnImplTest {
   void testHashCode() {
     Withdrawn withdrawn = WithdrawnImpl.of(NOW);
     Withdrawn otherWithdrawn = WithdrawnImpl.of(NOW);
-    assertThat(withdrawn.hashCode()).isEqualTo(otherWithdrawn.hashCode());
+    assertThat(withdrawn).hasSameHashCodeAs(otherWithdrawn);
   }
 
   @Test

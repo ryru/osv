@@ -34,8 +34,7 @@ class PublishedImplTest {
   @Test
   void testSameness() {
     Published published = PublishedImpl.of(NOW);
-    Published otherPublished = published;
-    assertThat(published).isEqualTo(otherPublished);
+    assertThat(published).isEqualTo(published);
   }
 
   @Test
@@ -56,7 +55,7 @@ class PublishedImplTest {
   void testHashCode() {
     Published published = PublishedImpl.of(NOW);
     Published otherPublished = PublishedImpl.of(NOW);
-    assertThat(published.hashCode()).isEqualTo(otherPublished.hashCode());
+    assertThat(published).hasSameHashCodeAs(otherPublished);
   }
 
   @Test

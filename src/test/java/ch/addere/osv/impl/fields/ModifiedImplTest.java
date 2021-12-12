@@ -34,8 +34,7 @@ class ModifiedImplTest {
   @Test
   void testSameness() {
     Modified modified = ModifiedImpl.of(NOW);
-    Modified otherModified = modified;
-    assertThat(modified).isEqualTo(otherModified);
+    assertThat(modified).isEqualTo(modified);
   }
 
   @Test
@@ -56,7 +55,7 @@ class ModifiedImplTest {
   void testHashCode() {
     Modified modified = ModifiedImpl.of(NOW);
     Modified otherModified = ModifiedImpl.of(NOW);
-    assertThat(modified.hashCode()).isEqualTo(otherModified.hashCode());
+    assertThat(modified).hasSameHashCodeAs(otherModified);
   }
 
   @Test

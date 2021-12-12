@@ -98,8 +98,7 @@ class IdImplTest {
   @Test
   void testSameness() {
     Id id = IdImpl.of(UVI, ENTRY_ID);
-    Id otherId = id;
-    assertThat(id).isEqualTo(otherId);
+    assertThat(id).isEqualTo(id);
   }
 
   @Test
@@ -120,7 +119,7 @@ class IdImplTest {
   void testHashCode() {
     Id id = IdImpl.of(UVI, ENTRY_ID);
     Id otherId = IdImpl.of(UVI, ENTRY_ID);
-    assertThat(id.hashCode()).isEqualTo(otherId.hashCode());
+    assertThat(id).hasSameHashCodeAs(otherId);
   }
 
   @Test

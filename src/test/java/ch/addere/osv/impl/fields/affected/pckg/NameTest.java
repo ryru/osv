@@ -33,8 +33,7 @@ class NameTest {
   @Test
   void testSameness() {
     Name name = NameImpl.of(NAME);
-    Name otherName = name;
-    assertThat(name).isEqualTo(otherName);
+    assertThat(name).isEqualTo(name);
   }
 
   @Test
@@ -55,7 +54,7 @@ class NameTest {
   void testHashCode() {
     Name name = NameImpl.of(NAME);
     Name otherName = NameImpl.of(NAME);
-    assertThat(name.hashCode()).isEqualTo(otherName.hashCode());
+    assertThat(name).hasSameHashCodeAs(otherName);
   }
 
   @Test

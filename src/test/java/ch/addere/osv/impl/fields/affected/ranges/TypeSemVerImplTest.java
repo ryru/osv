@@ -43,7 +43,7 @@ class TypeSemVerImplTest {
   }
 
   @Test
-  void testWitoutRepo() {
+  void testWithoutRepo() {
     Ranges typeSemVer = TypeSemVerImpl.of(introducedEvent());
     Optional<Repo> repo = typeSemVer.repo();
     assertThat(repo).isEmpty();
@@ -60,8 +60,7 @@ class TypeSemVerImplTest {
   @Test
   void testSameness() {
     Ranges type = TypeSemVerImpl.of(introducedEvent());
-    Ranges otherType = type;
-    assertThat(type).isEqualTo(otherType);
+    assertThat(type).isEqualTo(type);
   }
 
   @Test
@@ -82,7 +81,7 @@ class TypeSemVerImplTest {
   void testHashCode() {
     Ranges type = TypeSemVerImpl.of(introducedEvent());
     Ranges otherType = TypeSemVerImpl.of(introducedEvent());
-    assertThat(type.hashCode()).isEqualTo(otherType.hashCode());
+    assertThat(type).hasSameHashCodeAs(otherType);
   }
 
   @Test

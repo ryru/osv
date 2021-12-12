@@ -127,8 +127,7 @@ class AffectedImplTest {
   @Test
   void testSameness() {
     Affected affected = new AffectedBuilder(pckg()).versions(VersionsImpl.of(VERSION)).build();
-    Affected otherAffected = affected;
-    assertThat(affected).isEqualTo(otherAffected);
+    assertThat(affected).isEqualTo(affected);
   }
 
   @Test
@@ -153,7 +152,7 @@ class AffectedImplTest {
         .build();
     Affected otherAffected = new AffectedBuilder(pckg()).ranges(ranges())
         .versions(VersionsImpl.of(VERSION)).build();
-    assertThat(affected.hashCode()).isEqualTo(otherAffected.hashCode());
+    assertThat(affected).hasSameHashCodeAs(otherAffected);
   }
 
   @Test

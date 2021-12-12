@@ -62,8 +62,7 @@ class SemVerEventTest {
   @Test
   void testSameness() {
     Event semVerEvent = SemVerEvent.of(EventSpecifier.introduced, VERSION);
-    Event otherSemVerEvent = semVerEvent;
-    assertThat(semVerEvent).isEqualTo(otherSemVerEvent);
+    assertThat(semVerEvent).isEqualTo(semVerEvent);
   }
 
   @Test
@@ -84,7 +83,7 @@ class SemVerEventTest {
   void testHashCode() {
     Event semVerEvent = SemVerEvent.of(EventSpecifier.introduced, VERSION);
     Event otherSemVerEvent = SemVerEvent.of(EventSpecifier.introduced, VERSION);
-    assertThat(semVerEvent.hashCode()).isEqualTo(otherSemVerEvent.hashCode());
+    assertThat(semVerEvent).hasSameHashCodeAs(otherSemVerEvent);
   }
 
   @Test
