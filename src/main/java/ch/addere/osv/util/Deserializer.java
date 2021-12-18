@@ -11,6 +11,9 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
  */
 class Deserializer {
 
+  private Deserializer() {
+  }
+
   /**
    * Deserialize JSON representation of an open source vulnerability entry.
    *

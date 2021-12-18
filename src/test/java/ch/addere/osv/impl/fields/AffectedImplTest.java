@@ -157,7 +157,7 @@ class AffectedImplTest {
         .ecosystemSpecific(EcosystemSpecificImpl.of("{\"some\":\"ecosystem specific properties\"}"))
         .databaseSpecific(DatabaseSpecificImpl.of("{\"some\":\"database specific properties\"}"))
         .build();
-    assertThat(affected.toString()).isEqualTo(AFFECTED_KEY + ": "
+    assertThat(affected).hasToString(AFFECTED_KEY + ": "
         + join(", ",
         packageToString(),
         rangesToString(),

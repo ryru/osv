@@ -58,7 +58,6 @@ class EcosystemImplSpecificImplTest {
   @Test
   void testToString() {
     EcosystemSpecific ecosystemSpecific = EcosystemSpecificImpl.of(ECOSYSTEM_SPECIFIC2);
-    assertThat(ecosystemSpecific.toString()).isEqualTo(
-        ECOSYSTEM_SPECIFIC_KEY + ": " + ECOSYSTEM_SPECIFIC2);
+    assertThat(ecosystemSpecific).hasToString(ECOSYSTEM_SPECIFIC_KEY + ": " + ECOSYSTEM_SPECIFIC2);
   }
 }

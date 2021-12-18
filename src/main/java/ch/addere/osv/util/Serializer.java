@@ -11,6 +11,9 @@ import java.io.IOException;
  */
 class Serializer {
 
+  private Serializer() {
+  }
+
   /**
    * Serialize an open source vulnerability Entry to JSON.
    *

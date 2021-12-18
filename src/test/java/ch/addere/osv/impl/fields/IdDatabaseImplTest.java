@@ -39,6 +39,6 @@ class IdDatabaseImplTest {
   @Test
   void testToString() {
     IdDatabase idDatabase = IdDatabaseImpl.CVE;
-    assertThat(idDatabase.toString()).isEqualTo(CVE);
+    assertThat(idDatabase).hasToString(CVE);
   }
 }

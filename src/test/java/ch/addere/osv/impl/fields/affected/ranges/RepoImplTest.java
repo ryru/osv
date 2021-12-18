@@ -63,6 +63,6 @@ class RepoImplTest {
   @Test
   void testToString() {
     Repo repo = RepoImpl.of(VALID_URL);
-    assertThat(repo.toString()).isEqualTo(REPO_KEY + ": " + VALID_URL);
+    assertThat(repo).hasToString(REPO_KEY + ": " + VALID_URL);
   }
 }

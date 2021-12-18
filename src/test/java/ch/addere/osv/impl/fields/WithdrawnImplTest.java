@@ -55,6 +55,6 @@ class WithdrawnImplTest {
   @Test
   void testToString() {
     Withdrawn withdrawn = WithdrawnImpl.of(NOW);
-    assertThat(withdrawn.toString()).isEqualTo(WITHDRAWN_KEY + ": " + NOW.toString());
+    assertThat(withdrawn).hasToString(WITHDRAWN_KEY + ": " + NOW.toString());
   }
 }

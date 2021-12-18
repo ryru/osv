@@ -64,37 +64,16 @@ public class EntrySerializer extends StdSerializer<Entry> {
     super(t);
   }
 
-  @Override
-  public void serialize(Entry entry, JsonGenerator gen, SerializerProvider provider)
-      throws IOException {
-    gen.writeStartObject();
-    gen.writeStringField(ID_KEY, writeId(entry.id()));
-    if (entry.published().isPresent()) {
-      gen.writeStringField(PUBLISHED_KEY, writePublished(entry.published().get()));
+  private static void writeAllAffected(Entry value, JsonGenerator gen) throws IOException {
+    gen.writeFieldName(AFFECTED_KEY);
+    gen.writeStartArray();
+    List<Affected> affected = new ArrayList<>(value.affected());
+    if (!affected.isEmpty()) {
+      for (Affected aff : affected) {
+        writeAffected(gen, aff);
+      }
     }
-    gen.writeStringField(MODIFIED_KEY, writeModified(entry.modified()));
-    if (entry.aliases().isPresent()) {
-      writeAliases(entry, gen);
-    }
-    if (entry.related().isPresent()) {
-      writeRelated(entry, gen);
-    }
-    if (entry.withdrawn().isPresent()) {
-      gen.writeStringField(WITHDRAWN_KEY, writeWithdrawn(entry.withdrawn().get()));
-    }
-    if (entry.summary().isPresent()) {
-      gen.writeStringField(SUMMARY_KEY, writeSummary(entry.summary().get()));
-    }
-    if (entry.details().isPresent()) {
-      gen.writeStringField(DETAILS_KEY, writeDetails(entry.details().get()));
-    }
-    if (entry.affected() != null && !entry.affected().isEmpty()) {
-      writeAffected(entry, gen);
-    }
-    if (entry.references() != null && !entry.references().isEmpty()) {
-      writeReferences(entry, gen);
-    }
-    gen.writeEndObject();
+    gen.writeEndArray();
   }
 
   private static String writeId(Id id) {
@@ -141,42 +120,67 @@ public class EntrySerializer extends StdSerializer<Entry> {
     return details.value().replace("\\n", "\n");
   }
 
-  private static void writeAffected(Entry value, JsonGenerator gen) throws IOException {
-    gen.writeFieldName(AFFECTED_KEY);
-    gen.writeStartArray();
-    List<Affected> affected = new ArrayList<>(value.affected());
-    if (!affected.isEmpty()) {
-      for (Affected aff : affected) {
-        gen.writeStartObject();
-        if (aff.pckg() != null) {
-          gen.writeFieldName(PACKAGE_KEY);
-          writePackage(aff.pckg(), gen);
-        }
-        if (!aff.ranges().isEmpty()) {
-          gen.writeFieldName(RANGES_KEY);
-          gen.writeStartArray();
-          List<Ranges> ranges = aff.ranges();
-          for (Ranges range : ranges) {
-            writeRanges(range, gen);
-          }
-          gen.writeEndArray();
-        }
-        if (aff.versions().isPresent()) {
-          gen.writeFieldName(VERSIONS_KEY);
-          writeVersions(aff.versions().get(), gen);
-        }
-        if (aff.ecosystemSpecific().isPresent()) {
-          gen.writeFieldName(ECOSYSTEM_SPECIFIC_KEY);
-          writeEcosystemSpecific(aff.ecosystemSpecific().get(), gen);
-        }
-        if (aff.databaseSpecific().isPresent()) {
-          gen.writeFieldName(DATABASE_SPECIFIC_KEY);
-          writeDatabaseSpecific(aff.databaseSpecific().get(), gen);
-        }
-        gen.writeEndObject();
-      }
+  private static void writeAffected(JsonGenerator gen, Affected aff) throws IOException {
+    gen.writeStartObject();
+    if (aff.pckg() != null) {
+      gen.writeFieldName(PACKAGE_KEY);
+      writePackage(aff.pckg(), gen);
     }
-    gen.writeEndArray();
+    if (!aff.ranges().isEmpty()) {
+      gen.writeFieldName(RANGES_KEY);
+      gen.writeStartArray();
+      List<Ranges> ranges = aff.ranges();
+      for (Ranges range : ranges) {
+        writeRanges(range, gen);
+      }
+      gen.writeEndArray();
+    }
+    if (aff.versions().isPresent()) {
+      gen.writeFieldName(VERSIONS_KEY);
+      writeVersions(aff.versions().get(), gen);
+    }
+    if (aff.ecosystemSpecific().isPresent()) {
+      gen.writeFieldName(ECOSYSTEM_SPECIFIC_KEY);
+      writeEcosystemSpecific(aff.ecosystemSpecific().get(), gen);
+    }
+    if (aff.databaseSpecific().isPresent()) {
+      gen.writeFieldName(DATABASE_SPECIFIC_KEY);
+      writeDatabaseSpecific(aff.databaseSpecific().get(), gen);
+    }
+    gen.writeEndObject();
+  }
+
+  @Override
+  public void serialize(Entry entry, JsonGenerator gen, SerializerProvider provider)
+      throws IOException {
+    gen.writeStartObject();
+    gen.writeStringField(ID_KEY, writeId(entry.id()));
+    if (entry.published().isPresent()) {
+      gen.writeStringField(PUBLISHED_KEY, writePublished(entry.published().get()));
+    }
+    gen.writeStringField(MODIFIED_KEY, writeModified(entry.modified()));
+    if (entry.aliases().isPresent()) {
+      writeAliases(entry, gen);
+    }
+    if (entry.related().isPresent()) {
+      writeRelated(entry, gen);
+    }
+    if (entry.withdrawn().isPresent()) {
+      gen.writeStringField(WITHDRAWN_KEY, writeWithdrawn(entry.withdrawn().get()));
+    }
+    if (entry.summary().isPresent()) {
+      gen.writeStringField(SUMMARY_KEY, writeSummary(entry.summary().get()));
+    }
+    if (entry.details().isPresent()) {
+      gen.writeStringField(DETAILS_KEY, writeDetails(entry.details().get()));
+    }
+    if (entry.affected() != null && !entry.affected().isEmpty()) {
+      writeAllAffected(entry, gen);
+    }
+    if (entry.references() != null && !entry.references().isEmpty()) {
+      writeReferences(entry, gen);
+    }
+    gen.writeEndObject();
   }
 
   private static void writePackage(Package pckg, JsonGenerator gen) throws IOException {

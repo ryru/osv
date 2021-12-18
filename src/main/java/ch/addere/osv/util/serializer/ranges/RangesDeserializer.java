@@ -28,6 +28,9 @@ import java.util.Optional;
  */
 public final class RangesDeserializer {
 
+  private RangesDeserializer() {
+  }
+
   /**
    * Deserialize affected range JSON nodes.
    *

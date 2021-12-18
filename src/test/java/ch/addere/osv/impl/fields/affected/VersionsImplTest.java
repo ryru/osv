@@ -66,7 +66,6 @@ class VersionsImplTest {
   @Test
   void testToString() {
     Versions versions = VersionsImpl.of(ENTRY_1, ENTRY_2);
-    assertThat(versions.toString()).isEqualTo(
-        VERSIONS_KEY + ": " + ENTRY_1 + ", " + ENTRY_2);
+    assertThat(versions).hasToString(VERSIONS_KEY + ": " + ENTRY_1 + ", " + ENTRY_2);
   }
 }

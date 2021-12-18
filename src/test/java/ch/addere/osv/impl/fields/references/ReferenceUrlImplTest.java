@@ -56,6 +56,6 @@ class ReferenceUrlImplTest {
   @Test
   void testToString() {
     ReferenceUrl url = ReferenceUrlImpl.of(URI.create(VALID_URL));
-    assertThat(url.toString()).isEqualTo(REFERENCE_URL_KEY + ": " + url.value());
+    assertThat(url).hasToString(REFERENCE_URL_KEY + ": " + url.value());
   }
 }

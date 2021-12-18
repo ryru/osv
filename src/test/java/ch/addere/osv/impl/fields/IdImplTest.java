@@ -119,6 +119,6 @@ class IdImplTest {
   @Test
   void testToString() {
     Id id = IdImpl.of(UVI, ENTRY_ID);
-    assertThat(id.toString()).isEqualTo(ID_KEY + ": " + join(", ", "UVI", "2020-111"));
+    assertThat(id).hasToString(ID_KEY + ": " + join(", ", "UVI", "2020-111"));
   }
 }

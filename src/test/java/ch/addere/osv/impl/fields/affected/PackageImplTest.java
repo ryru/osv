@@ -88,7 +88,7 @@ class PackageImplTest {
   @Test
   void testToString() {
     Package pckg = PackageImpl.of(LINUX_ECOSYSTEM, NAME, PURL);
-    assertThat(pckg.toString()).isEqualTo(PACKAGE_KEY + ": " + join(", ",
+    assertThat(pckg).hasToString(PACKAGE_KEY + ": " + join(", ",
         ecosystemToString(),
         nameToString(),
         purlToString()));

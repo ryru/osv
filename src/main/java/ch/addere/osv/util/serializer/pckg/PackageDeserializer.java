@@ -22,6 +22,9 @@ import java.util.Optional;
  */
 public final class PackageDeserializer {
 
+  private PackageDeserializer() {
+  }
+
   /**
    * Deserialize affected package JSON nodes.
    *

@@ -54,6 +54,6 @@ class NameTest {
   @Test
   void testToString() {
     Name name = NameImpl.of(NAME);
-    assertThat(name.toString()).isEqualTo(NAME_KEY + ": " + name.value());
+    assertThat(name).hasToString(NAME_KEY + ": " + name.value());
   }
 }

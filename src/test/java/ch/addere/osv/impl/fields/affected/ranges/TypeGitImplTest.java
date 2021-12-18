@@ -80,7 +80,7 @@ class TypeGitImplTest {
   @Test
   void testToString() {
     Ranges type = TypeGitImpl.of(repo(), introducedEvent());
-    assertThat(type.toString()).isEqualTo(RANGES_KEY + ": " + join(", ",
+    assertThat(type).hasToString(RANGES_KEY + ": " + join(", ",
         typeToString(),
         repoToString(),
         eventToString()));

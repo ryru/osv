@@ -82,7 +82,7 @@ class TypeSemVerImplTest {
   @Test
   void testWithRepoToString() {
     Ranges type = TypeSemVerImpl.of(repo(), introducedEvent());
-    assertThat(type.toString()).isEqualTo(RANGES_KEY + ": " + join(", ",
+    assertThat(type).hasToString(RANGES_KEY + ": " + join(", ",
         typeToString(),
         repoToString(),
         eventToString()));
@@ -91,7 +91,7 @@ class TypeSemVerImplTest {
   @Test
   void testWithoutRepoToString() {
     Ranges type = TypeSemVerImpl.of(introducedEvent());
-    assertThat(type.toString()).isEqualTo(RANGES_KEY + ": " + join(", ",
+    assertThat(type).hasToString(RANGES_KEY + ": " + join(", ",
         typeToString(),
         eventToString()));
   }

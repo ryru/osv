@@ -68,7 +68,6 @@ class SummaryImplTest {
   @Test
   void testToString() {
     Summary summary = SummaryImpl.of(SUMMARY);
-    assertThat(summary.toString()).isEqualTo(
-        SUMMARY_KEY + ": " + SUMMARY);
+    assertThat(summary).hasToString(SUMMARY_KEY + ": " + SUMMARY);
   }
 }

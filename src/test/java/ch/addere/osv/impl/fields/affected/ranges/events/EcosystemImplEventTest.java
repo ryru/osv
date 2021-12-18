@@ -76,7 +76,7 @@ class EcosystemImplEventTest {
   @Test
   void testToString() {
     Event ecoEvent = EcosystemEvent.of(EventSpecifierImpl.INTRODUCED, VERSION);
-    assertThat(ecoEvent.toString()).isEqualTo(
-        EVENTS_KEY + ": " + ecoEvent.event() + ", " + ecoEvent.release());
+    assertThat(ecoEvent)
+        .hasToString(EVENTS_KEY + ": " + ecoEvent.event() + ", " + ecoEvent.release());
   }
 }

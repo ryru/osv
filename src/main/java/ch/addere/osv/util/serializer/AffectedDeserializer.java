@@ -28,6 +28,9 @@ import java.util.Optional;
  */
 public final class AffectedDeserializer {
 
+  private AffectedDeserializer() {
+  }
+
   /**
    * Deserialize affected JSON nodes.
    *

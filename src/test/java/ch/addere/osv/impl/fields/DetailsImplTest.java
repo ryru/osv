@@ -54,7 +54,6 @@ class DetailsImplTest {
   @Test
   void testToString() {
     Details details = DetailsImpl.of(DETAILS);
-    assertThat(details.toString())
-        .isEqualTo(DETAILS_KEY + ": " + DETAILS);
+    assertThat(details).hasToString(DETAILS_KEY + ": " + DETAILS);
   }
 }

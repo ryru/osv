@@ -83,7 +83,7 @@ class SemVerEventTest {
   @Test
   void testToString() {
     Event semVerEvent = SemVerEvent.of(EventSpecifierImpl.INTRODUCED, VERSION);
-    assertThat(semVerEvent.toString()).isEqualTo(
-        EVENTS_KEY + ": " + semVerEvent.event() + ", " + semVerEvent.release());
+    assertThat(semVerEvent)
+        .hasToString(EVENTS_KEY + ": " + semVerEvent.event() + ", " + semVerEvent.release());
   }
 }

@@ -69,7 +69,7 @@ class ReferencesImplTest {
   @Test
   void testToString() {
     References references = ReferencesImpl.of(type(), url());
-    assertThat(references.toString()).isEqualTo(REFERENCES_KEY + ": " + join(", ",
+    assertThat(references).hasToString(REFERENCES_KEY + ": " + join(", ",
         typeToString(),
         urlToString()));
   }

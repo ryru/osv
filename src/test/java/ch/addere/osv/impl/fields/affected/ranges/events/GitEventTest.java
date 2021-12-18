@@ -76,7 +76,7 @@ class GitEventTest {
   @Test
   void testToString() {
     Event gitEvent = GitEvent.of(EventSpecifierImpl.INTRODUCED, VERSION);
-    assertThat(gitEvent.toString()).isEqualTo(
-        EVENTS_KEY + ": " + gitEvent.event() + ", " + gitEvent.release());
+    assertThat(gitEvent)
+        .hasToString(EVENTS_KEY + ": " + gitEvent.event() + ", " + gitEvent.release());
   }
 }

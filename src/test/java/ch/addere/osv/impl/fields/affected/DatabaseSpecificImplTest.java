@@ -57,7 +57,6 @@ class DatabaseSpecificImplTest {
   @Test
   void testToString() {
     DatabaseSpecific databaseSpecific = DatabaseSpecificImpl.of(DATABASE_SPECIFIC2);
-    assertThat(databaseSpecific.toString()).isEqualTo(
-        DATABASE_SPECIFIC_KEY + ": " + DATABASE_SPECIFIC2);
+    assertThat(databaseSpecific).hasToString(DATABASE_SPECIFIC_KEY + ": " + DATABASE_SPECIFIC2);
   }
 }

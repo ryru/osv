@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
-class TypeEcosystemImplTestImpl {
+class TypeEcosystemImplTest {
 
 
   @Test
@@ -82,7 +82,7 @@ class TypeEcosystemImplTestImpl {
   @Test
   void testWithRepoToString() {
     Ranges type = TypeEcosystemImpl.of(repo(), introducedEvent());
-    assertThat(type.toString()).isEqualTo(RANGES_KEY + ": " + join(", ",
+    assertThat(type).hasToString(RANGES_KEY + ": " + join(", ",
         typeToString(),
         repoToString(),
         eventToString()));
@@ -91,7 +91,7 @@ class TypeEcosystemImplTestImpl {
   @Test
   void testWithoutRepoToString() {
     Ranges type = TypeEcosystemImpl.of(introducedEvent());
-    assertThat(type.toString()).isEqualTo(RANGES_KEY + ": " + join(", ",
+    assertThat(type).hasToString(RANGES_KEY + ": " + join(", ",
         typeToString(),
         eventToString()));
   }

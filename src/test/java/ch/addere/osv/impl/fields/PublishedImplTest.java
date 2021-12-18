@@ -55,6 +55,6 @@ class PublishedImplTest {
   @Test
   void testToString() {
     Published published = PublishedImpl.of(NOW);
-    assertThat(published.toString()).isEqualTo(PUBLISHED_KEY + ": " + NOW.toString());
+    assertThat(published).hasToString(PUBLISHED_KEY + ": " + NOW.toString());
   }
 }

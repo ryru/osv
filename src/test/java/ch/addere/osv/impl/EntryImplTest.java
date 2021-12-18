@@ -70,7 +70,6 @@ class EntryImplTest {
   @Test
   void testMinimalToString() {
     Entry entry = minimalEntry();
-    assertThat(entry.toString())
-        .isEqualTo("id: GO, 2021-99999, modified: 2021-03-10T23:20:53Z");
+    assertThat(entry).hasToString("id: GO, 2021-99999, modified: 2021-03-10T23:20:53Z");
   }
 }

@@ -61,6 +61,6 @@ class PurlImplTest {
   @Test
   void testToString() {
     Purl purl = PurlImpl.of(PURL);
-    assertThat(purl.toString()).isEqualTo(PURL_KEY + ": " + purl.value());
+    assertThat(purl).hasToString(PURL_KEY + ": " + purl.value());
   }
 }

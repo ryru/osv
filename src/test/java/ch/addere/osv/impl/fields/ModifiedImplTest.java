@@ -55,7 +55,6 @@ class ModifiedImplTest {
   @Test
   void testToString() {
     Modified modified = ModifiedImpl.of(NOW);
-    assertThat(modified.toString())
-        .isEqualTo(MODIFIED_KEY + ": " + NOW.toString());
+    assertThat(modified).hasToString(MODIFIED_KEY + ": " + NOW.toString());
   }
 }
