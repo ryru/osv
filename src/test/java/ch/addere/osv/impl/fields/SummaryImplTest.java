@@ -45,12 +45,6 @@ class SummaryImplTest {
   }
 
   @Test
-  void testSameness() {
-    Summary summary = SummaryImpl.of(SUMMARY);
-    assertThat(summary).isEqualTo(summary);
-  }
-
-  @Test
   void testEquality() {
     Summary summary = SummaryImpl.of(SUMMARY);
     Summary otherSummary = SummaryImpl.of(SUMMARY);

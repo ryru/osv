@@ -33,12 +33,6 @@ class ReferenceUrlImplTest {
   }
 
   @Test
-  void testSameness() {
-    ReferenceUrl url = ReferenceUrlImpl.of(URI.create(VALID_URL));
-    assertThat(url).isEqualTo(url);
-  }
-
-  @Test
   void testEquality() {
     ReferenceUrl url = ReferenceUrlImpl.of(URI.create(VALID_URL));
     ReferenceUrl otherUrl = ReferenceUrlImpl.of(URI.create(VALID_URL));

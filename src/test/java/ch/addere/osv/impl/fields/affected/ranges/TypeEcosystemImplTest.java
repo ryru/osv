@@ -58,12 +58,6 @@ class TypeEcosystemImplTest {
   }
 
   @Test
-  void testSameness() {
-    Ranges type = TypeEcosystemImpl.of(introducedEvent());
-    assertThat(type).isEqualTo(type);
-  }
-
-  @Test
   void testEquality() {
     Ranges type = TypeEcosystemImpl.of(introducedEvent());
     Ranges otherType = TypeEcosystemImpl.of(introducedEvent());

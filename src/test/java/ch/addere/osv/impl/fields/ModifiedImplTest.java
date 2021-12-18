@@ -32,12 +32,6 @@ class ModifiedImplTest {
   }
 
   @Test
-  void testSameness() {
-    Modified modified = ModifiedImpl.of(NOW);
-    assertThat(modified).isEqualTo(modified);
-  }
-
-  @Test
   void testEquality() {
     Modified modified = ModifiedImpl.of(NOW);
     Modified otherModified = ModifiedImpl.of(NOW);

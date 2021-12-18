@@ -40,12 +40,6 @@ class RepoImplTest {
   }
 
   @Test
-  void testSameness() {
-    Repo repo = RepoImpl.of(VALID_URL);
-    assertThat(repo).isEqualTo(repo);
-  }
-
-  @Test
   void testEquality() {
     Repo repo = RepoImpl.of(VALID_URL);
     Repo otherRepo = RepoImpl.of(VALID_URL);

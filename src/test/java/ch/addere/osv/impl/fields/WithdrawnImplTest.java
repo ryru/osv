@@ -32,12 +32,6 @@ class WithdrawnImplTest {
   }
 
   @Test
-  void testSameness() {
-    Withdrawn withdrawn = WithdrawnImpl.of(NOW);
-    assertThat(withdrawn).isEqualTo(withdrawn);
-  }
-
-  @Test
   void testEquality() {
     Withdrawn withdrawn = WithdrawnImpl.of(NOW);
     Withdrawn otherWithdrawn = WithdrawnImpl.of(NOW);

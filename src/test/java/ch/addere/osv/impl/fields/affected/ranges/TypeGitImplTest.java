@@ -56,12 +56,6 @@ class TypeGitImplTest {
   }
 
   @Test
-  void testSameness() {
-    Ranges type = TypeGitImpl.of(repo(), introducedEvent());
-    assertThat(type).isEqualTo(type);
-  }
-
-  @Test
   void testEquality() {
     Ranges type = TypeGitImpl.of(repo(), introducedEvent());
     Ranges otherType = TypeGitImpl.of(repo(), introducedEvent());

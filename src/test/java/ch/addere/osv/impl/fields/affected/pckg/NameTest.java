@@ -31,12 +31,6 @@ class NameTest {
   }
 
   @Test
-  void testSameness() {
-    Name name = NameImpl.of(NAME);
-    assertThat(name).isEqualTo(name);
-  }
-
-  @Test
   void testEquality() {
     Name name = NameImpl.of(NAME);
     Name otherName = NameImpl.of(NAME);

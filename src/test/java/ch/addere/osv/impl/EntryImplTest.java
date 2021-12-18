@@ -46,12 +46,6 @@ class EntryImplTest {
   }
 
   @Test
-  void testSameness() {
-    Entry entry = minimalEntry();
-    assertThat(entry).isEqualTo(entry);
-  }
-
-  @Test
   void testEquality() {
     Entry entry = minimalEntry();
     Entry otherEntry = minimalEntry();

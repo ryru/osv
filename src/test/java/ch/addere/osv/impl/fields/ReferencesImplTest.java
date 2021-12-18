@@ -46,12 +46,6 @@ class ReferencesImplTest {
   }
 
   @Test
-  void testSameness() {
-    References references = ReferencesImpl.of(type(), url());
-    assertThat(references).isEqualTo(references);
-  }
-
-  @Test
   void testEquality() {
     References references = ReferencesImpl.of(type(), url());
     References otherReferences = ReferencesImpl.of(type(), url());

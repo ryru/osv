@@ -125,12 +125,6 @@ class AffectedImplTest {
   }
 
   @Test
-  void testSameness() {
-    Affected affected = new AffectedBuilder(pckg()).versions(VersionsImpl.of(VERSION)).build();
-    assertThat(affected).isEqualTo(affected);
-  }
-
-  @Test
   void testEquality() {
     Affected affected = new AffectedBuilder(pckg()).versions(VersionsImpl.of(VERSION)).build();
     Affected otherAffected = new AffectedBuilder(pckg()).versions(VersionsImpl.of(VERSION)).build();

@@ -35,12 +35,6 @@ class EcosystemSpecificImplTest {
   }
 
   @Test
-  void testSameness() {
-    EcosystemSpecific ecosystemSpecific = EcosystemSpecificImpl.of(ECOSYSTEM_SPECIFIC1);
-    assertThat(ecosystemSpecific).isEqualTo(ecosystemSpecific);
-  }
-
-  @Test
   void testEquality() {
     EcosystemSpecific ecosystemSpecific = EcosystemSpecificImpl.of(ECOSYSTEM_SPECIFIC1);
     EcosystemSpecific otherEcosystemSpecific = EcosystemSpecificImpl.of(ECOSYSTEM_SPECIFIC1);

@@ -34,12 +34,6 @@ class DatabaseSpecificImplTest {
   }
 
   @Test
-  void testSameness() {
-    DatabaseSpecific databaseSpecific = DatabaseSpecificImpl.of(DATABASE_SPECIFIC1);
-    assertThat(databaseSpecific).isEqualTo(databaseSpecific);
-  }
-
-  @Test
   void testEquality() {
     DatabaseSpecific databaseSpecific = DatabaseSpecificImpl.of(DATABASE_SPECIFIC1);
     DatabaseSpecific otherDatabaseSpecific = DatabaseSpecificImpl.of(DATABASE_SPECIFIC1);

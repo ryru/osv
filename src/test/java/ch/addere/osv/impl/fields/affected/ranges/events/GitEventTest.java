@@ -53,12 +53,6 @@ class GitEventTest {
   }
 
   @Test
-  void testSameness() {
-    Event gitEvent = GitEvent.of(EventSpecifier.introduced, VERSION);
-    assertThat(gitEvent).isEqualTo(gitEvent);
-  }
-
-  @Test
   void testEquality() {
     Event gitEvent = GitEvent.of(EventSpecifier.introduced, VERSION);
     Event otherGitEvent = GitEvent.of(EventSpecifier.introduced, VERSION);

@@ -31,12 +31,6 @@ class DetailsImplTest {
   }
 
   @Test
-  void testSameness() {
-    Details details = DetailsImpl.of(DETAILS);
-    assertThat(details).isEqualTo(details);
-  }
-
-  @Test
   void testEquality() {
     Details details = DetailsImpl.of(DETAILS);
     Details otherDetails = DetailsImpl.of(DETAILS);

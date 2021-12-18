@@ -53,12 +53,6 @@ class EcosystemEventTest {
   }
 
   @Test
-  void testSameness() {
-    Event ecoEvent = EcosystemEvent.of(EventSpecifier.introduced, VERSION);
-    assertThat(ecoEvent).isEqualTo(ecoEvent);
-  }
-
-  @Test
   void testEquality() {
     Event ecoEvent = EcosystemEvent.of(EventSpecifier.introduced, VERSION);
     Event otherEcoEvent = EcosystemEvent.of(EventSpecifier.introduced, VERSION);

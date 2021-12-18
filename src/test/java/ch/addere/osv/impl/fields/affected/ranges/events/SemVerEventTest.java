@@ -60,12 +60,6 @@ class SemVerEventTest {
   }
 
   @Test
-  void testSameness() {
-    Event semVerEvent = SemVerEvent.of(EventSpecifier.introduced, VERSION);
-    assertThat(semVerEvent).isEqualTo(semVerEvent);
-  }
-
-  @Test
   void testEquality() {
     Event semVerEvent = SemVerEvent.of(EventSpecifier.introduced, VERSION);
     Event otherSemVerEvent = SemVerEvent.of(EventSpecifier.introduced, VERSION);

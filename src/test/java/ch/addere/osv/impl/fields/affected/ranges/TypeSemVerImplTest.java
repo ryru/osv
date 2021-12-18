@@ -58,12 +58,6 @@ class TypeSemVerImplTest {
   }
 
   @Test
-  void testSameness() {
-    Ranges type = TypeSemVerImpl.of(introducedEvent());
-    assertThat(type).isEqualTo(type);
-  }
-
-  @Test
   void testEquality() {
     Ranges type = TypeSemVerImpl.of(introducedEvent());
     Ranges otherType = TypeSemVerImpl.of(introducedEvent());

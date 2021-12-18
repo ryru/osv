@@ -38,12 +38,6 @@ class PurlImplTest {
   }
 
   @Test
-  void testSameness() {
-    Purl purl = PurlImpl.of(PURL);
-    assertThat(purl).isEqualTo(purl);
-  }
-
-  @Test
   void testEquality() {
     Purl purl = PurlImpl.of(PURL);
     Purl otherPurl = PurlImpl.of(PURL);

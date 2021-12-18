@@ -65,12 +65,6 @@ class PackageImplTest {
   }
 
   @Test
-  void testSameness() {
-    Package pckg = PackageImpl.of(LINUX_ECOSYSTEM, NAME, PURL);
-    assertThat(pckg).isEqualTo(pckg);
-  }
-
-  @Test
   void testEquality() {
     Package pckg = PackageImpl.of(LINUX_ECOSYSTEM, NAME, PURL);
     Package otherPckg = PackageImpl.of(LINUX_ECOSYSTEM, NAME, PURL);

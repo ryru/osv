@@ -32,12 +32,6 @@ class PublishedImplTest {
   }
 
   @Test
-  void testSameness() {
-    Published published = PublishedImpl.of(NOW);
-    assertThat(published).isEqualTo(published);
-  }
-
-  @Test
   void testEquality() {
     Published published = PublishedImpl.of(NOW);
     Published otherPublished = PublishedImpl.of(NOW);

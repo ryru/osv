@@ -43,12 +43,6 @@ class VersionsImplTest {
   }
 
   @Test
-  void testSameness() {
-    Versions versions = VersionsImpl.of(ENTRY_1);
-    assertThat(versions).isEqualTo(versions);
-  }
-
-  @Test
   void testEquality() {
     Versions versions = VersionsImpl.of(ENTRY_1);
     Versions otherVersions = VersionsImpl.of(ENTRY_1);

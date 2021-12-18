@@ -96,12 +96,6 @@ class IdImplTest {
   }
 
   @Test
-  void testSameness() {
-    Id id = IdImpl.of(UVI, ENTRY_ID);
-    assertThat(id).isEqualTo(id);
-  }
-
-  @Test
   void testEquality() {
     Id id = IdImpl.of(UVI, ENTRY_ID);
     Id otherId = IdImpl.of(UVI, ENTRY_ID);
