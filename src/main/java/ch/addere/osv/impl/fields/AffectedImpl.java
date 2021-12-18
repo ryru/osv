@@ -9,7 +9,7 @@ import ch.addere.osv.fields.affected.EcosystemSpecific;
 import ch.addere.osv.fields.affected.Package;
 import ch.addere.osv.fields.affected.Ranges;
 import ch.addere.osv.fields.affected.Versions;
-import ch.addere.osv.impl.fields.affected.ranges.Type;
+import ch.addere.osv.impl.fields.affected.ranges.RangeTypeImpl;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -190,7 +190,7 @@ public final class AffectedImpl implements Affected {
     }
 
     private boolean hasRangeOfSemVer() {
-      return ranges.stream().anyMatch(range -> range.type() == Type.SEMVER);
+      return ranges.stream().anyMatch(range -> range.type() == RangeTypeImpl.SEMVER);
     }
   }
 }

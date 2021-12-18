@@ -3,9 +3,9 @@ package ch.addere.osv.impl.fields.affected;
 import static java.util.stream.Collectors.joining;
 
 import ch.addere.osv.fields.affected.Package;
+import ch.addere.osv.fields.affected.pckg.Ecosystem;
 import ch.addere.osv.fields.affected.pckg.Name;
 import ch.addere.osv.fields.affected.pckg.Purl;
-import ch.addere.osv.impl.fields.affected.pckg.Ecosystem;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;

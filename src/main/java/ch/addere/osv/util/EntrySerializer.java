@@ -16,11 +16,11 @@ import static ch.addere.osv.impl.fields.affected.DatabaseSpecificImpl.DATABASE_S
 import static ch.addere.osv.impl.fields.affected.EcosystemSpecificImpl.ECOSYSTEM_SPECIFIC_KEY;
 import static ch.addere.osv.impl.fields.affected.PackageImpl.PACKAGE_KEY;
 import static ch.addere.osv.impl.fields.affected.VersionsImpl.VERSIONS_KEY;
-import static ch.addere.osv.impl.fields.affected.pckg.Ecosystem.ECOSYSTEM_KEY;
+import static ch.addere.osv.impl.fields.affected.pckg.EcosystemImpl.ECOSYSTEM_KEY;
 import static ch.addere.osv.impl.fields.affected.pckg.NameImpl.NAME_KEY;
 import static ch.addere.osv.impl.fields.affected.pckg.PurlImpl.PURL_KEY;
+import static ch.addere.osv.impl.fields.affected.ranges.RangeTypeImpl.TYPE_KEY;
 import static ch.addere.osv.impl.fields.affected.ranges.RepoImpl.REPO_KEY;
-import static ch.addere.osv.impl.fields.affected.ranges.Type.TYPE_KEY;
 import static ch.addere.osv.impl.fields.references.ReferenceTypeImpl.REFERENCE_TYPE_KEY;
 import static ch.addere.osv.impl.fields.references.ReferenceUrlImpl.REFERENCE_URL_KEY;
 
@@ -40,10 +40,10 @@ import ch.addere.osv.fields.affected.EcosystemSpecific;
 import ch.addere.osv.fields.affected.Package;
 import ch.addere.osv.fields.affected.Ranges;
 import ch.addere.osv.fields.affected.Versions;
+import ch.addere.osv.fields.affected.pckg.Ecosystem;
 import ch.addere.osv.fields.affected.pckg.Name;
 import ch.addere.osv.fields.affected.pckg.Purl;
 import ch.addere.osv.fields.affected.ranges.Event;
-import ch.addere.osv.impl.fields.affected.pckg.Ecosystem;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
@@ -207,7 +207,7 @@ public class EntrySerializer extends StdSerializer<Entry> {
   private static void writeRanges(Ranges ranges, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
     gen.writeFieldName(TYPE_KEY);
-    gen.writeString(ranges.type().name());
+    gen.writeString(ranges.type().value());
     if (ranges.repo().isPresent()) {
       gen.writeFieldName(REPO_KEY);
       gen.writeString(ranges.repo().get().value());
@@ -226,7 +226,7 @@ public class EntrySerializer extends StdSerializer<Entry> {
 
   private static void writeRangeEvent(Event e, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
-    gen.writeFieldName(e.event().name());
+    gen.writeFieldName(e.event().value());
     gen.writeString(e.release());
     gen.writeEndObject();
   }
@@ -266,7 +266,7 @@ public class EntrySerializer extends StdSerializer<Entry> {
       throws IOException {
     gen.writeStartObject();
     gen.writeFieldName(REFERENCE_TYPE_KEY);
-    gen.writeString(reference.referenceType().name());
+    gen.writeString(reference.referenceType().value());
     gen.writeFieldName(REFERENCE_URL_KEY);
     gen.writeString(reference.referenceUrl().value());
     gen.writeEndObject();

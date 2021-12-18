@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ch.addere.osv.fields.affected.Package;
 import ch.addere.osv.impl.fields.affected.PackageImpl;
-import ch.addere.osv.impl.fields.affected.pckg.Ecosystem;
+import ch.addere.osv.impl.fields.affected.pckg.EcosystemImpl;
 import ch.addere.osv.impl.fields.affected.pckg.NameImpl;
 import ch.addere.osv.impl.fields.affected.pckg.PurlImpl;
 import ch.addere.osv.util.OsvParserException;
@@ -28,7 +28,7 @@ class PackageImplDeserializerTest {
 
   @Test
   void testValidMinimalGoPackage() throws JsonProcessingException, OsvParserException {
-    Package pckg = PackageImpl.of(Ecosystem.Go, NameImpl.of("crypto/elliptic"));
+    Package pckg = PackageImpl.of(EcosystemImpl.GO, NameImpl.of("crypto/elliptic"));
     Package deserializedPackage = deserialize(
         "{\"ecosystem\":\"Go\",\"name\":\"crypto/elliptic\"}");
     assertThat(deserializedPackage).isEqualTo(pckg);
@@ -36,7 +36,7 @@ class PackageImplDeserializerTest {
 
   @Test
   void testValidGoPackage() throws JsonProcessingException, OsvParserException {
-    Package pckg = PackageImpl.of(Ecosystem.Go, NameImpl.of("crypto/elliptic"),
+    Package pckg = PackageImpl.of(EcosystemImpl.GO, NameImpl.of("crypto/elliptic"),
         PurlImpl.of(PURL_STRING));
     Package deserializedPackage = deserialize(
         "{\"ecosystem\":\"Go\",\"name\":\"crypto/elliptic\",\"purl\":\""

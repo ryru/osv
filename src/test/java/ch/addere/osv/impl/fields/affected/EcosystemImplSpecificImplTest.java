@@ -7,7 +7,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import ch.addere.osv.fields.affected.EcosystemSpecific;
 import org.junit.jupiter.api.Test;
 
-class EcosystemSpecificImplTest {
+class EcosystemImplSpecificImplTest {
 
   private static final String ECOSYSTEM_SPECIFIC1 = "someEcosystemSpecificValues";
   private static final String ECOSYSTEM_SPECIFIC2 =

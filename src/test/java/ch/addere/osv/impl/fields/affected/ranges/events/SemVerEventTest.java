@@ -20,69 +20,69 @@ class SemVerEventTest {
 
   @Test
   void testOfVersionNull() {
-    assertThatThrownBy(() -> SemVerEvent.of(EventSpecifier.introduced, null))
+    assertThatThrownBy(() -> SemVerEvent.of(EventSpecifierImpl.INTRODUCED, null))
         .isInstanceOf(NullPointerException.class)
         .hasMessageContaining("argument semVer must not be null");
   }
 
   @Test
   void testInvalidSemVer() {
-    assertThatThrownBy(() -> SemVerEvent.of(EventSpecifier.fixed, "not-a-semantic-version"))
+    assertThatThrownBy(() -> SemVerEvent.of(EventSpecifierImpl.FIXED, "not-a-semantic-version"))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("invalid semantic version: 'not-a-semantic-version'");
   }
 
   @Test
   void testIntroducedEvent() {
-    Event semVerEvent = SemVerEvent.of(EventSpecifier.introduced, VERSION);
+    Event semVerEvent = SemVerEvent.of(EventSpecifierImpl.INTRODUCED, VERSION);
     assertThat(semVerEvent).satisfies(semVer -> {
-      assertThat(semVer.event()).isEqualTo(EventSpecifier.introduced);
+      assertThat(semVer.event()).isEqualTo(EventSpecifierImpl.INTRODUCED);
       assertThat(semVer.release()).isEqualTo(VERSION);
     });
   }
 
   @Test
   void testFixedEvent() {
-    Event semVerEvent = SemVerEvent.of(EventSpecifier.fixed, VERSION);
+    Event semVerEvent = SemVerEvent.of(EventSpecifierImpl.FIXED, VERSION);
     assertThat(semVerEvent).satisfies(semVer -> {
-      assertThat(semVer.event()).isEqualTo(EventSpecifier.fixed);
+      assertThat(semVer.event()).isEqualTo(EventSpecifierImpl.FIXED);
       assertThat(semVer.release()).isEqualTo(VERSION);
     });
   }
 
   @Test
   void testLimitedEvent() {
-    Event semVerEvent = SemVerEvent.of(EventSpecifier.limited, VERSION);
+    Event semVerEvent = SemVerEvent.of(EventSpecifierImpl.LIMITED, VERSION);
     assertThat(semVerEvent).satisfies(semVer -> {
-      assertThat(semVer.event()).isEqualTo(EventSpecifier.limited);
+      assertThat(semVer.event()).isEqualTo(EventSpecifierImpl.LIMITED);
       assertThat(semVer.release()).isEqualTo(VERSION);
     });
   }
 
   @Test
   void testEquality() {
-    Event semVerEvent = SemVerEvent.of(EventSpecifier.introduced, VERSION);
-    Event otherSemVerEvent = SemVerEvent.of(EventSpecifier.introduced, VERSION);
+    Event semVerEvent = SemVerEvent.of(EventSpecifierImpl.INTRODUCED, VERSION);
+    Event otherSemVerEvent = SemVerEvent.of(EventSpecifierImpl.INTRODUCED, VERSION);
     assertThat(semVerEvent).isEqualTo(otherSemVerEvent);
   }
 
   @Test
   void testNonEquality() {
-    Event semVerEvent = SemVerEvent.of(EventSpecifier.introduced, VERSION);
-    Event otherSemVerEvent = SemVerEvent.of(EventSpecifier.limited, VERSION);
+    Event semVerEvent = SemVerEvent.of(EventSpecifierImpl.INTRODUCED, VERSION);
+    Event otherSemVerEvent = SemVerEvent.of(EventSpecifierImpl.LIMITED, VERSION);
     assertThat(semVerEvent).isNotEqualTo(otherSemVerEvent);
   }
 
   @Test
   void testHashCode() {
-    Event semVerEvent = SemVerEvent.of(EventSpecifier.introduced, VERSION);
-    Event otherSemVerEvent = SemVerEvent.of(EventSpecifier.introduced, VERSION);
+    Event semVerEvent = SemVerEvent.of(EventSpecifierImpl.INTRODUCED, VERSION);
+    Event otherSemVerEvent = SemVerEvent.of(EventSpecifierImpl.INTRODUCED, VERSION);
     assertThat(semVerEvent).hasSameHashCodeAs(otherSemVerEvent);
   }
 
   @Test
   void testToString() {
-    Event semVerEvent = SemVerEvent.of(EventSpecifier.introduced, VERSION);
+    Event semVerEvent = SemVerEvent.of(EventSpecifierImpl.INTRODUCED, VERSION);
     assertThat(semVerEvent.toString()).isEqualTo(
         EVENTS_KEY + ": " + semVerEvent.event() + ", " + semVerEvent.release());
   }

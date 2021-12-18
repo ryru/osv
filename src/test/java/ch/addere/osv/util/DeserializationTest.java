@@ -9,8 +9,8 @@ import ch.addere.osv.impl.EntryImpl;
 import ch.addere.osv.impl.fields.AffectedImpl.AffectedBuilder;
 import ch.addere.osv.impl.fields.DetailsImpl;
 import ch.addere.osv.impl.fields.IdAggregate;
+import ch.addere.osv.impl.fields.IdDatabaseImpl;
 import ch.addere.osv.impl.fields.IdImpl;
-import ch.addere.osv.impl.fields.IdImpl.Database;
 import ch.addere.osv.impl.fields.ModifiedImpl;
 import ch.addere.osv.impl.fields.PublishedImpl;
 import ch.addere.osv.impl.fields.ReferencesImpl;
@@ -19,14 +19,14 @@ import ch.addere.osv.impl.fields.affected.DatabaseSpecificImpl;
 import ch.addere.osv.impl.fields.affected.EcosystemSpecificImpl;
 import ch.addere.osv.impl.fields.affected.PackageImpl;
 import ch.addere.osv.impl.fields.affected.VersionsImpl;
-import ch.addere.osv.impl.fields.affected.pckg.Ecosystem;
+import ch.addere.osv.impl.fields.affected.pckg.EcosystemImpl;
 import ch.addere.osv.impl.fields.affected.pckg.NameImpl;
 import ch.addere.osv.impl.fields.affected.ranges.RepoImpl;
 import ch.addere.osv.impl.fields.affected.ranges.TypeEcosystemImpl;
 import ch.addere.osv.impl.fields.affected.ranges.TypeGitImpl;
 import ch.addere.osv.impl.fields.affected.ranges.TypeSemVerImpl;
 import ch.addere.osv.impl.fields.affected.ranges.events.EcosystemEvent;
-import ch.addere.osv.impl.fields.affected.ranges.events.EventSpecifier;
+import ch.addere.osv.impl.fields.affected.ranges.events.EventSpecifierImpl;
 import ch.addere.osv.impl.fields.affected.ranges.events.GitEvent;
 import ch.addere.osv.impl.fields.affected.ranges.events.SemVerEvent;
 import ch.addere.osv.impl.fields.references.ReferenceTypeImpl;
@@ -66,17 +66,17 @@ class DeserializationTest {
 
   private static Entry minimalEntry() {
     return EntryImpl.builder(
-            IdImpl.of(Database.GO, "2021-99998"),
+            IdImpl.of(IdDatabaseImpl.GO, "2021-99998"),
             ModifiedImpl.of(Instant.parse("2021-03-10T23:20:53Z")))
         .build();
   }
 
   private static Entry goEntry() {
     return EntryImpl.builder(
-            IdImpl.of(Database.GO, "2021-99998"),
+            IdImpl.of(IdDatabaseImpl.GO, "2021-99998"),
             ModifiedImpl.of(Instant.parse("2021-03-10T23:20:53Z")))
         .published(PublishedImpl.of(Instant.parse("2021-01-21T19:15:00Z")))
-        .aliases(IdAggregate.of(IdImpl.of(Database.CVE, "2021-3114")))
+        .aliases(IdAggregate.of(IdImpl.of(IdDatabaseImpl.CVE, "2021-3114")))
         .summary(SummaryImpl.of("incorrect P-224 curve operations"))
         .details(DetailsImpl.of(
             "The P224() Curve implementation can in rare circumstances generate incorrect outputs, "
@@ -94,12 +94,12 @@ class DeserializationTest {
                 URI.create("https://github.com/catenacyber/elliptic-curve-differential-fuzzer")))
         )
         .affected(new AffectedBuilder(
-            PackageImpl.of(Ecosystem.Go, NameImpl.of("crypto/elliptic")))
+            PackageImpl.of(EcosystemImpl.GO, NameImpl.of("crypto/elliptic")))
             .ranges(TypeSemVerImpl.of(
-                SemVerEvent.of(EventSpecifier.introduced, "1.0.0"),
-                SemVerEvent.of(EventSpecifier.fixed, "1.14.14"),
-                SemVerEvent.of(EventSpecifier.introduced, "1.15.0"),
-                SemVerEvent.of(EventSpecifier.fixed, "1.15.17")
+                SemVerEvent.of(EventSpecifierImpl.INTRODUCED, "1.0.0"),
+                SemVerEvent.of(EventSpecifierImpl.FIXED, "1.14.14"),
+                SemVerEvent.of(EventSpecifierImpl.INTRODUCED, "1.15.0"),
+                SemVerEvent.of(EventSpecifierImpl.FIXED, "1.15.17")
             ))
             .ecosystemSpecific(EcosystemSpecificImpl.of(
                 "{\"functions\":[\"P224\"],\"module\":\"std\",\"severity\":\"HIGH\"}"))
@@ -109,11 +109,11 @@ class DeserializationTest {
 
   private static Entry goToolEntry() {
     return EntryImpl.builder(
-            IdImpl.of(Database.GO, "2021-99999"),
+            IdImpl.of(IdDatabaseImpl.GO, "2021-99999"),
             ModifiedImpl.of(Instant.parse("2021-03-10T23:20:53Z"))
         )
         .published(PublishedImpl.of(Instant.parse("2021-01-21T19:15:00Z")))
-        .aliases(IdAggregate.of(IdImpl.of(Database.CVE, "2021-3115")))
+        .aliases(IdAggregate.of(IdImpl.of(IdDatabaseImpl.CVE, "2021-3115")))
         .summary(
             SummaryImpl.of(
                 "packages using cgo can cause arbitrary code execution at build time"))
@@ -127,12 +127,12 @@ class DeserializationTest {
                 + "(https://twitter.com/ryotkak) for reporting this issue."))
         .references(ReferencesImpl.of(ReferenceTypeImpl.REPORT,
             ReferenceUrlImpl.of(URI.create("https://golang.org/issue/43783"))))
-        .affected(new AffectedBuilder(PackageImpl.of(Ecosystem.Go, NameImpl.of("cmd/go")))
+        .affected(new AffectedBuilder(PackageImpl.of(EcosystemImpl.GO, NameImpl.of("cmd/go")))
             .ranges(TypeSemVerImpl.of(
-                SemVerEvent.of(EventSpecifier.introduced, "1.0.0"),
-                SemVerEvent.of(EventSpecifier.fixed, "1.14.14"),
-                SemVerEvent.of(EventSpecifier.introduced, "1.15.10"),
-                SemVerEvent.of(EventSpecifier.fixed, "1.15.17")
+                SemVerEvent.of(EventSpecifierImpl.INTRODUCED, "1.0.0"),
+                SemVerEvent.of(EventSpecifierImpl.FIXED, "1.14.14"),
+                SemVerEvent.of(EventSpecifierImpl.INTRODUCED, "1.15.10"),
+                SemVerEvent.of(EventSpecifierImpl.FIXED, "1.15.17")
             ))
             .ecosystemSpecific(EcosystemSpecificImpl.of(
                 "{\"severity\":\"HIGH\"}"))
@@ -142,20 +142,20 @@ class DeserializationTest {
 
   private static Entry npmEntry() {
     return EntryImpl.builder(
-            IdImpl.of(Database.GHSA, "r9p9-mrjm-926w"),
+            IdImpl.of(IdDatabaseImpl.GHSA, "r9p9-mrjm-926w"),
             ModifiedImpl.of(Instant.parse("2021-03-10T23:40:39Z"))
         )
         .published(PublishedImpl.of(Instant.parse("2021-03-07T11:27:00Z")))
         .aliases(
             IdAggregate.of(
-                IdImpl.of(Database.NPM, "1648"),
-                IdImpl.of(Database.CVE, "2020-28498"),
-                IdImpl.of(Database.SNYK, "JS-ELLIPTIC-1064899"))
+                IdImpl.of(IdDatabaseImpl.NPM, "1648"),
+                IdImpl.of(IdDatabaseImpl.CVE, "2020-28498"),
+                IdImpl.of(IdDatabaseImpl.SNYK, "JS-ELLIPTIC-1064899"))
         )
         .related(
             IdAggregate.of(
-                IdImpl.of(Database.NPM, "1649"),
-                IdImpl.of(Database.SNYK, "JAVA-ORGWEBJARSNPM-1069836"))
+                IdImpl.of(IdDatabaseImpl.NPM, "1649"),
+                IdImpl.of(IdDatabaseImpl.SNYK, "JAVA-ORGWEBJARSNPM-1069836"))
         )
         .summary(SummaryImpl.of("Use of a Broken or Risky Cryptographic Algorithm"))
         .details(DetailsImpl.of(
@@ -185,12 +185,12 @@ class DeserializationTest {
                 ReferenceUrlImpl.of(URI.create("https://www.npmjs.com/package/elliptic")))
         )
         .affected(
-            new AffectedBuilder(PackageImpl.of(Ecosystem.npm, NameImpl.of("elliptic")))
+            new AffectedBuilder(PackageImpl.of(EcosystemImpl.NPM, NameImpl.of("elliptic")))
                 .ranges(TypeSemVerImpl.of(
-                    SemVerEvent.of(EventSpecifier.introduced, "1.15.0"),
-                    SemVerEvent.of(EventSpecifier.fixed, "1.15.17"),
-                    SemVerEvent.of(EventSpecifier.introduced, "6.5.0"),
-                    SemVerEvent.of(EventSpecifier.fixed, "6.5.4")
+                    SemVerEvent.of(EventSpecifierImpl.INTRODUCED, "1.15.0"),
+                    SemVerEvent.of(EventSpecifierImpl.FIXED, "1.15.17"),
+                    SemVerEvent.of(EventSpecifierImpl.INTRODUCED, "6.5.0"),
+                    SemVerEvent.of(EventSpecifierImpl.FIXED, "6.5.4")
                 ))
                 .databaseSpecific(DatabaseSpecificImpl.of(
                     "{\"CWE\":\"CWE-327\",\"CVSS\":{\"Score\":\"6.8\",\"Severity\":\"Medium\","
@@ -202,7 +202,7 @@ class DeserializationTest {
 
   private static Entry osvEntry() {
     return EntryImpl.builder(
-            IdImpl.of(Database.OSV, "2020-584"),
+            IdImpl.of(IdDatabaseImpl.OSV, "2020-584"),
             ModifiedImpl.of(Instant.parse("2021-03-09T04:49:05.965964Z"))
         )
         .published(PublishedImpl.of(Instant.parse("2020-07-01T00:00:18.401815Z")))
@@ -216,12 +216,12 @@ class DeserializationTest {
                 URI.create("https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=15499"))
         ))
         .affected(
-            new AffectedBuilder(PackageImpl.of(Ecosystem.OSS_FUZZ, NameImpl.of("icu")))
+            new AffectedBuilder(PackageImpl.of(EcosystemImpl.OSS_FUZZ, NameImpl.of("icu")))
                 .ranges(
                     TypeGitImpl.of(RepoImpl.of("https://github.com/unicode-org/icu.git"),
-                        GitEvent.of(EventSpecifier.introduced,
+                        GitEvent.of(EventSpecifierImpl.INTRODUCED,
                             "6e5755a2a833bc64852eae12967d0a54d7adf629"),
-                        GitEvent.of(EventSpecifier.fixed,
+                        GitEvent.of(EventSpecifierImpl.FIXED,
                             "c43455749b914feef56b178b256f29b3016146eb")
                     )
                 )
@@ -237,11 +237,11 @@ class DeserializationTest {
 
   private static Entry pythonEntry() {
     return EntryImpl.builder(
-            IdImpl.of(Database.PYSEC, "2021-XXXX"),
+            IdImpl.of(IdDatabaseImpl.PYSEC, "2021-XXXX"),
             ModifiedImpl.of(Instant.parse("2021-04-07T15:14:00Z"))
         )
         .published(PublishedImpl.of(Instant.parse("2021-04-01T20:15:00Z")))
-        .aliases(IdAggregate.of(IdImpl.of(Database.CVE, "2021-29421")))
+        .aliases(IdAggregate.of(IdImpl.of(IdDatabaseImpl.CVE, "2021-29421")))
         .summary(SummaryImpl.of("XXE in pikepdf"))
         .details(DetailsImpl.of(
             "models/metadata.py in the pikepdf package 2.8.0 through 2.9.2 for Python allows XXE "
@@ -249,16 +249,16 @@ class DeserializationTest {
         .references(ReferencesImpl.of(ReferenceTypeImpl.FIX, ReferenceUrlImpl.of(URI.create(
             "https://github.com/pikepdf/pikepdf/commit/3f38f73218e5e782fe411ccbb3b44a793c0b343a"))))
         .affected(
-            new AffectedBuilder(PackageImpl.of(Ecosystem.PYPI, NameImpl.of("pikepdf")))
+            new AffectedBuilder(PackageImpl.of(EcosystemImpl.PYPI, NameImpl.of("pikepdf")))
                 .ranges(
                     TypeGitImpl.of(RepoImpl.of("https://github.com/pikepdf/pikepdf"),
-                        GitEvent.of(EventSpecifier.introduced, "0"),
-                        GitEvent.of(EventSpecifier.fixed,
+                        GitEvent.of(EventSpecifierImpl.INTRODUCED, "0"),
+                        GitEvent.of(EventSpecifierImpl.FIXED,
                             "3f38f73218e5e782fe411ccbb3b44a793c0b343a")
                     ),
                     TypeEcosystemImpl.of(
-                        EcosystemEvent.of(EventSpecifier.introduced, "2.8.0"),
-                        EcosystemEvent.of(EventSpecifier.fixed, "2.10.0")))
+                        EcosystemEvent.of(EventSpecifierImpl.INTRODUCED, "2.8.0"),
+                        EcosystemEvent.of(EventSpecifierImpl.FIXED, "2.10.0")))
                 .versions(VersionsImpl.of("2.8.0",
                     "2.8.0.post1",
                     "2.8.0.post2",
@@ -272,7 +272,7 @@ class DeserializationTest {
 
   private static Entry rubyEntry() {
     return EntryImpl.builder(
-            IdImpl.of(Database.CVE, "2019-3881"),
+            IdImpl.of(IdDatabaseImpl.CVE, "2019-3881"),
             ModifiedImpl.of(Instant.parse("2021-05-10T00:00:00Z"))
         )
         .published(PublishedImpl.of(Instant.parse("2018-04-23T00:00:00Z")))
@@ -284,11 +284,11 @@ class DeserializationTest {
                 + "does not have a writable home directory, an attacker could place malicious code "
                 + "in this directory that would be later loaded and executed."))
         .affected(
-            new AffectedBuilder(PackageImpl.of(Ecosystem.RUBY_GEMS, NameImpl.of("bundler")))
+            new AffectedBuilder(PackageImpl.of(EcosystemImpl.RUBY_GEMS, NameImpl.of("bundler")))
                 .ranges(
                     TypeEcosystemImpl.of(
-                        EcosystemEvent.of(EventSpecifier.introduced, "1.14.0"),
-                        EcosystemEvent.of(EventSpecifier.fixed, "2.1.0")
+                        EcosystemEvent.of(EventSpecifierImpl.INTRODUCED, "1.14.0"),
+                        EcosystemEvent.of(EventSpecifierImpl.FIXED, "2.1.0")
                     ))
                 .versions(VersionsImpl.of(
                     "1.14.0",
@@ -341,13 +341,13 @@ class DeserializationTest {
 
   private static Entry rustEntry() {
     return EntryImpl.builder(
-            IdImpl.of(Database.RUSTSEC, "2019-0033"),
+            IdImpl.of(IdDatabaseImpl.RUSTSEC, "2019-0033"),
             ModifiedImpl.of(Instant.parse("2021-01-04T19:02:00Z"))
         )
         .published(PublishedImpl.of(Instant.parse("2019-11-16T00:00:00Z")))
         .aliases(IdAggregate.of(
-            IdImpl.of(Database.CVE, "2020-25574"),
-            IdImpl.of(Database.CVE, "2019-25008")))
+            IdImpl.of(IdDatabaseImpl.CVE, "2020-25574"),
+            IdImpl.of(IdDatabaseImpl.CVE, "2019-25008")))
         .summary(SummaryImpl.of("Integer Overflow in HeaderMap::reserve() can cause Denial "
             + "of Service"))
         .details(DetailsImpl.of("HeaderMap::reserve() used usize::next_power_of_two() to calculate"
@@ -362,11 +362,11 @@ class DeserializationTest {
             ReferencesImpl.of(ReferenceTypeImpl.ADVISORY, ReferenceUrlImpl.of(
                 URI.create("https://rustsec.org/advisories/RUSTSEC-2019-0033.html"))))
         .affected(
-            new AffectedBuilder(PackageImpl.of(Ecosystem.CRATES_IO, NameImpl.of("http")))
+            new AffectedBuilder(PackageImpl.of(EcosystemImpl.CRATES_IO, NameImpl.of("http")))
                 .ranges(
                     TypeSemVerImpl.of(
-                        SemVerEvent.of(EventSpecifier.introduced, "0.0.0-0"),
-                        SemVerEvent.of(EventSpecifier.fixed, "0.1.20")
+                        SemVerEvent.of(EventSpecifierImpl.INTRODUCED, "0.0.0-0"),
+                        SemVerEvent.of(EventSpecifierImpl.FIXED, "0.1.20")
                     ))
                 .ecosystemSpecific(EcosystemSpecificImpl.of("{\"functions\":[\"http::header::"
                     + "HeaderMap::reserve\"],\"keywords\":[\"http\",\"integer-overflow\",\"DoS\"],"

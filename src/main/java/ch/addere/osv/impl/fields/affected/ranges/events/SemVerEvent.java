@@ -12,10 +12,10 @@ import java.util.Objects;
  */
 public final class SemVerEvent implements Event {
 
-  private final EventSpecifier event;
+  private final EventSpecifierImpl event;
   private final Version semVer;
 
-  private SemVerEvent(EventSpecifier event, String semVer) {
+  private SemVerEvent(EventSpecifierImpl event, String semVer) {
     Objects.requireNonNull(event, "argument event must not be null");
     Objects.requireNonNull(semVer, "argument semVer must not be null");
     this.event = event;
@@ -26,12 +26,12 @@ public final class SemVerEvent implements Event {
     }
   }
 
-  public static SemVerEvent of(EventSpecifier event, String semVer) {
+  public static SemVerEvent of(EventSpecifierImpl event, String semVer) {
     return new SemVerEvent(event, semVer);
   }
 
   @Override
-  public EventSpecifier event() {
+  public EventSpecifierImpl event() {
     return event;
   }
 

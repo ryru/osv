@@ -2,17 +2,18 @@ package ch.addere.osv.impl.fields.affected.ranges;
 
 import static ch.addere.osv.fields.affected.Ranges.RANGES_KEY;
 import static ch.addere.osv.fields.affected.ranges.Event.EVENTS_KEY;
+import static ch.addere.osv.impl.fields.affected.ranges.RangeTypeImpl.TYPE_KEY;
 import static ch.addere.osv.impl.fields.affected.ranges.RepoImpl.REPO_KEY;
 import static ch.addere.osv.impl.fields.affected.ranges.RepoImpl.of;
-import static ch.addere.osv.impl.fields.affected.ranges.Type.TYPE_KEY;
 import static java.lang.String.join;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ch.addere.osv.fields.affected.Ranges;
 import ch.addere.osv.fields.affected.ranges.Event;
+import ch.addere.osv.fields.affected.ranges.RangeType;
 import ch.addere.osv.fields.affected.ranges.Repo;
-import ch.addere.osv.impl.fields.affected.ranges.events.EventSpecifier;
+import ch.addere.osv.impl.fields.affected.ranges.events.EventSpecifierImpl;
 import ch.addere.osv.impl.fields.affected.ranges.events.SemVerEvent;
 import java.util.List;
 import java.util.Optional;
@@ -31,8 +32,8 @@ class TypeSemVerImplTest {
   @Test
   void testType() {
     Ranges typeSemVer = TypeSemVerImpl.of(introducedEvent());
-    Type type = typeSemVer.type();
-    assertThat(type).isEqualTo(Type.SEMVER);
+    RangeType type = typeSemVer.type();
+    assertThat(type).isEqualTo(RangeTypeImpl.SEMVER);
   }
 
   @Test
@@ -54,7 +55,7 @@ class TypeSemVerImplTest {
     Ranges typeSemVer = TypeSemVerImpl.of(introducedEvent());
     List<? extends Event> events = typeSemVer.events();
     assertThat(events.toArray()).containsExactly(
-        SemVerEvent.of(EventSpecifier.introduced, "1.0.0"));
+        SemVerEvent.of(EventSpecifierImpl.INTRODUCED, "1.0.0"));
   }
 
   @Test
@@ -100,11 +101,11 @@ class TypeSemVerImplTest {
   }
 
   private static SemVerEvent introducedEvent() {
-    return SemVerEvent.of(EventSpecifier.introduced, "1.0.0");
+    return SemVerEvent.of(EventSpecifierImpl.INTRODUCED, "1.0.0");
   }
 
   private static SemVerEvent fixedEvent() {
-    return SemVerEvent.of(EventSpecifier.fixed, "1.0.1");
+    return SemVerEvent.of(EventSpecifierImpl.FIXED, "1.0.1");
   }
 
   private static String typeToString() {

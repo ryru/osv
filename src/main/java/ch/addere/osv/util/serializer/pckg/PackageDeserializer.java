@@ -1,15 +1,16 @@
 package ch.addere.osv.util.serializer.pckg;
 
 import static ch.addere.osv.impl.fields.affected.PackageImpl.PACKAGE_KEY;
-import static ch.addere.osv.impl.fields.affected.pckg.Ecosystem.ECOSYSTEM_KEY;
+import static ch.addere.osv.impl.fields.affected.pckg.EcosystemImpl.ECOSYSTEM_KEY;
 import static ch.addere.osv.impl.fields.affected.pckg.NameImpl.NAME_KEY;
 import static ch.addere.osv.impl.fields.affected.pckg.PurlImpl.PURL_KEY;
 
 import ch.addere.osv.fields.affected.Package;
+import ch.addere.osv.fields.affected.pckg.Ecosystem;
 import ch.addere.osv.fields.affected.pckg.Name;
 import ch.addere.osv.fields.affected.pckg.Purl;
 import ch.addere.osv.impl.fields.affected.PackageImpl;
-import ch.addere.osv.impl.fields.affected.pckg.Ecosystem;
+import ch.addere.osv.impl.fields.affected.pckg.EcosystemImpl;
 import ch.addere.osv.impl.fields.affected.pckg.NameImpl;
 import ch.addere.osv.impl.fields.affected.pckg.PurlImpl;
 import ch.addere.osv.util.OsvParserException;
@@ -44,7 +45,7 @@ public final class PackageDeserializer {
 
   private static Ecosystem readEcosystem(JsonNode ecosystem) {
     final String name = ecosystem.asText();
-    return Ecosystem.value(name);
+    return EcosystemImpl.of(name);
   }
 
   private static Name readName(JsonNode name) {

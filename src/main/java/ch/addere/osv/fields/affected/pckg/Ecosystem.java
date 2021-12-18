@@ -1,12 +1,12 @@
-package ch.addere.osv.fields.references;
+package ch.addere.osv.fields.affected.pckg;
 
 /**
- * Reference type property.
+ * Ecosystem type property.
  */
-public interface ReferenceType {
+public interface Ecosystem {
 
   /**
-   * ReferenceType value.
+   * Ecosystem value.
    *
    * <p>Can be used to create a new instance by of() method.</p>
    *

@@ -2,16 +2,17 @@ package ch.addere.osv.impl.fields.affected.ranges;
 
 import static ch.addere.osv.fields.affected.Ranges.RANGES_KEY;
 import static ch.addere.osv.fields.affected.ranges.Event.EVENTS_KEY;
+import static ch.addere.osv.impl.fields.affected.ranges.RangeTypeImpl.TYPE_KEY;
 import static ch.addere.osv.impl.fields.affected.ranges.RepoImpl.REPO_KEY;
-import static ch.addere.osv.impl.fields.affected.ranges.Type.TYPE_KEY;
 import static java.lang.String.join;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ch.addere.osv.fields.affected.Ranges;
 import ch.addere.osv.fields.affected.ranges.Event;
+import ch.addere.osv.fields.affected.ranges.RangeType;
 import ch.addere.osv.fields.affected.ranges.Repo;
-import ch.addere.osv.impl.fields.affected.ranges.events.EventSpecifier;
+import ch.addere.osv.impl.fields.affected.ranges.events.EventSpecifierImpl;
 import ch.addere.osv.impl.fields.affected.ranges.events.GitEvent;
 import java.util.List;
 import java.util.Optional;
@@ -36,8 +37,8 @@ class TypeGitImplTest {
   @Test
   void testType() {
     Ranges typeEcosystem = TypeGitImpl.of(repo(), introducedEvent());
-    Type type = typeEcosystem.type();
-    assertThat(type).isEqualTo(Type.GIT);
+    RangeType type = typeEcosystem.type();
+    assertThat(type).isEqualTo(RangeTypeImpl.GIT);
   }
 
   @Test
@@ -52,7 +53,7 @@ class TypeGitImplTest {
     Ranges typeEcosystem = TypeGitImpl.of(repo(), introducedEvent());
     List<? extends Event> events = typeEcosystem.events();
     assertThat(events.toArray()).containsExactly(
-        GitEvent.of(EventSpecifier.introduced, "1.0.0"));
+        GitEvent.of(EventSpecifierImpl.INTRODUCED, "1.0.0"));
   }
 
   @Test
@@ -90,11 +91,11 @@ class TypeGitImplTest {
   }
 
   private static GitEvent introducedEvent() {
-    return GitEvent.of(EventSpecifier.introduced, "1.0.0");
+    return GitEvent.of(EventSpecifierImpl.INTRODUCED, "1.0.0");
   }
 
   private static GitEvent fixedEvent() {
-    return GitEvent.of(EventSpecifier.fixed, "1.0.1");
+    return GitEvent.of(EventSpecifierImpl.FIXED, "1.0.1");
   }
 
   private static String typeToString() {

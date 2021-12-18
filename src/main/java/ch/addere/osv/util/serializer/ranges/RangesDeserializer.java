@@ -2,18 +2,18 @@ package ch.addere.osv.util.serializer.ranges;
 
 import static ch.addere.osv.fields.affected.Ranges.RANGES_KEY;
 import static ch.addere.osv.fields.affected.ranges.Event.EVENTS_KEY;
+import static ch.addere.osv.impl.fields.affected.ranges.RangeTypeImpl.TYPE_KEY;
 import static ch.addere.osv.impl.fields.affected.ranges.RepoImpl.REPO_KEY;
-import static ch.addere.osv.impl.fields.affected.ranges.Type.TYPE_KEY;
 import static java.lang.String.format;
 
 import ch.addere.osv.fields.affected.Ranges;
+import ch.addere.osv.impl.fields.affected.ranges.RangeTypeImpl;
 import ch.addere.osv.impl.fields.affected.ranges.RepoImpl;
-import ch.addere.osv.impl.fields.affected.ranges.Type;
 import ch.addere.osv.impl.fields.affected.ranges.TypeEcosystemImpl;
 import ch.addere.osv.impl.fields.affected.ranges.TypeGitImpl;
 import ch.addere.osv.impl.fields.affected.ranges.TypeSemVerImpl;
 import ch.addere.osv.impl.fields.affected.ranges.events.EcosystemEvent;
-import ch.addere.osv.impl.fields.affected.ranges.events.EventSpecifier;
+import ch.addere.osv.impl.fields.affected.ranges.events.EventSpecifierImpl;
 import ch.addere.osv.impl.fields.affected.ranges.events.GitEvent;
 import ch.addere.osv.impl.fields.affected.ranges.events.SemVerEvent;
 import ch.addere.osv.util.OsvParserException;
@@ -49,7 +49,7 @@ public final class RangesDeserializer {
   }
 
   private static Optional<Ranges> readRange(JsonNode rangeNode) throws OsvParserException {
-    Type type = readRangeType(rangeNode.get(TYPE_KEY));
+    RangeTypeImpl type = readRangeType(rangeNode.get(TYPE_KEY));
     switch (type) {
       case SEMVER:
         return getSemVerRanges(rangeNode);
@@ -62,9 +62,9 @@ public final class RangesDeserializer {
     }
   }
 
-  private static Type readRangeType(JsonNode rangeTypeNode) throws OsvParserException {
+  private static RangeTypeImpl readRangeType(JsonNode rangeTypeNode) throws OsvParserException {
     try {
-      return Type.valueOf(rangeTypeNode.asText());
+      return RangeTypeImpl.of(rangeTypeNode.asText());
     } catch (IllegalArgumentException ex) {
       throw new OsvParserException(format("type '%s' is not valid", rangeTypeNode.asText()), ex);
     }
@@ -110,7 +110,7 @@ public final class RangesDeserializer {
     List<SemVerEvent> eventList = new LinkedList<>();
     for (JsonNode jsonNode : eventArray) {
       var entry = jsonNode.fields().next();
-      EventSpecifier specifier = EventSpecifier.valueOf(entry.getKey());
+      EventSpecifierImpl specifier = EventSpecifierImpl.of(entry.getKey());
       String version = entry.getValue().asText();
       eventList.add(SemVerEvent.of(specifier, version));
     }
@@ -121,7 +121,7 @@ public final class RangesDeserializer {
     List<GitEvent> eventList = new LinkedList<>();
     for (JsonNode jsonNode : eventArray) {
       var entry = jsonNode.fields().next();
-      EventSpecifier specifier = EventSpecifier.valueOf(entry.getKey());
+      EventSpecifierImpl specifier = EventSpecifierImpl.of(entry.getKey());
       String version = entry.getValue().asText();
       eventList.add(GitEvent.of(specifier, version));
     }
@@ -132,7 +132,7 @@ public final class RangesDeserializer {
     List<EcosystemEvent> eventList = new LinkedList<>();
     for (JsonNode jsonNode : eventArray) {
       var entry = jsonNode.fields().next();
-      EventSpecifier specifier = EventSpecifier.valueOf(entry.getKey());
+      EventSpecifierImpl specifier = EventSpecifierImpl.of(entry.getKey());
       String version = entry.getValue().asText();
       eventList.add(EcosystemEvent.of(specifier, version));
     }

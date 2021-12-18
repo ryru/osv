@@ -19,6 +19,7 @@ import ch.addere.osv.Entry;
 import ch.addere.osv.fields.Affected;
 import ch.addere.osv.fields.Details;
 import ch.addere.osv.fields.Id;
+import ch.addere.osv.fields.IdDatabase;
 import ch.addere.osv.fields.Modified;
 import ch.addere.osv.fields.Published;
 import ch.addere.osv.fields.References;
@@ -29,8 +30,8 @@ import ch.addere.osv.fields.references.ReferenceUrl;
 import ch.addere.osv.impl.EntryImpl;
 import ch.addere.osv.impl.fields.DetailsImpl;
 import ch.addere.osv.impl.fields.IdAggregate;
+import ch.addere.osv.impl.fields.IdDatabaseImpl;
 import ch.addere.osv.impl.fields.IdImpl;
-import ch.addere.osv.impl.fields.IdImpl.Database;
 import ch.addere.osv.impl.fields.ModifiedImpl;
 import ch.addere.osv.impl.fields.PublishedImpl;
 import ch.addere.osv.impl.fields.ReferencesImpl;
@@ -68,7 +69,7 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
   private static Id readId(JsonNode idNode) {
     final String delimiter = "-";
     String[] tokenized = idNode.asText().split(delimiter);
-    Database database = Database.valueOf(tokenized[0]);
+    IdDatabase database = IdDatabaseImpl.of(tokenized[0]);
     String entryId = stream(tokenized)
         .skip(1)
         .collect(joining(delimiter));
@@ -163,7 +164,7 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
     Optional<JsonNode> urlNode = Optional.ofNullable(reference.get(REFERENCE_URL_KEY));
 
     if (referenceTypeNode.isPresent() && urlNode.isPresent()) {
-      ReferenceType type = ReferenceTypeImpl.valueOf(referenceTypeNode.get().asText());
+      ReferenceType type = ReferenceTypeImpl.of(referenceTypeNode.get().asText());
       ReferenceUrl url = ReferenceUrlImpl.of(URI.create(urlNode.get().asText()));
       return Optional.of(ReferencesImpl.of(type, url));
     } else {

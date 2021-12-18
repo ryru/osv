@@ -1,5 +1,6 @@
 package ch.addere.osv.util.serializer.ranges;
 
+import static ch.addere.osv.impl.fields.affected.ranges.events.EventSpecifierImpl.INTRODUCED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -10,7 +11,6 @@ import ch.addere.osv.impl.fields.affected.ranges.TypeEcosystemImpl;
 import ch.addere.osv.impl.fields.affected.ranges.TypeGitImpl;
 import ch.addere.osv.impl.fields.affected.ranges.TypeSemVerImpl;
 import ch.addere.osv.impl.fields.affected.ranges.events.EcosystemEvent;
-import ch.addere.osv.impl.fields.affected.ranges.events.EventSpecifier;
 import ch.addere.osv.impl.fields.affected.ranges.events.GitEvent;
 import ch.addere.osv.impl.fields.affected.ranges.events.SemVerEvent;
 import ch.addere.osv.util.OsvParserException;
@@ -93,18 +93,18 @@ class RangesDeserializerTest {
 
   private static Ranges semVerRange(Repo repo) {
     return Optional.ofNullable(repo)
-        .map(value -> TypeSemVerImpl.of(value, SemVerEvent.of(EventSpecifier.introduced, SEM_VER)))
-        .orElseGet(() -> TypeSemVerImpl.of(SemVerEvent.of(EventSpecifier.introduced, SEM_VER)));
+        .map(value -> TypeSemVerImpl.of(value, SemVerEvent.of(INTRODUCED, SEM_VER)))
+        .orElseGet(() -> TypeSemVerImpl.of(SemVerEvent.of(INTRODUCED, SEM_VER)));
   }
 
   private static Ranges gitRange() {
-    return TypeGitImpl.of(getRepo(), GitEvent.of(EventSpecifier.introduced, "0"));
+    return TypeGitImpl.of(getRepo(), GitEvent.of(INTRODUCED, "0"));
   }
 
   private static Ranges ecosystemRange(Repo repo) {
     return Optional.ofNullable(repo).map(
-            value -> TypeEcosystemImpl.of(value, EcosystemEvent.of(EventSpecifier.introduced, "0")))
-        .orElseGet(() -> TypeEcosystemImpl.of(EcosystemEvent.of(EventSpecifier.introduced, "0")));
+            value -> TypeEcosystemImpl.of(value, EcosystemEvent.of(INTRODUCED, "0")))
+        .orElseGet(() -> TypeEcosystemImpl.of(EcosystemEvent.of(INTRODUCED, "0")));
   }
 
   private static Repo getRepo() {

@@ -1,13 +1,13 @@
 package ch.addere.osv.impl.fields;
 
-import static ch.addere.osv.impl.fields.IdImpl.Database.CVE;
-import static ch.addere.osv.impl.fields.IdImpl.Database.GO;
-import static ch.addere.osv.impl.fields.IdImpl.Database.NPM;
-import static ch.addere.osv.impl.fields.IdImpl.Database.OSV;
-import static ch.addere.osv.impl.fields.IdImpl.Database.PYSEC;
-import static ch.addere.osv.impl.fields.IdImpl.Database.RUSTSEC;
-import static ch.addere.osv.impl.fields.IdImpl.Database.SNYK;
-import static ch.addere.osv.impl.fields.IdImpl.Database.UVI;
+import static ch.addere.osv.impl.fields.IdDatabaseImpl.CVE;
+import static ch.addere.osv.impl.fields.IdDatabaseImpl.GO;
+import static ch.addere.osv.impl.fields.IdDatabaseImpl.NPM;
+import static ch.addere.osv.impl.fields.IdDatabaseImpl.OSV;
+import static ch.addere.osv.impl.fields.IdDatabaseImpl.PYSEC;
+import static ch.addere.osv.impl.fields.IdDatabaseImpl.RUSTSEC;
+import static ch.addere.osv.impl.fields.IdDatabaseImpl.SNYK;
+import static ch.addere.osv.impl.fields.IdDatabaseImpl.UVI;
 import static ch.addere.osv.impl.fields.IdImpl.ID_KEY;
 import static java.lang.String.join;
 import static org.assertj.core.api.Assertions.assertThat;

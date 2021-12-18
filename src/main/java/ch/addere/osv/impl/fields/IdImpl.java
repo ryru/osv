@@ -3,6 +3,7 @@ package ch.addere.osv.impl.fields;
 import static java.lang.String.join;
 
 import ch.addere.osv.fields.Id;
+import ch.addere.osv.fields.IdDatabase;
 import java.util.Objects;
 
 /**
@@ -12,17 +13,17 @@ public final class IdImpl implements Id {
 
   public static final String ID_KEY = "id";
 
-  private final Database database;
+  private final IdDatabase database;
   private final String entryId;
 
-  private IdImpl(Database database, String entryId) {
+  private IdImpl(IdDatabase database, String entryId) {
     Objects.requireNonNull(database, "argument database must not be null");
     Objects.requireNonNull(entryId, "argument entryId must not be null");
     this.database = database;
     this.entryId = entryId;
   }
 
-  public static IdImpl of(Database database, String entryId) {
+  public static IdImpl of(IdDatabase database, String entryId) {
     return new IdImpl(database, entryId);
   }
 
@@ -40,7 +41,7 @@ public final class IdImpl implements Id {
       return false;
     }
     IdImpl id = (IdImpl) o;
-    return database == id.database && Objects.equals(entryId, id.entryId);
+    return database.equals(id.database) && Objects.equals(entryId, id.entryId);
   }
 
   @Override
@@ -53,31 +54,5 @@ public final class IdImpl implements Id {
     return ID_KEY + ": " + join(", ",
         database.toString(),
         entryId);
-  }
-
-  /**
-   * Vulnerability databases supported by the specification.
-   */
-  public enum Database {
-    GO("GO"),
-    OSV("OSV"),
-    PYSEC("PYSEC"),
-    RUSTSEC("RUSTSEC"),
-    UVI("UVI"),
-    CVE("CVE"),
-    NPM("NPM"),
-    SNYK("SNYK"),
-    GHSA("GHSA");
-
-    private final String database;
-
-    Database(String databaseName) {
-      database = databaseName;
-    }
-
-    @Override
-    public String toString() {
-      return database;
-    }
   }
 }

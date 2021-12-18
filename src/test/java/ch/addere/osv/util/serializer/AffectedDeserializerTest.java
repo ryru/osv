@@ -11,11 +11,11 @@ import ch.addere.osv.fields.affected.pckg.Purl;
 import ch.addere.osv.impl.fields.AffectedImpl.AffectedBuilder;
 import ch.addere.osv.impl.fields.affected.PackageImpl;
 import ch.addere.osv.impl.fields.affected.VersionsImpl;
-import ch.addere.osv.impl.fields.affected.pckg.Ecosystem;
+import ch.addere.osv.impl.fields.affected.pckg.EcosystemImpl;
 import ch.addere.osv.impl.fields.affected.pckg.NameImpl;
 import ch.addere.osv.impl.fields.affected.pckg.PurlImpl;
 import ch.addere.osv.impl.fields.affected.ranges.TypeSemVerImpl;
-import ch.addere.osv.impl.fields.affected.ranges.events.EventSpecifier;
+import ch.addere.osv.impl.fields.affected.ranges.events.EventSpecifierImpl;
 import ch.addere.osv.impl.fields.affected.ranges.events.SemVerEvent;
 import ch.addere.osv.util.OsvParserException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -88,17 +88,17 @@ class AffectedDeserializerTest {
   }
 
   private static Affected affected(Purl purl) {
-    Package pckg = PackageImpl.of(Ecosystem.Go, NameImpl.of("crypto/elliptic"), purl);
-    SemVerEvent introduced1 = SemVerEvent.of(EventSpecifier.introduced, "1.0.0");
-    SemVerEvent fixed1 = SemVerEvent.of(EventSpecifier.fixed, "1.14.14");
-    SemVerEvent introduced2 = SemVerEvent.of(EventSpecifier.introduced, "1.15.0");
-    SemVerEvent fixed2 = SemVerEvent.of(EventSpecifier.fixed, "1.15.17");
+    Package pckg = PackageImpl.of(EcosystemImpl.GO, NameImpl.of("crypto/elliptic"), purl);
+    SemVerEvent introduced1 = SemVerEvent.of(EventSpecifierImpl.INTRODUCED, "1.0.0");
+    SemVerEvent fixed1 = SemVerEvent.of(EventSpecifierImpl.FIXED, "1.14.14");
+    SemVerEvent introduced2 = SemVerEvent.of(EventSpecifierImpl.INTRODUCED, "1.15.0");
+    SemVerEvent fixed2 = SemVerEvent.of(EventSpecifierImpl.FIXED, "1.15.17");
     Ranges ranges = TypeSemVerImpl.of(introduced1, fixed1, introduced2, fixed2);
     return new AffectedBuilder(pckg).ranges(ranges).build();
   }
 
   private static Affected affectedWithVersion() {
-    Package pckg = PackageImpl.of(Ecosystem.Go, NameImpl.of("crypto/elliptic"));
+    Package pckg = PackageImpl.of(EcosystemImpl.GO, NameImpl.of("crypto/elliptic"));
     Versions version = VersionsImpl.of("2.8.0", "2.8.0.post1", "2.8.0.post2", "2.9.0", "2.9.1",
         "2.9.2");
     return new AffectedBuilder(pckg).versions(version).build();

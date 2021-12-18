@@ -1,6 +1,7 @@
 package ch.addere.osv.impl.fields.affected.ranges.events;
 
 import ch.addere.osv.fields.affected.ranges.Event;
+import ch.addere.osv.fields.affected.ranges.events.EventSpecifier;
 import java.util.Objects;
 
 /**
@@ -41,7 +42,7 @@ public final class EcosystemEvent implements Event {
       return false;
     }
     EcosystemEvent that = (EcosystemEvent) o;
-    return event == that.event && Objects.equals(version, that.version);
+    return event.equals(that.event) && Objects.equals(version, that.version);
   }
 
   @Override

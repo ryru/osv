@@ -1,8 +1,8 @@
 package ch.addere.osv.fields.affected;
 
 import ch.addere.osv.fields.affected.ranges.Event;
+import ch.addere.osv.fields.affected.ranges.RangeType;
 import ch.addere.osv.fields.affected.ranges.Repo;
-import ch.addere.osv.impl.fields.affected.ranges.Type;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,7 +13,7 @@ public interface Ranges {
 
   String RANGES_KEY = "ranges";
 
-  Type type();
+  RangeType type();
 
   Optional<Repo> repo();
 

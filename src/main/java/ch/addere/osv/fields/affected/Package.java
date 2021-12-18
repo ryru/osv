@@ -1,8 +1,8 @@
 package ch.addere.osv.fields.affected;
 
+import ch.addere.osv.fields.affected.pckg.Ecosystem;
 import ch.addere.osv.fields.affected.pckg.Name;
 import ch.addere.osv.fields.affected.pckg.Purl;
-import ch.addere.osv.impl.fields.affected.pckg.Ecosystem;
 import java.util.Optional;
 
 /**

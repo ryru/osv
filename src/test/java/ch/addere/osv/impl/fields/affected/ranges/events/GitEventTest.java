@@ -20,62 +20,62 @@ class GitEventTest {
 
   @Test
   void testOfVersionNull() {
-    assertThatThrownBy(() -> GitEvent.of(EventSpecifier.introduced, null))
+    assertThatThrownBy(() -> GitEvent.of(EventSpecifierImpl.INTRODUCED, null))
         .isInstanceOf(NullPointerException.class)
         .hasMessageContaining("argument gitCommit must not be null");
   }
 
   @Test
   void testIntroducedEvent() {
-    Event gitEvent = GitEvent.of(EventSpecifier.introduced, VERSION);
+    Event gitEvent = GitEvent.of(EventSpecifierImpl.INTRODUCED, VERSION);
     assertThat(gitEvent).satisfies(git -> {
-      assertThat(git.event()).isEqualTo(EventSpecifier.introduced);
+      assertThat(git.event()).isEqualTo(EventSpecifierImpl.INTRODUCED);
       assertThat(git.release()).isEqualTo(VERSION);
     });
   }
 
   @Test
   void testFixedEvent() {
-    Event gitEvent = GitEvent.of(EventSpecifier.fixed, VERSION);
+    Event gitEvent = GitEvent.of(EventSpecifierImpl.FIXED, VERSION);
     assertThat(gitEvent).satisfies(git -> {
-      assertThat(git.event()).isEqualTo(EventSpecifier.fixed);
+      assertThat(git.event()).isEqualTo(EventSpecifierImpl.FIXED);
       assertThat(git.release()).isEqualTo(VERSION);
     });
   }
 
   @Test
   void testLimitedEvent() {
-    Event gitEvent = GitEvent.of(EventSpecifier.limited, VERSION);
+    Event gitEvent = GitEvent.of(EventSpecifierImpl.LIMITED, VERSION);
     assertThat(gitEvent).satisfies(git -> {
-      assertThat(git.event()).isEqualTo(EventSpecifier.limited);
+      assertThat(git.event()).isEqualTo(EventSpecifierImpl.LIMITED);
       assertThat(git.release()).isEqualTo(VERSION);
     });
   }
 
   @Test
   void testEquality() {
-    Event gitEvent = GitEvent.of(EventSpecifier.introduced, VERSION);
-    Event otherGitEvent = GitEvent.of(EventSpecifier.introduced, VERSION);
+    Event gitEvent = GitEvent.of(EventSpecifierImpl.INTRODUCED, VERSION);
+    Event otherGitEvent = GitEvent.of(EventSpecifierImpl.INTRODUCED, VERSION);
     assertThat(gitEvent).isEqualTo(otherGitEvent);
   }
 
   @Test
   void testNonEquality() {
-    Event gitEvent = GitEvent.of(EventSpecifier.introduced, VERSION);
-    Event otherGitEvent = GitEvent.of(EventSpecifier.limited, VERSION);
+    Event gitEvent = GitEvent.of(EventSpecifierImpl.INTRODUCED, VERSION);
+    Event otherGitEvent = GitEvent.of(EventSpecifierImpl.LIMITED, VERSION);
     assertThat(gitEvent).isNotEqualTo(otherGitEvent);
   }
 
   @Test
   void testHashCode() {
-    Event gitEvent = GitEvent.of(EventSpecifier.introduced, VERSION);
-    Event otherGitEvent = GitEvent.of(EventSpecifier.introduced, VERSION);
+    Event gitEvent = GitEvent.of(EventSpecifierImpl.INTRODUCED, VERSION);
+    Event otherGitEvent = GitEvent.of(EventSpecifierImpl.INTRODUCED, VERSION);
     assertThat(gitEvent).hasSameHashCodeAs(otherGitEvent);
   }
 
   @Test
   void testToString() {
-    Event gitEvent = GitEvent.of(EventSpecifier.introduced, VERSION);
+    Event gitEvent = GitEvent.of(EventSpecifierImpl.INTRODUCED, VERSION);
     assertThat(gitEvent.toString()).isEqualTo(
         EVENTS_KEY + ": " + gitEvent.event() + ", " + gitEvent.release());
   }

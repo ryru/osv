@@ -169,6 +169,12 @@ public final class EntryImpl implements Entry {
     private List<Affected> affected = null;
     private List<References> references = null;
 
+    /**
+     * Entry builder.
+     *
+     * @param id ID of this entry
+     * @param modified Modified of this entry
+     */
     public EntryBuilder(Id id, Modified modified) {
       Objects.requireNonNull(id, "argument id must not be null");
       Objects.requireNonNull(modified, "argument modified must not be null");

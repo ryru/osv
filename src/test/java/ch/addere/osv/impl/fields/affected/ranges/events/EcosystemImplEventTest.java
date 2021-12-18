@@ -7,7 +7,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import ch.addere.osv.fields.affected.ranges.Event;
 import org.junit.jupiter.api.Test;
 
-class EcosystemEventTest {
+class EcosystemImplEventTest {
 
   private static final String VERSION = "aVersion";
 
@@ -20,62 +20,62 @@ class EcosystemEventTest {
 
   @Test
   void testOfVersionNull() {
-    assertThatThrownBy(() -> EcosystemEvent.of(EventSpecifier.introduced, null))
+    assertThatThrownBy(() -> EcosystemEvent.of(EventSpecifierImpl.INTRODUCED, null))
         .isInstanceOf(NullPointerException.class)
         .hasMessageContaining("argument version must not be null");
   }
 
   @Test
   void testIntroducedEvent() {
-    Event ecoEvent = EcosystemEvent.of(EventSpecifier.introduced, VERSION);
+    Event ecoEvent = EcosystemEvent.of(EventSpecifierImpl.INTRODUCED, VERSION);
     assertThat(ecoEvent).satisfies(eco -> {
-      assertThat(eco.event()).isEqualTo(EventSpecifier.introduced);
+      assertThat(eco.event()).isEqualTo(EventSpecifierImpl.INTRODUCED);
       assertThat(eco.release()).isEqualTo(VERSION);
     });
   }
 
   @Test
   void testFixedEvent() {
-    Event ecoEvent = EcosystemEvent.of(EventSpecifier.fixed, VERSION);
+    Event ecoEvent = EcosystemEvent.of(EventSpecifierImpl.FIXED, VERSION);
     assertThat(ecoEvent).satisfies(eco -> {
-      assertThat(eco.event()).isEqualTo(EventSpecifier.fixed);
+      assertThat(eco.event()).isEqualTo(EventSpecifierImpl.FIXED);
       assertThat(eco.release()).isEqualTo(VERSION);
     });
   }
 
   @Test
   void testLimitedEvent() {
-    Event ecoEvent = EcosystemEvent.of(EventSpecifier.limited, VERSION);
+    Event ecoEvent = EcosystemEvent.of(EventSpecifierImpl.LIMITED, VERSION);
     assertThat(ecoEvent).satisfies(eco -> {
-      assertThat(eco.event()).isEqualTo(EventSpecifier.limited);
+      assertThat(eco.event()).isEqualTo(EventSpecifierImpl.LIMITED);
       assertThat(eco.release()).isEqualTo(VERSION);
     });
   }
 
   @Test
   void testEquality() {
-    Event ecoEvent = EcosystemEvent.of(EventSpecifier.introduced, VERSION);
-    Event otherEcoEvent = EcosystemEvent.of(EventSpecifier.introduced, VERSION);
+    Event ecoEvent = EcosystemEvent.of(EventSpecifierImpl.INTRODUCED, VERSION);
+    Event otherEcoEvent = EcosystemEvent.of(EventSpecifierImpl.INTRODUCED, VERSION);
     assertThat(ecoEvent).isEqualTo(otherEcoEvent);
   }
 
   @Test
   void testNonEquality() {
-    Event ecoEvent = EcosystemEvent.of(EventSpecifier.introduced, VERSION);
-    Event otherEcoEvent = EcosystemEvent.of(EventSpecifier.limited, VERSION);
+    Event ecoEvent = EcosystemEvent.of(EventSpecifierImpl.INTRODUCED, VERSION);
+    Event otherEcoEvent = EcosystemEvent.of(EventSpecifierImpl.LIMITED, VERSION);
     assertThat(ecoEvent).isNotEqualTo(otherEcoEvent);
   }
 
   @Test
   void testHashCode() {
-    Event ecoEvent = EcosystemEvent.of(EventSpecifier.introduced, VERSION);
-    Event otherEcoEvent = EcosystemEvent.of(EventSpecifier.introduced, VERSION);
+    Event ecoEvent = EcosystemEvent.of(EventSpecifierImpl.INTRODUCED, VERSION);
+    Event otherEcoEvent = EcosystemEvent.of(EventSpecifierImpl.INTRODUCED, VERSION);
     assertThat(ecoEvent).hasSameHashCodeAs(otherEcoEvent);
   }
 
   @Test
   void testToString() {
-    Event ecoEvent = EcosystemEvent.of(EventSpecifier.introduced, VERSION);
+    Event ecoEvent = EcosystemEvent.of(EventSpecifierImpl.INTRODUCED, VERSION);
     assertThat(ecoEvent.toString()).isEqualTo(
         EVENTS_KEY + ": " + ecoEvent.event() + ", " + ecoEvent.release());
   }

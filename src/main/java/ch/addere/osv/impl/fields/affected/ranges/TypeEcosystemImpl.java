@@ -4,6 +4,7 @@ import static java.util.stream.Collectors.joining;
 
 import ch.addere.osv.fields.affected.Ranges;
 import ch.addere.osv.fields.affected.ranges.Event;
+import ch.addere.osv.fields.affected.ranges.RangeType;
 import ch.addere.osv.fields.affected.ranges.Repo;
 import ch.addere.osv.impl.fields.affected.ranges.events.EcosystemEvent;
 import java.util.LinkedList;
@@ -17,13 +18,13 @@ import java.util.stream.Stream;
  */
 public final class TypeEcosystemImpl implements Ranges {
 
-  private final Type type;
+  private final RangeType type;
   private final Repo repo;
   private final List<EcosystemEvent> events;
 
   private TypeEcosystemImpl(Repo repo, EcosystemEvent... events) {
     Objects.requireNonNull(events, "argument events must not be null");
-    this.type = Type.ECOSYSTEM;
+    this.type = RangeTypeImpl.ECOSYSTEM;
     this.repo = repo;
     this.events = List.of(events);
   }
@@ -37,7 +38,7 @@ public final class TypeEcosystemImpl implements Ranges {
   }
 
   @Override
-  public Type type() {
+  public RangeType type() {
     return type;
   }
 
@@ -60,7 +61,7 @@ public final class TypeEcosystemImpl implements Ranges {
       return false;
     }
     TypeEcosystemImpl that = (TypeEcosystemImpl) o;
-    return type == that.type && Objects.equals(repo, that.repo) && Objects.equals(
+    return type.equals(that.type) && Objects.equals(repo, that.repo) && Objects.equals(
         events, that.events);
   }
 

@@ -1,7 +1,7 @@
 package ch.addere.osv.impl.fields.affected;
 
 import static ch.addere.osv.impl.fields.affected.PackageImpl.PACKAGE_KEY;
-import static ch.addere.osv.impl.fields.affected.pckg.Ecosystem.ECOSYSTEM_KEY;
+import static ch.addere.osv.impl.fields.affected.pckg.EcosystemImpl.ECOSYSTEM_KEY;
 import static ch.addere.osv.impl.fields.affected.pckg.NameImpl.NAME_KEY;
 import static ch.addere.osv.impl.fields.affected.pckg.NameImpl.of;
 import static ch.addere.osv.impl.fields.affected.pckg.PurlImpl.PURL_KEY;
@@ -12,13 +12,13 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import ch.addere.osv.fields.affected.Package;
 import ch.addere.osv.fields.affected.pckg.Name;
 import ch.addere.osv.fields.affected.pckg.Purl;
-import ch.addere.osv.impl.fields.affected.pckg.Ecosystem;
+import ch.addere.osv.impl.fields.affected.pckg.EcosystemImpl;
 import ch.addere.osv.impl.fields.affected.pckg.PurlImpl;
 import org.junit.jupiter.api.Test;
 
 class PackageImplTest {
 
-  private static final Ecosystem LINUX_ECOSYSTEM = Ecosystem.LINUX;
+  private static final EcosystemImpl LINUX_ECOSYSTEM = EcosystemImpl.LINUX;
   private static final Name NAME = of("aName");
   private static final Name ANOTHER_NAME = of("anotherName");
   private static final String PURL_STRING = "pkg:deb/debian/curl@7.50.3-1?arch=i386&distro=jessie";

@@ -5,8 +5,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import ch.addere.osv.Entry;
 import ch.addere.osv.impl.EntryImpl.EntryBuilder;
+import ch.addere.osv.impl.fields.IdDatabaseImpl;
 import ch.addere.osv.impl.fields.IdImpl;
-import ch.addere.osv.impl.fields.IdImpl.Database;
 import ch.addere.osv.impl.fields.ModifiedImpl;
 import ch.addere.osv.impl.fields.PublishedImpl;
 import java.time.Instant;
@@ -20,7 +20,7 @@ class EntryImplTest {
 
   private static EntryBuilder entryBuilder() {
     return EntryImpl.builder(
-        IdImpl.of(Database.GO, "2021-99999"),
+        IdImpl.of(IdDatabaseImpl.GO, "2021-99999"),
         ModifiedImpl.of(Instant.parse("2021-03-10T23:20:53Z")));
   }
 
@@ -40,7 +40,7 @@ class EntryImplTest {
 
   @Test
   void testOfModifiedNull() {
-    assertThatThrownBy(() -> EntryImpl.builder(IdImpl.of(Database.CVE, "anId"), null))
+    assertThatThrownBy(() -> EntryImpl.builder(IdImpl.of(IdDatabaseImpl.CVE, "anId"), null))
         .isInstanceOf(NullPointerException.class)
         .hasMessageContaining("argument modified must not be null");
   }
