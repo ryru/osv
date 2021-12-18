@@ -25,6 +25,13 @@ class VersionsImplTest {
   }
 
   @Test
+  void testOfValueObjectCreation() {
+    Versions versions1 = VersionsImpl.of(ENTRY_1);
+    Versions versions2 = VersionsImpl.of(versions1.value().toArray(new String[0]));
+    assertThat(versions1).isEqualTo(versions2);
+  }
+
+  @Test
   void testEmptyVersions() {
     Versions versions = VersionsImpl.of();
     assertThat(versions.value()).asList().isEmpty();

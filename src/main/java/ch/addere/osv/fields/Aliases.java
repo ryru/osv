@@ -7,6 +7,6 @@ import java.util.List;
  */
 public interface Aliases {
 
-  List<Id> ids();
+  List<Id> values();
 
 }

@@ -1,6 +1,7 @@
 package ch.addere.osv.impl.fields.affected.ranges.events;
 
 import ch.addere.osv.fields.affected.ranges.Event;
+import ch.addere.osv.fields.affected.ranges.events.EventSpecifier;
 import java.util.Objects;
 
 /**
@@ -8,22 +9,22 @@ import java.util.Objects;
  */
 public final class GitEvent implements Event {
 
-  private final EventSpecifierImpl event;
+  private final EventSpecifier event;
   private final String gitCommit;
 
-  private GitEvent(EventSpecifierImpl event, String gitCommit) {
+  private GitEvent(EventSpecifier event, String gitCommit) {
     Objects.requireNonNull(event, "argument event must not be null");
     Objects.requireNonNull(gitCommit, "argument gitCommit must not be null");
     this.event = event;
     this.gitCommit = gitCommit;
   }
 
-  public static GitEvent of(EventSpecifierImpl event, String gitCommit) {
+  public static GitEvent of(EventSpecifier event, String gitCommit) {
     return new GitEvent(event, gitCommit);
   }
 
   @Override
-  public EventSpecifierImpl event() {
+  public EventSpecifier event() {
     return event;
   }
 
@@ -41,7 +42,7 @@ public final class GitEvent implements Event {
       return false;
     }
     GitEvent that = (GitEvent) o;
-    return event == that.event && Objects.equals(gitCommit, that.gitCommit);
+    return event.equals(that.event) && Objects.equals(gitCommit, that.gitCommit);
   }
 
   @Override

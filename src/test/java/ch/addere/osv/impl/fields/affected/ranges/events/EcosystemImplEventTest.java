@@ -26,6 +26,13 @@ class EcosystemImplEventTest {
   }
 
   @Test
+  void testOfValueObjectCreation() {
+    Event event1 = EcosystemEvent.of(EventSpecifierImpl.INTRODUCED, VERSION);
+    Event event2 = EcosystemEvent.of(event1.event(), event1.release());
+    assertThat(event1).isEqualTo(event2);
+  }
+
+  @Test
   void testIntroducedEvent() {
     Event ecoEvent = EcosystemEvent.of(EventSpecifierImpl.INTRODUCED, VERSION);
     assertThat(ecoEvent).satisfies(eco -> {

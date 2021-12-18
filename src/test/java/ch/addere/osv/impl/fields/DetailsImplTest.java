@@ -25,6 +25,13 @@ class DetailsImplTest {
   }
 
   @Test
+  void testOfValueObjectCreation() {
+    Details details1 = DetailsImpl.of(DETAILS);
+    Details details2 = DetailsImpl.of(details1.value());
+    assertThat(details1).isEqualTo(details2);
+  }
+
+  @Test
   void testValidDetails() {
     Details details = DetailsImpl.of(DETAILS);
     assertThat(details.value()).isEqualTo(DETAILS);

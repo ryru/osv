@@ -7,4 +7,8 @@ public interface Id {
 
   String value();
 
+  IdDatabase getDatabase();
+
+  String getEntryId();
+
 }

@@ -38,10 +38,10 @@ public final class IdAggregate implements Aliases, Related {
   /**
    * Get a copy of all IDs.
    *
-   * @return IDs
+   * @return List of IDs
    */
   @Override
-  public List<Id> ids() {
+  public List<Id> values() {
     return List.copyOf(ids);
   }
 

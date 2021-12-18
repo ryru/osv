@@ -45,6 +45,13 @@ class SummaryImplTest {
   }
 
   @Test
+  void testOfValueObjectCreation() {
+    Summary ref1 = SummaryImpl.of(SUMMARY);
+    Summary ref2 = SummaryImpl.of(ref1.value());
+    assertThat(ref1).isEqualTo(ref2);
+  }
+
+  @Test
   void testEquality() {
     Summary summary = SummaryImpl.of(SUMMARY);
     Summary otherSummary = SummaryImpl.of(SUMMARY);

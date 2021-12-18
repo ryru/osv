@@ -91,7 +91,7 @@ public class EntrySerializer extends StdSerializer<Entry> {
   private static void writeAliases(Entry value, JsonGenerator gen) throws IOException {
     gen.writeFieldName(ALIASES_KEY);
     gen.writeStartArray();
-    var ids = value.aliases().map(Aliases::ids).orElse(List.of());
+    var ids = value.aliases().map(Aliases::values).orElse(List.of());
     for (var id : ids) {
       gen.writeString(writeId(id));
     }
@@ -101,7 +101,7 @@ public class EntrySerializer extends StdSerializer<Entry> {
   private static void writeRelated(Entry value, JsonGenerator gen) throws IOException {
     gen.writeFieldName(RELATED_KEY);
     gen.writeStartArray();
-    var ids = value.related().map(Related::ids).orElse(List.of());
+    var ids = value.related().map(Related::values).orElse(List.of());
     for (var id : ids) {
       gen.writeString(writeId(id));
     }

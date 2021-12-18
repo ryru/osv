@@ -7,6 +7,6 @@ import java.util.List;
  */
 public interface Related {
 
-  List<Id> ids();
+  List<Id> values();
 
 }

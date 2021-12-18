@@ -30,6 +30,15 @@ class TypeEcosystemImplTest {
   }
 
   @Test
+  void testOfValueObjectCreation() {
+    Ranges ranges1 = TypeEcosystemImpl.of(repo(), introducedEvent());
+    Ranges ranges2 = TypeEcosystemImpl.of(
+        ranges1.repo().get(),
+        ranges1.events().toArray(new EcosystemEvent[0]));
+    assertThat(ranges1).isEqualTo(ranges2);
+  }
+
+  @Test
   void testType() {
     Ranges typeEcosystem = TypeEcosystemImpl.of(introducedEvent());
     RangeType type = typeEcosystem.type();

@@ -33,6 +33,13 @@ class SemVerEventTest {
   }
 
   @Test
+  void testOfValueObjectCreation() {
+    Event event1 = SemVerEvent.of(EventSpecifierImpl.INTRODUCED, VERSION);
+    Event event2 = SemVerEvent.of(event1.event(), event1.release());
+    assertThat(event1).isEqualTo(event2);
+  }
+
+  @Test
   void testIntroducedEvent() {
     Event semVerEvent = SemVerEvent.of(EventSpecifierImpl.INTRODUCED, VERSION);
     assertThat(semVerEvent).satisfies(semVer -> {

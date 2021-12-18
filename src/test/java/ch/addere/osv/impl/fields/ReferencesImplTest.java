@@ -37,6 +37,13 @@ class ReferencesImplTest {
   }
 
   @Test
+  void testOfValueObjectCreation() {
+    References ref1 = ReferencesImpl.of(type(), url());
+    References ref2 = ReferencesImpl.of(ref1.referenceType(), ref1.referenceUrl());
+    assertThat(ref1).isEqualTo(ref2);
+  }
+
+  @Test
   void testValidReference() {
     References references = ReferencesImpl.of(type(), url());
     assertThat(references).satisfies(ref -> {

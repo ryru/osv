@@ -26,6 +26,13 @@ class GitEventTest {
   }
 
   @Test
+  void testOfValueObjectCreation() {
+    Event event1 = GitEvent.of(EventSpecifierImpl.INTRODUCED, VERSION);
+    Event event2 = GitEvent.of(event1.event(), event1.release());
+    assertThat(event1).isEqualTo(event2);
+  }
+
+  @Test
   void testIntroducedEvent() {
     Event gitEvent = GitEvent.of(EventSpecifierImpl.INTRODUCED, VERSION);
     assertThat(gitEvent).satisfies(git -> {

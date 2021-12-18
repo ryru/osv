@@ -40,6 +40,14 @@ class IdImplTest {
   }
 
   @Test
+  void testOfValueObjectCreation() {
+    Id id1 = IdImpl.of(GO, ENTRY_ID);
+    Id id2 = IdImpl.of(id1.getDatabase(), id1.getEntryId());
+    assertThat(id1).isEqualTo(id2);
+  }
+
+
+  @Test
   void testGoToJson() {
     Id goId = IdImpl.of(GO, ENTRY_ID);
     String id = goId.value();

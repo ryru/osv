@@ -26,6 +26,13 @@ class RepoImplTest {
   }
 
   @Test
+  void testOfValueObjectCreation() {
+    Repo repo1 = RepoImpl.of(VALID_URL);
+    Repo repo2 = RepoImpl.of(repo1.value());
+    assertThat(repo1).isEqualTo(repo2);
+  }
+
+  @Test
   void testValidRepoValue() {
     Repo repo = RepoImpl.of(VALID_URL);
     String url = repo.value();

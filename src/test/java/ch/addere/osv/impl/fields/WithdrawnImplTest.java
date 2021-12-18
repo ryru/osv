@@ -26,6 +26,13 @@ class WithdrawnImplTest {
   }
 
   @Test
+  void testOfValueObjectCreation() {
+    Withdrawn ref1 = WithdrawnImpl.of(NOW);
+    Withdrawn ref2 = WithdrawnImpl.of(ref1.value());
+    assertThat(ref1).isEqualTo(ref2);
+  }
+
+  @Test
   void testValidWithdrawn() {
     Withdrawn withdrawn = WithdrawnImpl.of(NOW);
     assertThat(withdrawn.value()).isEqualTo(NOW);

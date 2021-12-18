@@ -46,6 +46,13 @@ class PackageImplTest {
   }
 
   @Test
+  void testOfValueObjectCreation() {
+    Package pckg1 = PackageImpl.of(LINUX_ECOSYSTEM, NAME, PURL);
+    Package pckg2 = PackageImpl.of(pckg1.ecosystem(), pckg1.name(), pckg1.purl().get());
+    assertThat(pckg1).isEqualTo(pckg2);
+  }
+
+  @Test
   void testValidMinimalPackage() {
     Package pckg = PackageImpl.of(LINUX_ECOSYSTEM, NAME);
     assertThat(pckg).satisfies(p -> {

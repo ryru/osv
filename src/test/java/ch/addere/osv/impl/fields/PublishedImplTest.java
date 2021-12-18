@@ -26,6 +26,13 @@ class PublishedImplTest {
   }
 
   @Test
+  void testOfValueObjectCreation() {
+    Published modified1 = PublishedImpl.of(NOW);
+    Published modified2 = PublishedImpl.of(modified1.value());
+    assertThat(modified1).isEqualTo(modified2);
+  }
+
+  @Test
   void testValidPublished() {
     Published published = PublishedImpl.of(NOW);
     assertThat(published.value()).isEqualTo(NOW);

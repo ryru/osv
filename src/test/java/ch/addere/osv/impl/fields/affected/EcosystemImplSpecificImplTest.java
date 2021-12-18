@@ -29,6 +29,13 @@ class EcosystemImplSpecificImplTest {
   }
 
   @Test
+  void testOfValueObjectCreation() {
+    EcosystemSpecific ecosystemSpecific1 = EcosystemSpecificImpl.of(ECOSYSTEM_SPECIFIC1);
+    EcosystemSpecific ecosystemSpecific2 = EcosystemSpecificImpl.of(ecosystemSpecific1.value());
+    assertThat(ecosystemSpecific1).isEqualTo(ecosystemSpecific2);
+  }
+
+  @Test
   void testValidEcosystemSpecific() {
     EcosystemSpecific ecosystemSpecific = EcosystemSpecificImpl.of(ECOSYSTEM_SPECIFIC1);
     assertThat(ecosystemSpecific.value()).isEqualTo(ECOSYSTEM_SPECIFIC1);

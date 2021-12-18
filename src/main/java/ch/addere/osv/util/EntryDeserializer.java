@@ -12,14 +12,11 @@ import static ch.addere.osv.impl.fields.SummaryImpl.SUMMARY_KEY;
 import static ch.addere.osv.impl.fields.WithdrawnImpl.WITHDRAWN_KEY;
 import static ch.addere.osv.impl.fields.references.ReferenceTypeImpl.REFERENCE_TYPE_KEY;
 import static ch.addere.osv.impl.fields.references.ReferenceUrlImpl.REFERENCE_URL_KEY;
-import static java.util.Arrays.stream;
-import static java.util.stream.Collectors.joining;
 
 import ch.addere.osv.Entry;
 import ch.addere.osv.fields.Affected;
 import ch.addere.osv.fields.Details;
 import ch.addere.osv.fields.Id;
-import ch.addere.osv.fields.IdDatabase;
 import ch.addere.osv.fields.Modified;
 import ch.addere.osv.fields.Published;
 import ch.addere.osv.fields.References;
@@ -30,7 +27,6 @@ import ch.addere.osv.fields.references.ReferenceUrl;
 import ch.addere.osv.impl.EntryImpl;
 import ch.addere.osv.impl.fields.DetailsImpl;
 import ch.addere.osv.impl.fields.IdAggregate;
-import ch.addere.osv.impl.fields.IdDatabaseImpl;
 import ch.addere.osv.impl.fields.IdImpl;
 import ch.addere.osv.impl.fields.ModifiedImpl;
 import ch.addere.osv.impl.fields.PublishedImpl;
@@ -67,13 +63,7 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
   }
 
   private static Id readId(JsonNode idNode) {
-    final String delimiter = "-";
-    String[] tokenized = idNode.asText().split(delimiter);
-    IdDatabase database = IdDatabaseImpl.of(tokenized[0]);
-    String entryId = stream(tokenized)
-        .skip(1)
-        .collect(joining(delimiter));
-    return IdImpl.of(database, entryId);
+    return IdImpl.of(idNode.asText());
   }
 
   private static Modified readModified(JsonNode modifiedNode) {

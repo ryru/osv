@@ -25,9 +25,16 @@ class NameTest {
   }
 
   @Test
+  void testOfValueObjectCreation() {
+    Name name1 = NameImpl.of(NAME);
+    Name name2 = NameImpl.of(name1.value());
+    assertThat(name1).isEqualTo(name2);
+  }
+
+  @Test
   void testSetNewName() {
-    Name name = NameImpl.of("aName");
-    assertThat(name.value()).isEqualTo("aName");
+    Name name = NameImpl.of(NAME);
+    assertThat(name.value()).isEqualTo(NAME);
   }
 
   @Test

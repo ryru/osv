@@ -1,6 +1,8 @@
 package ch.addere.osv.impl.fields;
 
 import static java.lang.String.join;
+import static java.util.Arrays.stream;
+import static java.util.stream.Collectors.joining;
 
 import ch.addere.osv.fields.Id;
 import ch.addere.osv.fields.IdDatabase;
@@ -23,8 +25,39 @@ public final class IdImpl implements Id {
     this.entryId = entryId;
   }
 
+  /**
+   * CreateID from Database and EntryID property.
+   *
+   * @param database Database property
+   * @param entryId  EntryID property
+   * @return a valid ID property
+   */
   public static IdImpl of(IdDatabase database, String entryId) {
     return new IdImpl(database, entryId);
+  }
+
+  /**
+   * Create ID from an ID string.
+   *
+   * @param id ID string
+   * @return valid ID property
+   */
+  public static IdImpl of(String id) {
+    String separator = "-";
+    String[] inputId = id.split(separator);
+    IdDatabase database = IdDatabaseImpl.of(inputId[0]);
+    String entryId = stream(inputId).skip(1).collect(joining(separator));
+    return new IdImpl(database, entryId);
+  }
+
+  @Override
+  public IdDatabase getDatabase() {
+    return database;
+  }
+
+  @Override
+  public String getEntryId() {
+    return entryId;
   }
 
   @Override

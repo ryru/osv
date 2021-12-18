@@ -35,6 +35,16 @@ class TypeGitImplTest {
   }
 
   @Test
+  void testOfValueObjectCreation() {
+    Ranges ranges1 = TypeGitImpl.of(repo(), introducedEvent());
+    Ranges ranges2 = TypeGitImpl.of(
+        ranges1.repo().get(),
+        ranges1.events().toArray(new GitEvent[0]));
+    assertThat(ranges1).isEqualTo(ranges2);
+  }
+
+
+  @Test
   void testType() {
     Ranges typeEcosystem = TypeGitImpl.of(repo(), introducedEvent());
     RangeType type = typeEcosystem.type();

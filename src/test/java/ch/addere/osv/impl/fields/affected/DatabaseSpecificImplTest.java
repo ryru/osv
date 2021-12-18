@@ -28,6 +28,13 @@ class DatabaseSpecificImplTest {
   }
 
   @Test
+  void testOfValueObjectCreation() {
+    DatabaseSpecific databaseSpecific1 = DatabaseSpecificImpl.of(DATABASE_SPECIFIC1);
+    DatabaseSpecific databaseSpecific2 = DatabaseSpecificImpl.of(databaseSpecific1.value());
+    assertThat(databaseSpecific1).isEqualTo(databaseSpecific2);
+  }
+
+  @Test
   void testValidDatabaseSpecific() {
     DatabaseSpecific databaseSpecific = DatabaseSpecificImpl.of(DATABASE_SPECIFIC1);
     assertThat(databaseSpecific.value()).isEqualTo(DATABASE_SPECIFIC1);

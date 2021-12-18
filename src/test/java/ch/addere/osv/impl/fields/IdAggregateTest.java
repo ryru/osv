@@ -29,12 +29,19 @@ class IdAggregateTest {
   }
 
   @Test
+  void testOfValueObjectCreation() {
+    IdAggregate idAggregate1 = IdAggregate.of(IdImpl.of(GO, "enEntryId"));
+    IdAggregate idAggregate2 = IdAggregate.of(idAggregate1.values().toArray(new Id[0]));
+    assertThat(idAggregate1).isEqualTo(idAggregate2);
+  }
+
+  @Test
   void testValidArugment() {
-    var id1 = IdImpl.of(GO, "anEntryId");
-    var alias = IdAggregate.of(id1);
+    Id id1 = IdImpl.of(GO, "anEntryId");
+    IdAggregate alias = IdAggregate.of(id1);
     assertThat(alias).satisfies(a -> {
-      assertThat(a.ids().size()).isEqualTo(1);
-      assertThat(a.ids().get(0)).isEqualTo(id1);
+      assertThat(a.values().size()).isEqualTo(1);
+      assertThat(a.values().get(0)).isEqualTo(id1);
     });
   }
 
@@ -44,9 +51,9 @@ class IdAggregateTest {
     var id2 = IdImpl.of(OSV, "anotherEntryId");
     var alias = IdAggregate.of(id1, id2);
     assertThat(alias).satisfies(a -> {
-      assertThat(a.ids().size()).isEqualTo(2);
-      assertThat(a.ids().get(0)).isEqualTo(id1);
-      assertThat(a.ids().get(1)).isEqualTo(id2);
+      assertThat(a.values().size()).isEqualTo(2);
+      assertThat(a.values().get(0)).isEqualTo(id1);
+      assertThat(a.values().get(1)).isEqualTo(id2);
     });
   }
 
@@ -76,7 +83,7 @@ class IdAggregateTest {
     var related1 = IdAggregate.of(ID_1, ID_2);
     var related2 = related1.add(ID_1);
     assertThat(related2).satisfies(a2 -> {
-      assertThat(a2.ids()).containsExactlyInAnyOrder(ID_1, ID_2);
+      assertThat(a2.values()).containsExactlyInAnyOrder(ID_1, ID_2);
       assertThat(a2).isEqualTo(related1);
     });
   }
@@ -86,9 +93,9 @@ class IdAggregateTest {
     var related1 = IdAggregate.of(ID_1, ID_2);
     var related2 = related1.add(ID_3);
     assertThat(related2).satisfies(a2 -> {
-      assertThat(a2.ids()).containsExactlyInAnyOrder(ID_1, ID_2, ID_3);
+      assertThat(a2.values()).containsExactlyInAnyOrder(ID_1, ID_2, ID_3);
       assertThat(a2).isNotEqualTo(related1);
-      assertThat(related1.ids()).containsExactlyInAnyOrder(ID_1, ID_2);
+      assertThat(related1.values()).containsExactlyInAnyOrder(ID_1, ID_2);
     });
   }
 
@@ -97,7 +104,7 @@ class IdAggregateTest {
     var related1 = IdAggregate.of(ID_1, ID_2);
     var related2 = related1.remove(ID_3);
     assertThat(related2).satisfies(a2 -> {
-      assertThat(a2.ids()).containsExactlyInAnyOrder(ID_1, ID_2);
+      assertThat(a2.values()).containsExactlyInAnyOrder(ID_1, ID_2);
       assertThat(a2).isEqualTo(related1);
     });
   }
@@ -107,9 +114,30 @@ class IdAggregateTest {
     var related1 = IdAggregate.of(ID_1, ID_2);
     var related2 = related1.remove(ID_1);
     assertThat(related2).satisfies(a2 -> {
-      assertThat(a2.ids()).containsExactly(ID_2);
+      assertThat(a2.values()).containsExactly(ID_2);
       assertThat(a2).isNotEqualTo(related1);
-      assertThat(related1.ids()).containsExactlyInAnyOrder(ID_1, ID_2);
+      assertThat(related1.values()).containsExactlyInAnyOrder(ID_1, ID_2);
     });
+  }
+
+  @Test
+  void testEquality() {
+    IdAggregate idAggregate = IdAggregate.of(ID_1, ID_2);
+    IdAggregate otherIdAggregate = IdAggregate.of(ID_1, ID_2);
+    assertThat(idAggregate).isEqualTo(otherIdAggregate);
+  }
+
+  @Test
+  void testNonEquality() {
+    IdAggregate idAggregate = IdAggregate.of(ID_1, ID_2);
+    IdAggregate otherIdAggregate = IdAggregate.of(ID_2);
+    assertThat(idAggregate).isNotEqualTo(otherIdAggregate);
+  }
+
+  @Test
+  void testHashCode() {
+    IdAggregate idAggregate = IdAggregate.of(ID_1, ID_2);
+    IdAggregate otherIdAggregate = IdAggregate.of(ID_1, ID_2);
+    assertThat(idAggregate).hasSameHashCodeAs(otherIdAggregate);
   }
 }

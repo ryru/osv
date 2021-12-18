@@ -26,6 +26,13 @@ class ReferenceUrlImplTest {
   }
 
   @Test
+  void testOfValueObjectCreation() {
+    ReferenceUrl referenceUrl1 = ReferenceUrlImpl.of(URI.create(VALID_URL));
+    ReferenceUrl referenceUrl2 = ReferenceUrlImpl.of(URI.create(referenceUrl1.value()));
+    assertThat(referenceUrl1).isEqualTo(referenceUrl2);
+  }
+
+  @Test
   void testValidUrl() {
     ReferenceUrl referenceUrl = ReferenceUrlImpl.of(URI.create(VALID_URL));
     String url = referenceUrl.value();

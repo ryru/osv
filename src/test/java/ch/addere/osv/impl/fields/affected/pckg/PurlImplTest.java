@@ -32,6 +32,13 @@ class PurlImplTest {
   }
 
   @Test
+  void testOfValueObjectCreation() {
+    Purl purl1 = PurlImpl.of(PURL);
+    Purl purl2 = PurlImpl.of(purl1.value());
+    assertThat(purl1).isEqualTo(purl2);
+  }
+
+  @Test
   void testSetNewPurl() {
     Purl purl = PurlImpl.of(PURL);
     assertThat(purl.value()).isEqualTo(PURL);

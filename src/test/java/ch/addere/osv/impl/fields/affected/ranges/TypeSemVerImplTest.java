@@ -30,6 +30,15 @@ class TypeSemVerImplTest {
   }
 
   @Test
+  void testOfValueObjectCreation() {
+    Ranges ranges1 = TypeSemVerImpl.of(repo(), introducedEvent());
+    Ranges ranges2 = TypeSemVerImpl.of(
+        ranges1.repo().get(),
+        ranges1.events().toArray(new SemVerEvent[0]));
+    assertThat(ranges1).isEqualTo(ranges2);
+  }
+
+  @Test
   void testType() {
     Ranges typeSemVer = TypeSemVerImpl.of(introducedEvent());
     RangeType type = typeSemVer.type();

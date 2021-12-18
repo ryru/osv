@@ -26,6 +26,13 @@ class ModifiedImplTest {
   }
 
   @Test
+  void testOfValueObjectCreation() {
+    Modified modified1 = ModifiedImpl.of(NOW);
+    Modified modified2 = ModifiedImpl.of(modified1.value());
+    assertThat(modified1).isEqualTo(modified2);
+  }
+
+  @Test
   void testValidModified() {
     Modified modified = ModifiedImpl.of(NOW);
     assertThat(modified.value()).isEqualTo(NOW);
