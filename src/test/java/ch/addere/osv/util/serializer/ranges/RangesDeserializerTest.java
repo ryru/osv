@@ -1,12 +1,11 @@
 package ch.addere.osv.util.serializer.ranges;
 
-import static ch.addere.osv.impl.fields.affected.ranges.events.EventSpecifierImpl.INTRODUCED;
+import static ch.addere.osv.impl.fields.affected.ranges.events.EventSpecifierValue.INTRODUCED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ch.addere.osv.fields.affected.Ranges;
-import ch.addere.osv.fields.affected.ranges.Repo;
-import ch.addere.osv.impl.fields.affected.ranges.RepoImpl;
+import ch.addere.osv.impl.fields.affected.ranges.RepoValue;
 import ch.addere.osv.impl.fields.affected.ranges.TypeEcosystemImpl;
 import ch.addere.osv.impl.fields.affected.ranges.TypeGitImpl;
 import ch.addere.osv.impl.fields.affected.ranges.TypeSemVerImpl;
@@ -91,7 +90,7 @@ class RangesDeserializerTest {
     assertThat(deserializedRange).containsExactly(range);
   }
 
-  private static Ranges semVerRange(Repo repo) {
+  private static Ranges semVerRange(RepoValue repo) {
     return Optional.ofNullable(repo)
         .map(value -> TypeSemVerImpl.of(value, SemVerEvent.of(INTRODUCED, SEM_VER)))
         .orElseGet(() -> TypeSemVerImpl.of(SemVerEvent.of(INTRODUCED, SEM_VER)));
@@ -101,14 +100,14 @@ class RangesDeserializerTest {
     return TypeGitImpl.of(getRepo(), GitEvent.of(INTRODUCED, "0"));
   }
 
-  private static Ranges ecosystemRange(Repo repo) {
+  private static Ranges ecosystemRange(RepoValue repo) {
     return Optional.ofNullable(repo).map(
             value -> TypeEcosystemImpl.of(value, EcosystemEvent.of(INTRODUCED, "0")))
         .orElseGet(() -> TypeEcosystemImpl.of(EcosystemEvent.of(INTRODUCED, "0")));
   }
 
-  private static Repo getRepo() {
-    return RepoImpl.of("https://test.repo");
+  private static RepoValue getRepo() {
+    return RepoValue.fromString("https://test.repo");
   }
 
   private static List<Ranges> deserialize(String jsonData)

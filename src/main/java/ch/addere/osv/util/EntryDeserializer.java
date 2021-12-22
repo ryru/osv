@@ -1,40 +1,33 @@
 package ch.addere.osv.util;
 
 import static ch.addere.osv.impl.fields.AffectedImpl.AFFECTED_KEY;
-import static ch.addere.osv.impl.fields.DetailsImpl.DETAILS_KEY;
+import static ch.addere.osv.impl.fields.DetailsValue.DETAILS_KEY;
 import static ch.addere.osv.impl.fields.IdAggregate.ALIASES_KEY;
 import static ch.addere.osv.impl.fields.IdAggregate.RELATED_KEY;
 import static ch.addere.osv.impl.fields.IdImpl.ID_KEY;
-import static ch.addere.osv.impl.fields.ModifiedImpl.MODIFIED_KEY;
-import static ch.addere.osv.impl.fields.PublishedImpl.PUBLISHED_KEY;
+import static ch.addere.osv.impl.fields.ModifiedValue.MODIFIED_KEY;
+import static ch.addere.osv.impl.fields.PublishedValue.PUBLISHED_KEY;
 import static ch.addere.osv.impl.fields.ReferencesImpl.REFERENCES_KEY;
-import static ch.addere.osv.impl.fields.SummaryImpl.SUMMARY_KEY;
-import static ch.addere.osv.impl.fields.WithdrawnImpl.WITHDRAWN_KEY;
-import static ch.addere.osv.impl.fields.references.ReferenceTypeImpl.REFERENCE_TYPE_KEY;
-import static ch.addere.osv.impl.fields.references.ReferenceUrlImpl.REFERENCE_URL_KEY;
+import static ch.addere.osv.impl.fields.SummaryValue.SUMMARY_KEY;
+import static ch.addere.osv.impl.fields.WithdrawnValue.WITHDRAWN_KEY;
+import static ch.addere.osv.impl.fields.references.ReferenceTypeValue.REFERENCE_TYPE_KEY;
+import static ch.addere.osv.impl.fields.references.ReferenceUrlValue.REFERENCE_URL_KEY;
 
 import ch.addere.osv.Entry;
 import ch.addere.osv.fields.Affected;
-import ch.addere.osv.fields.Details;
 import ch.addere.osv.fields.Id;
-import ch.addere.osv.fields.Modified;
-import ch.addere.osv.fields.Published;
 import ch.addere.osv.fields.References;
-import ch.addere.osv.fields.Summary;
-import ch.addere.osv.fields.Withdrawn;
-import ch.addere.osv.fields.references.ReferenceType;
-import ch.addere.osv.fields.references.ReferenceUrl;
 import ch.addere.osv.impl.EntryImpl;
-import ch.addere.osv.impl.fields.DetailsImpl;
+import ch.addere.osv.impl.fields.DetailsValue;
 import ch.addere.osv.impl.fields.IdAggregate;
 import ch.addere.osv.impl.fields.IdImpl;
-import ch.addere.osv.impl.fields.ModifiedImpl;
-import ch.addere.osv.impl.fields.PublishedImpl;
+import ch.addere.osv.impl.fields.ModifiedValue;
+import ch.addere.osv.impl.fields.PublishedValue;
 import ch.addere.osv.impl.fields.ReferencesImpl;
-import ch.addere.osv.impl.fields.SummaryImpl;
-import ch.addere.osv.impl.fields.WithdrawnImpl;
-import ch.addere.osv.impl.fields.references.ReferenceTypeImpl;
-import ch.addere.osv.impl.fields.references.ReferenceUrlImpl;
+import ch.addere.osv.impl.fields.SummaryValue;
+import ch.addere.osv.impl.fields.WithdrawnValue;
+import ch.addere.osv.impl.fields.references.ReferenceTypeValue;
+import ch.addere.osv.impl.fields.references.ReferenceUrlValue;
 import ch.addere.osv.util.serializer.AffectedDeserializer;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.ObjectCodec;
@@ -42,7 +35,6 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import java.io.IOException;
-import java.net.URI;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -66,9 +58,9 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
     return IdImpl.of(idNode.asText());
   }
 
-  private static Modified readModified(JsonNode modifiedNode) {
+  private static ModifiedValue readModified(JsonNode modifiedNode) {
     Instant instant = readInstant(modifiedNode);
-    return ModifiedImpl.of(instant);
+    return ModifiedValue.of(instant);
   }
 
   private static Optional<IdAggregate> readAliases(JsonNode aliasesNode) {
@@ -105,34 +97,34 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
     }
   }
 
-  private static Optional<Published> readPublished(JsonNode publishedNode) {
+  private static Optional<PublishedValue> readPublished(JsonNode publishedNode) {
     if (isEmptyJsonNode(publishedNode)) {
       return Optional.empty();
     }
     Instant instant = readInstant(publishedNode);
-    return Optional.of(PublishedImpl.of(instant));
+    return Optional.of(PublishedValue.of(instant));
   }
 
-  private static Optional<Withdrawn> readWithdrawn(JsonNode withdrawnNode) {
+  private static Optional<WithdrawnValue> readWithdrawn(JsonNode withdrawnNode) {
     if (isEmptyJsonNode(withdrawnNode)) {
       return Optional.empty();
     }
     Instant instant = readInstant(withdrawnNode);
-    return Optional.of(WithdrawnImpl.of(instant));
+    return Optional.of(WithdrawnValue.of(instant));
   }
 
-  private static Optional<Summary> readSummary(JsonNode summary) {
+  private static Optional<SummaryValue> readSummary(JsonNode summary) {
     if (isEmptyJsonNode(summary)) {
       return Optional.empty();
     }
-    return Optional.of(SummaryImpl.of(summary.asText()));
+    return Optional.of(SummaryValue.fromString(summary.asText()));
   }
 
-  private static Optional<Details> readDetails(JsonNode details) {
+  private static Optional<DetailsValue> readDetails(JsonNode details) {
     if (isEmptyJsonNode(details)) {
       return Optional.empty();
     }
-    return Optional.of(DetailsImpl.of(details.asText()));
+    return Optional.of(DetailsValue.fromString(details.asText()));
   }
 
   private static List<References> readReferences(JsonNode references)
@@ -154,8 +146,8 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
     Optional<JsonNode> urlNode = Optional.ofNullable(reference.get(REFERENCE_URL_KEY));
 
     if (referenceTypeNode.isPresent() && urlNode.isPresent()) {
-      ReferenceType type = ReferenceTypeImpl.of(referenceTypeNode.get().asText());
-      ReferenceUrl url = ReferenceUrlImpl.of(URI.create(urlNode.get().asText()));
+      ReferenceTypeValue type = ReferenceTypeValue.of(referenceTypeNode.get().asText());
+      ReferenceUrlValue url = ReferenceUrlValue.fromString(urlNode.get().asText());
       return Optional.of(ReferencesImpl.of(type, url));
     } else {
       return Optional.empty();
@@ -182,13 +174,13 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
     if (node.get(MODIFIED_KEY) == null) {
       throw new OsvParserException("deserialization error");
     }
-    Modified modified = readModified(node.get(MODIFIED_KEY));
+    ModifiedValue modified = readModified(node.get(MODIFIED_KEY));
     Optional<IdAggregate> aliases = readAliases(node.get(ALIASES_KEY));
     Optional<IdAggregate> related = readRelated(node.get(RELATED_KEY));
-    Optional<Published> published = readPublished(node.get(PUBLISHED_KEY));
-    Optional<Withdrawn> withdrawn = readWithdrawn(node.get(WITHDRAWN_KEY));
-    Optional<Summary> summary = readSummary(node.get(SUMMARY_KEY));
-    Optional<Details> details = readDetails(node.get(DETAILS_KEY));
+    Optional<PublishedValue> published = readPublished(node.get(PUBLISHED_KEY));
+    Optional<WithdrawnValue> withdrawn = readWithdrawn(node.get(WITHDRAWN_KEY));
+    Optional<SummaryValue> summary = readSummary(node.get(SUMMARY_KEY));
+    Optional<DetailsValue> details = readDetails(node.get(DETAILS_KEY));
     List<Affected> affected = null;
     JsonNode affecedNode = node.get(AFFECTED_KEY);
     if (affecedNode != null && !affecedNode.isNull()) {

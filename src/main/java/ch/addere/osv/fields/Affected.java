@@ -1,10 +1,10 @@
 package ch.addere.osv.fields;
 
-import ch.addere.osv.fields.affected.DatabaseSpecific;
-import ch.addere.osv.fields.affected.EcosystemSpecific;
 import ch.addere.osv.fields.affected.Package;
 import ch.addere.osv.fields.affected.Ranges;
 import ch.addere.osv.fields.affected.Versions;
+import ch.addere.osv.impl.fields.affected.DatabaseSpecificValue;
+import ch.addere.osv.impl.fields.affected.EcosystemSpecificValue;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,8 +19,8 @@ public interface Affected {
 
   Optional<Versions> versions();
 
-  Optional<EcosystemSpecific> ecosystemSpecific();
+  Optional<EcosystemSpecificValue> ecosystemSpecific();
 
-  Optional<DatabaseSpecific> databaseSpecific();
+  Optional<DatabaseSpecificValue> databaseSpecific();
 
 }

@@ -3,7 +3,6 @@ package ch.addere.osv.impl.fields.affected.ranges.events;
 import static java.lang.String.format;
 
 import ch.addere.osv.fields.affected.ranges.Event;
-import ch.addere.osv.fields.affected.ranges.events.EventSpecifier;
 import de.skuzzle.semantic.Version;
 import de.skuzzle.semantic.Version.VersionFormatException;
 import java.util.Objects;
@@ -13,10 +12,10 @@ import java.util.Objects;
  */
 public final class SemVerEvent implements Event {
 
-  private final EventSpecifier event;
+  private final EventSpecifierValue event;
   private final Version semVer;
 
-  private SemVerEvent(EventSpecifier event, String semVer) {
+  private SemVerEvent(EventSpecifierValue event, String semVer) {
     Objects.requireNonNull(event, "argument event must not be null");
     Objects.requireNonNull(semVer, "argument semVer must not be null");
     this.event = event;
@@ -27,12 +26,12 @@ public final class SemVerEvent implements Event {
     }
   }
 
-  public static SemVerEvent of(EventSpecifier event, String semVer) {
+  public static SemVerEvent of(EventSpecifierValue event, String semVer) {
     return new SemVerEvent(event, semVer);
   }
 
   @Override
-  public EventSpecifier event() {
+  public EventSpecifierValue event() {
     return event;
   }
 

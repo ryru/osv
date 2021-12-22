@@ -1,7 +1,6 @@
 package ch.addere.osv.impl.fields.affected.ranges.events;
 
 import ch.addere.osv.fields.affected.ranges.Event;
-import ch.addere.osv.fields.affected.ranges.events.EventSpecifier;
 import java.util.Objects;
 
 /**
@@ -9,22 +8,22 @@ import java.util.Objects;
  */
 public final class EcosystemEvent implements Event {
 
-  private final EventSpecifier event;
+  private final EventSpecifierValue event;
   private final String version;
 
-  private EcosystemEvent(EventSpecifier event, String version) {
+  private EcosystemEvent(EventSpecifierValue event, String version) {
     Objects.requireNonNull(event, "argument event must not be null");
     Objects.requireNonNull(version, "argument version must not be null");
     this.event = event;
     this.version = version;
   }
 
-  public static EcosystemEvent of(EventSpecifier event, String version) {
+  public static EcosystemEvent of(EventSpecifierValue event, String version) {
     return new EcosystemEvent(event, version);
   }
 
   @Override
-  public EventSpecifier event() {
+  public EventSpecifierValue event() {
     return event;
   }
 

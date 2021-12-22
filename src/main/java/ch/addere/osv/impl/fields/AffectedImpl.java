@@ -4,12 +4,12 @@ import static java.util.stream.Collectors.joining;
 import static java.util.stream.Stream.concat;
 
 import ch.addere.osv.fields.Affected;
-import ch.addere.osv.fields.affected.DatabaseSpecific;
-import ch.addere.osv.fields.affected.EcosystemSpecific;
 import ch.addere.osv.fields.affected.Package;
 import ch.addere.osv.fields.affected.Ranges;
 import ch.addere.osv.fields.affected.Versions;
-import ch.addere.osv.impl.fields.affected.ranges.RangeTypeImpl;
+import ch.addere.osv.impl.fields.affected.DatabaseSpecificValue;
+import ch.addere.osv.impl.fields.affected.EcosystemSpecificValue;
+import ch.addere.osv.impl.fields.affected.ranges.RangeTypeValue;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -25,19 +25,19 @@ public final class AffectedImpl implements Affected {
   private final Package pckg;
   private final List<Ranges> ranges;
   private final Versions versions;
-  private final EcosystemSpecific ecosystemSpecific;
-  private final DatabaseSpecific databaseSpecific;
+  private final EcosystemSpecificValue ecosystemSpecific;
+  private final DatabaseSpecificValue databaseSpecificValue;
 
   private AffectedImpl(Package pckge,
       List<Ranges> ranges,
       Versions versions,
-      EcosystemSpecific ecosystemSpecific,
-      DatabaseSpecific databaseSpecific) {
+      EcosystemSpecificValue ecosystemSpecific,
+      DatabaseSpecificValue databaseSpecificValue) {
     this.pckg = pckge;
     this.ranges = ranges;
     this.versions = versions;
     this.ecosystemSpecific = ecosystemSpecific;
-    this.databaseSpecific = databaseSpecific;
+    this.databaseSpecificValue = databaseSpecificValue;
   }
 
   @Override
@@ -56,13 +56,13 @@ public final class AffectedImpl implements Affected {
   }
 
   @Override
-  public Optional<EcosystemSpecific> ecosystemSpecific() {
+  public Optional<EcosystemSpecificValue> ecosystemSpecific() {
     return Optional.ofNullable(ecosystemSpecific);
   }
 
   @Override
-  public Optional<DatabaseSpecific> databaseSpecific() {
-    return Optional.ofNullable(databaseSpecific);
+  public Optional<DatabaseSpecificValue> databaseSpecific() {
+    return Optional.ofNullable(databaseSpecificValue);
   }
 
   @Override
@@ -77,19 +77,19 @@ public final class AffectedImpl implements Affected {
     return Objects.equals(pckg, affected.pckg) && Objects.equals(ranges,
         affected.ranges) && Objects.equals(versions, affected.versions)
         && Objects.equals(ecosystemSpecific, affected.ecosystemSpecific)
-        && Objects.equals(databaseSpecific, affected.databaseSpecific);
+        && Objects.equals(databaseSpecificValue, affected.databaseSpecificValue);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(pckg, ranges, versions, ecosystemSpecific, databaseSpecific);
+    return Objects.hash(pckg, ranges, versions, ecosystemSpecific, databaseSpecificValue);
   }
 
   @Override
   public String toString() {
     Stream<Package> packageStream = Stream.of(pckg);
     Stream<Ranges> rangesStream = ranges.stream().filter(Objects::nonNull);
-    Stream<Object> objectStream = Stream.of(versions, ecosystemSpecific, databaseSpecific);
+    Stream<Object> objectStream = Stream.of(versions, ecosystemSpecific, databaseSpecificValue);
     Stream<Object> concat = concat(packageStream, concat(rangesStream, objectStream));
 
     return AFFECTED_KEY + ": " + concat
@@ -107,8 +107,8 @@ public final class AffectedImpl implements Affected {
     private final Package pckg;
     private List<Ranges> ranges = List.of();
     private Versions versions = null;
-    private EcosystemSpecific ecosystemSpecific = null;
-    private DatabaseSpecific databaseSpecific = null;
+    private EcosystemSpecificValue ecosystemSpecific = null;
+    private DatabaseSpecificValue databaseSpecificValue = null;
 
     /**
      * Affected builder.
@@ -150,7 +150,7 @@ public final class AffectedImpl implements Affected {
      * @param ecosystemSpecific valid EcosystemSpecific
      * @return Affected builder
      */
-    public AffectedBuilder ecosystemSpecific(EcosystemSpecific ecosystemSpecific) {
+    public AffectedBuilder ecosystemSpecific(EcosystemSpecificValue ecosystemSpecific) {
       Objects.requireNonNull(ecosystemSpecific, "argument ecosystem specific must not be null");
       this.ecosystemSpecific = ecosystemSpecific;
       return this;
@@ -159,12 +159,12 @@ public final class AffectedImpl implements Affected {
     /**
      * Add DatabaseSpecific to Affected builder.
      *
-     * @param databaseSpecific valid DatabaseSpecific
+     * @param databaseSpecificValue valid DatabaseSpecific
      * @return Affected builder
      */
-    public AffectedBuilder databaseSpecific(DatabaseSpecific databaseSpecific) {
-      Objects.requireNonNull(databaseSpecific, "argument database specific must not be null");
-      this.databaseSpecific = databaseSpecific;
+    public AffectedBuilder databaseSpecific(DatabaseSpecificValue databaseSpecificValue) {
+      Objects.requireNonNull(databaseSpecificValue, "argument database specific must not be null");
+      this.databaseSpecificValue = databaseSpecificValue;
       return this;
     }
 
@@ -175,7 +175,7 @@ public final class AffectedImpl implements Affected {
      */
     public AffectedImpl build() {
       if (validate()) {
-        return new AffectedImpl(pckg, ranges, versions, ecosystemSpecific, databaseSpecific);
+        return new AffectedImpl(pckg, ranges, versions, ecosystemSpecific, databaseSpecificValue);
       } else {
         throw new IllegalStateException("no versions or no range of type semantic version");
       }
@@ -190,7 +190,7 @@ public final class AffectedImpl implements Affected {
     }
 
     private boolean hasRangeOfSemVer() {
-      return ranges.stream().anyMatch(range -> range.type() == RangeTypeImpl.SEMVER);
+      return ranges.stream().anyMatch(range -> range.type() == RangeTypeValue.SEMVER);
     }
   }
 }

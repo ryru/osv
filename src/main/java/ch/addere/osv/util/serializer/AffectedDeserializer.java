@@ -2,8 +2,8 @@ package ch.addere.osv.util.serializer;
 
 import static ch.addere.osv.fields.affected.Ranges.RANGES_KEY;
 import static ch.addere.osv.impl.fields.AffectedImpl.AFFECTED_KEY;
-import static ch.addere.osv.impl.fields.affected.DatabaseSpecificImpl.DATABASE_SPECIFIC_KEY;
-import static ch.addere.osv.impl.fields.affected.EcosystemSpecificImpl.ECOSYSTEM_SPECIFIC_KEY;
+import static ch.addere.osv.impl.fields.affected.DatabaseSpecificValue.DATABASE_SPECIFIC_KEY;
+import static ch.addere.osv.impl.fields.affected.EcosystemSpecificValue.ECOSYSTEM_SPECIFIC_KEY;
 import static ch.addere.osv.impl.fields.affected.PackageImpl.PACKAGE_KEY;
 import static ch.addere.osv.impl.fields.affected.VersionsImpl.VERSIONS_KEY;
 
@@ -11,8 +11,8 @@ import ch.addere.osv.fields.Affected;
 import ch.addere.osv.fields.affected.Package;
 import ch.addere.osv.fields.affected.Ranges;
 import ch.addere.osv.impl.fields.AffectedImpl.AffectedBuilder;
-import ch.addere.osv.impl.fields.affected.DatabaseSpecificImpl;
-import ch.addere.osv.impl.fields.affected.EcosystemSpecificImpl;
+import ch.addere.osv.impl.fields.affected.DatabaseSpecificValue;
+import ch.addere.osv.impl.fields.affected.EcosystemSpecificValue;
 import ch.addere.osv.impl.fields.affected.VersionsImpl;
 import ch.addere.osv.util.OsvParserException;
 import ch.addere.osv.util.serializer.pckg.PackageDeserializer;
@@ -88,11 +88,11 @@ public final class AffectedDeserializer {
     return VersionsImpl.of(versions.toArray(new String[0]));
   }
 
-  private static EcosystemSpecificImpl readEcosystemSpecific(JsonNode ecosystemSpecificNode) {
-    return EcosystemSpecificImpl.of(ecosystemSpecificNode.toString());
+  private static EcosystemSpecificValue readEcosystemSpecific(JsonNode ecosystemSpecificNode) {
+    return EcosystemSpecificValue.fromString(ecosystemSpecificNode.toString());
   }
 
-  private static DatabaseSpecificImpl readDatabaseSpecific(JsonNode databaseSpecificNode) {
-    return DatabaseSpecificImpl.of(databaseSpecificNode.toString());
+  private static DatabaseSpecificValue readDatabaseSpecific(JsonNode databaseSpecificNode) {
+    return DatabaseSpecificValue.fromString(databaseSpecificNode.toString());
   }
 }

@@ -3,9 +3,9 @@ package ch.addere.osv.impl.fields.affected;
 import static java.util.stream.Collectors.joining;
 
 import ch.addere.osv.fields.affected.Package;
-import ch.addere.osv.fields.affected.pckg.Ecosystem;
-import ch.addere.osv.fields.affected.pckg.Name;
-import ch.addere.osv.fields.affected.pckg.Purl;
+import ch.addere.osv.impl.fields.affected.pckg.EcosystemValue;
+import ch.addere.osv.impl.fields.affected.pckg.NameValue;
+import ch.addere.osv.impl.fields.affected.pckg.PurlValue;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -17,11 +17,11 @@ public final class PackageImpl implements Package {
 
   public static final String PACKAGE_KEY = "package";
 
-  private final Ecosystem ecosystem;
-  private final Name name;
-  private final Purl purl;
+  private final EcosystemValue ecosystem;
+  private final NameValue name;
+  private final PurlValue purl;
 
-  private PackageImpl(Ecosystem ecosystem, Name name, Purl purl) {
+  private PackageImpl(EcosystemValue ecosystem, NameValue name, PurlValue purl) {
     Objects.requireNonNull(ecosystem, "argument ecosystem must not be null");
     Objects.requireNonNull(name, "argument name must not be null");
     this.ecosystem = ecosystem;
@@ -36,7 +36,7 @@ public final class PackageImpl implements Package {
    * @param name      name the package revers to
    * @return valid Package
    */
-  public static PackageImpl of(Ecosystem ecosystem, Name name) {
+  public static PackageImpl of(EcosystemValue ecosystem, NameValue name) {
     return new PackageImpl(ecosystem, name, null);
   }
 
@@ -48,22 +48,22 @@ public final class PackageImpl implements Package {
    * @param purl      purl the package refers to
    * @return valid Package
    */
-  public static PackageImpl of(Ecosystem ecosystem, Name name, Purl purl) {
+  public static PackageImpl of(EcosystemValue ecosystem, NameValue name, PurlValue purl) {
     return new PackageImpl(ecosystem, name, purl);
   }
 
   @Override
-  public Ecosystem ecosystem() {
+  public EcosystemValue ecosystem() {
     return ecosystem;
   }
 
   @Override
-  public Name name() {
+  public NameValue name() {
     return name;
   }
 
   @Override
-  public Optional<Purl> purl() {
+  public Optional<PurlValue> purl() {
     return Optional.ofNullable(purl);
   }
 

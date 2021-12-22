@@ -3,47 +3,47 @@ package ch.addere.osv.util;
 import static ch.addere.osv.fields.affected.Ranges.RANGES_KEY;
 import static ch.addere.osv.fields.affected.ranges.Event.EVENTS_KEY;
 import static ch.addere.osv.impl.fields.AffectedImpl.AFFECTED_KEY;
-import static ch.addere.osv.impl.fields.DetailsImpl.DETAILS_KEY;
+import static ch.addere.osv.impl.fields.DetailsValue.DETAILS_KEY;
 import static ch.addere.osv.impl.fields.IdAggregate.ALIASES_KEY;
 import static ch.addere.osv.impl.fields.IdAggregate.RELATED_KEY;
 import static ch.addere.osv.impl.fields.IdImpl.ID_KEY;
-import static ch.addere.osv.impl.fields.ModifiedImpl.MODIFIED_KEY;
-import static ch.addere.osv.impl.fields.PublishedImpl.PUBLISHED_KEY;
+import static ch.addere.osv.impl.fields.ModifiedValue.MODIFIED_KEY;
+import static ch.addere.osv.impl.fields.PublishedValue.PUBLISHED_KEY;
 import static ch.addere.osv.impl.fields.ReferencesImpl.REFERENCES_KEY;
-import static ch.addere.osv.impl.fields.SummaryImpl.SUMMARY_KEY;
-import static ch.addere.osv.impl.fields.WithdrawnImpl.WITHDRAWN_KEY;
-import static ch.addere.osv.impl.fields.affected.DatabaseSpecificImpl.DATABASE_SPECIFIC_KEY;
-import static ch.addere.osv.impl.fields.affected.EcosystemSpecificImpl.ECOSYSTEM_SPECIFIC_KEY;
+import static ch.addere.osv.impl.fields.SummaryValue.SUMMARY_KEY;
+import static ch.addere.osv.impl.fields.WithdrawnValue.WITHDRAWN_KEY;
+import static ch.addere.osv.impl.fields.affected.DatabaseSpecificValue.DATABASE_SPECIFIC_KEY;
+import static ch.addere.osv.impl.fields.affected.EcosystemSpecificValue.ECOSYSTEM_SPECIFIC_KEY;
 import static ch.addere.osv.impl.fields.affected.PackageImpl.PACKAGE_KEY;
 import static ch.addere.osv.impl.fields.affected.VersionsImpl.VERSIONS_KEY;
-import static ch.addere.osv.impl.fields.affected.pckg.EcosystemImpl.ECOSYSTEM_KEY;
-import static ch.addere.osv.impl.fields.affected.pckg.NameImpl.NAME_KEY;
-import static ch.addere.osv.impl.fields.affected.pckg.PurlImpl.PURL_KEY;
-import static ch.addere.osv.impl.fields.affected.ranges.RangeTypeImpl.TYPE_KEY;
-import static ch.addere.osv.impl.fields.affected.ranges.RepoImpl.REPO_KEY;
-import static ch.addere.osv.impl.fields.references.ReferenceTypeImpl.REFERENCE_TYPE_KEY;
-import static ch.addere.osv.impl.fields.references.ReferenceUrlImpl.REFERENCE_URL_KEY;
+import static ch.addere.osv.impl.fields.affected.pckg.EcosystemValue.ECOSYSTEM_KEY;
+import static ch.addere.osv.impl.fields.affected.pckg.NameValue.NAME_KEY;
+import static ch.addere.osv.impl.fields.affected.pckg.PurlValue.PURL_KEY;
+import static ch.addere.osv.impl.fields.affected.ranges.RangeTypeValue.TYPE_KEY;
+import static ch.addere.osv.impl.fields.affected.ranges.RepoValue.REPO_KEY;
+import static ch.addere.osv.impl.fields.references.ReferenceTypeValue.REFERENCE_TYPE_KEY;
+import static ch.addere.osv.impl.fields.references.ReferenceUrlValue.REFERENCE_URL_KEY;
 
 import ch.addere.osv.Entry;
 import ch.addere.osv.fields.Affected;
 import ch.addere.osv.fields.Aliases;
-import ch.addere.osv.fields.Details;
 import ch.addere.osv.fields.Id;
-import ch.addere.osv.fields.Modified;
-import ch.addere.osv.fields.Published;
 import ch.addere.osv.fields.References;
 import ch.addere.osv.fields.Related;
-import ch.addere.osv.fields.Summary;
-import ch.addere.osv.fields.Withdrawn;
-import ch.addere.osv.fields.affected.DatabaseSpecific;
-import ch.addere.osv.fields.affected.EcosystemSpecific;
 import ch.addere.osv.fields.affected.Package;
 import ch.addere.osv.fields.affected.Ranges;
 import ch.addere.osv.fields.affected.Versions;
-import ch.addere.osv.fields.affected.pckg.Ecosystem;
-import ch.addere.osv.fields.affected.pckg.Name;
-import ch.addere.osv.fields.affected.pckg.Purl;
 import ch.addere.osv.fields.affected.ranges.Event;
+import ch.addere.osv.impl.fields.DetailsValue;
+import ch.addere.osv.impl.fields.ModifiedValue;
+import ch.addere.osv.impl.fields.PublishedValue;
+import ch.addere.osv.impl.fields.SummaryValue;
+import ch.addere.osv.impl.fields.WithdrawnValue;
+import ch.addere.osv.impl.fields.affected.DatabaseSpecificValue;
+import ch.addere.osv.impl.fields.affected.EcosystemSpecificValue;
+import ch.addere.osv.impl.fields.affected.pckg.EcosystemValue;
+import ch.addere.osv.impl.fields.affected.pckg.NameValue;
+import ch.addere.osv.impl.fields.affected.pckg.PurlValue;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
@@ -80,11 +80,11 @@ public class EntrySerializer extends StdSerializer<Entry> {
     return id.value();
   }
 
-  private static String writePublished(Published published) {
+  private static String writePublished(PublishedValue published) {
     return published.value().toString();
   }
 
-  private static String writeModified(Modified modified) {
+  private static String writeModified(ModifiedValue modified) {
     return modified.value().toString();
   }
 
@@ -108,16 +108,16 @@ public class EntrySerializer extends StdSerializer<Entry> {
     gen.writeEndArray();
   }
 
-  private static String writeWithdrawn(Withdrawn withdrawn) {
+  private static String writeWithdrawn(WithdrawnValue withdrawn) {
     return withdrawn.value().toString();
   }
 
-  private static String writeSummary(Summary summary) {
+  private static String writeSummary(SummaryValue summary) {
     return summary.value();
   }
 
-  private static String writeDetails(Details details) {
-    return details.value().replace("\\n", "\n");
+  private static String writeDetails(DetailsValue detailsValue) {
+    return detailsValue.value().replace("\\n", "\n");
   }
 
   private static void writeAffected(JsonGenerator gen, Affected aff) throws IOException {
@@ -196,15 +196,15 @@ public class EntrySerializer extends StdSerializer<Entry> {
     gen.writeEndObject();
   }
 
-  private static String writeEcosystem(Ecosystem ecosystem) {
+  private static String writeEcosystem(EcosystemValue ecosystem) {
     return ecosystem.value();
   }
 
-  private static String writeName(Name name) {
+  private static String writeName(NameValue name) {
     return name.value();
   }
 
-  private static String writePurl(Purl purl) {
+  private static String writePurl(PurlValue purl) {
     return purl.value();
   }
 
@@ -214,7 +214,7 @@ public class EntrySerializer extends StdSerializer<Entry> {
     gen.writeString(ranges.type().value());
     if (ranges.repo().isPresent()) {
       gen.writeFieldName(REPO_KEY);
-      gen.writeString(ranges.repo().get().value());
+      gen.writeString(ranges.repo().get().value().toString());
     }
     if (!ranges.events().isEmpty()) {
       gen.writeFieldName(EVENTS_KEY);
@@ -244,16 +244,16 @@ public class EntrySerializer extends StdSerializer<Entry> {
     gen.writeEndArray();
   }
 
-  private static void writeEcosystemSpecific(EcosystemSpecific ecosystemSpecific,
+  private static void writeEcosystemSpecific(EcosystemSpecificValue ecosystemSpecific,
       JsonGenerator gen)
       throws IOException {
     gen.writeRawValue(ecosystemSpecific.value());
   }
 
-  private static void writeDatabaseSpecific(DatabaseSpecific databaseSpecific,
+  private static void writeDatabaseSpecific(DatabaseSpecificValue databaseSpecificValue,
       JsonGenerator gen)
       throws IOException {
-    gen.writeRawValue(databaseSpecific.value());
+    gen.writeRawValue(databaseSpecificValue.value());
   }
 
   private static void writeReferences(Entry entry, JsonGenerator gen)
@@ -272,7 +272,7 @@ public class EntrySerializer extends StdSerializer<Entry> {
     gen.writeFieldName(REFERENCE_TYPE_KEY);
     gen.writeString(reference.referenceType().value());
     gen.writeFieldName(REFERENCE_URL_KEY);
-    gen.writeString(reference.referenceUrl().value());
+    gen.writeString(reference.referenceUrl().value().toString());
     gen.writeEndObject();
   }
 }

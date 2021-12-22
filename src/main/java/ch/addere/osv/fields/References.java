@@ -1,15 +1,15 @@
 package ch.addere.osv.fields;
 
-import ch.addere.osv.fields.references.ReferenceType;
-import ch.addere.osv.fields.references.ReferenceUrl;
+import ch.addere.osv.impl.fields.references.ReferenceTypeValue;
+import ch.addere.osv.impl.fields.references.ReferenceUrlValue;
 
 /**
  * Reference field property.
  */
 public interface References {
 
-  ReferenceType referenceType();
+  ReferenceTypeValue referenceType();
 
-  ReferenceUrl referenceUrl();
+  ReferenceUrlValue referenceUrl();
 
 }

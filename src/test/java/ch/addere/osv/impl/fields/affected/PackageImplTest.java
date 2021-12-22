@@ -1,30 +1,28 @@
 package ch.addere.osv.impl.fields.affected;
 
 import static ch.addere.osv.impl.fields.affected.PackageImpl.PACKAGE_KEY;
-import static ch.addere.osv.impl.fields.affected.pckg.EcosystemImpl.ECOSYSTEM_KEY;
-import static ch.addere.osv.impl.fields.affected.pckg.NameImpl.NAME_KEY;
-import static ch.addere.osv.impl.fields.affected.pckg.NameImpl.of;
-import static ch.addere.osv.impl.fields.affected.pckg.PurlImpl.PURL_KEY;
+import static ch.addere.osv.impl.fields.affected.pckg.EcosystemValue.ECOSYSTEM_KEY;
+import static ch.addere.osv.impl.fields.affected.pckg.NameValue.NAME_KEY;
+import static ch.addere.osv.impl.fields.affected.pckg.PurlValue.PURL_KEY;
 import static java.lang.String.join;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import ch.addere.osv.fields.affected.Package;
-import ch.addere.osv.fields.affected.pckg.Name;
-import ch.addere.osv.fields.affected.pckg.Purl;
-import ch.addere.osv.impl.fields.affected.pckg.EcosystemImpl;
-import ch.addere.osv.impl.fields.affected.pckg.PurlImpl;
+import ch.addere.osv.impl.fields.affected.pckg.EcosystemValue;
+import ch.addere.osv.impl.fields.affected.pckg.NameValue;
+import ch.addere.osv.impl.fields.affected.pckg.PurlValue;
 import org.junit.jupiter.api.Test;
 
 class PackageImplTest {
 
-  private static final EcosystemImpl LINUX_ECOSYSTEM = EcosystemImpl.LINUX;
-  private static final Name NAME = of("aName");
-  private static final Name ANOTHER_NAME = of("anotherName");
+  private static final EcosystemValue LINUX_ECOSYSTEM = EcosystemValue.LINUX;
+  private static final NameValue NAME = NameValue.fromString("aName");
+  private static final NameValue ANOTHER_NAME = NameValue.fromString("anotherName");
   private static final String PURL_STRING = "pkg:deb/debian/curl@7.50.3-1?arch=i386&distro=jessie";
   private static final String OTHER_PURL_STRING = "pkg:docker/cassandra@sha256:244fd47e07d1004f9c";
-  private static final Purl PURL = PurlImpl.of(PURL_STRING);
-  private static final Purl OTHER_PURL = PurlImpl.of(OTHER_PURL_STRING);
+  private static final PurlValue PURL = PurlValue.fromString(PURL_STRING);
+  private static final PurlValue OTHER_PURL = PurlValue.fromString(OTHER_PURL_STRING);
 
   @Test
   void testJsonKey() {

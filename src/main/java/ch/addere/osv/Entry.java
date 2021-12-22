@@ -2,14 +2,14 @@ package ch.addere.osv;
 
 import ch.addere.osv.fields.Affected;
 import ch.addere.osv.fields.Aliases;
-import ch.addere.osv.fields.Details;
 import ch.addere.osv.fields.Id;
-import ch.addere.osv.fields.Modified;
-import ch.addere.osv.fields.Published;
 import ch.addere.osv.fields.References;
 import ch.addere.osv.fields.Related;
-import ch.addere.osv.fields.Summary;
-import ch.addere.osv.fields.Withdrawn;
+import ch.addere.osv.impl.fields.DetailsValue;
+import ch.addere.osv.impl.fields.ModifiedValue;
+import ch.addere.osv.impl.fields.PublishedValue;
+import ch.addere.osv.impl.fields.SummaryValue;
+import ch.addere.osv.impl.fields.WithdrawnValue;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,19 +20,19 @@ public interface Entry {
 
   Id id();
 
-  Modified modified();
+  ModifiedValue modified();
 
   Optional<Aliases> aliases();
 
   Optional<Related> related();
 
-  Optional<Published> published();
+  Optional<PublishedValue> published();
 
-  Optional<Withdrawn> withdrawn();
+  Optional<WithdrawnValue> withdrawn();
 
-  Optional<Summary> summary();
+  Optional<SummaryValue> summary();
 
-  Optional<Details> details();
+  Optional<DetailsValue> details();
 
   List<Affected> affected();
 

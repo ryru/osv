@@ -1,8 +1,8 @@
 package ch.addere.osv.fields.affected;
 
-import ch.addere.osv.fields.affected.pckg.Ecosystem;
-import ch.addere.osv.fields.affected.pckg.Name;
-import ch.addere.osv.fields.affected.pckg.Purl;
+import ch.addere.osv.impl.fields.affected.pckg.EcosystemValue;
+import ch.addere.osv.impl.fields.affected.pckg.NameValue;
+import ch.addere.osv.impl.fields.affected.pckg.PurlValue;
 import java.util.Optional;
 
 /**
@@ -10,10 +10,10 @@ import java.util.Optional;
  */
 public interface Package {
 
-  Ecosystem ecosystem();
+  EcosystemValue ecosystem();
 
-  Name name();
+  NameValue name();
 
-  Optional<Purl> purl();
+  Optional<PurlValue> purl();
 
 }

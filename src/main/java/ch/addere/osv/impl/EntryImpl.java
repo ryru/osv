@@ -5,14 +5,14 @@ import static java.util.stream.Collectors.joining;
 import ch.addere.osv.Entry;
 import ch.addere.osv.fields.Affected;
 import ch.addere.osv.fields.Aliases;
-import ch.addere.osv.fields.Details;
 import ch.addere.osv.fields.Id;
-import ch.addere.osv.fields.Modified;
-import ch.addere.osv.fields.Published;
 import ch.addere.osv.fields.References;
 import ch.addere.osv.fields.Related;
-import ch.addere.osv.fields.Summary;
-import ch.addere.osv.fields.Withdrawn;
+import ch.addere.osv.impl.fields.DetailsValue;
+import ch.addere.osv.impl.fields.ModifiedValue;
+import ch.addere.osv.impl.fields.PublishedValue;
+import ch.addere.osv.impl.fields.SummaryValue;
+import ch.addere.osv.impl.fields.WithdrawnValue;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -25,17 +25,17 @@ import java.util.stream.Stream;
 public final class EntryImpl implements Entry {
 
   private final Id id;
-  private final Modified modified;
+  private final ModifiedValue modified;
   private Aliases aliases;
   private Related related;
-  private Published published;
-  private Withdrawn withdrawn;
-  private Summary summary;
-  private Details details;
+  private PublishedValue published;
+  private WithdrawnValue withdrawn;
+  private SummaryValue summary;
+  private DetailsValue detailsValue;
   private List<Affected> affected;
   private List<References> references;
 
-  private EntryImpl(Id id, Modified modified) {
+  private EntryImpl(Id id, ModifiedValue modified) {
     this.id = id;
     this.modified = modified;
   }
@@ -48,7 +48,7 @@ public final class EntryImpl implements Entry {
    * @param modified last modification date
    * @return valid entity
    */
-  public static EntryBuilder builder(Id id, Modified modified) {
+  public static EntryBuilder builder(Id id, ModifiedValue modified) {
     return new EntryBuilder(id, modified);
   }
 
@@ -58,7 +58,7 @@ public final class EntryImpl implements Entry {
   }
 
   @Override
-  public Modified modified() {
+  public ModifiedValue modified() {
     return modified;
   }
 
@@ -73,23 +73,23 @@ public final class EntryImpl implements Entry {
   }
 
   @Override
-  public Optional<Published> published() {
+  public Optional<PublishedValue> published() {
     return Optional.ofNullable(published);
   }
 
   @Override
-  public Optional<Withdrawn> withdrawn() {
+  public Optional<WithdrawnValue> withdrawn() {
     return Optional.ofNullable(withdrawn);
   }
 
   @Override
-  public Optional<Summary> summary() {
+  public Optional<SummaryValue> summary() {
     return Optional.ofNullable(summary);
   }
 
   @Override
-  public Optional<Details> details() {
-    return Optional.ofNullable(details);
+  public Optional<DetailsValue> details() {
+    return Optional.ofNullable(detailsValue);
   }
 
   @Override
@@ -123,30 +123,30 @@ public final class EntryImpl implements Entry {
         entry.aliases) && Objects.equals(related, entry.related)
         && Objects.equals(published, entry.published) && Objects.equals(withdrawn,
         entry.withdrawn) && Objects.equals(summary, entry.summary)
-        && Objects.equals(details, entry.details) && Objects.equals(affected,
+        && Objects.equals(detailsValue, entry.detailsValue) && Objects.equals(affected,
         entry.affected) && Objects.equals(references, entry.references);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, modified, aliases, related, published, withdrawn, summary, details,
+    return Objects.hash(id, modified, aliases, related, published, withdrawn, summary, detailsValue,
         affected, references);
   }
 
   @Override
   public String toString() {
     return Stream.of(
-        id,
-        modified,
-        aliases,
-        related,
-        published,
-        withdrawn,
-        summary,
-        details,
-        affected,
-        references
-    )
+            id,
+            modified,
+            aliases,
+            related,
+            published,
+            withdrawn,
+            summary,
+            detailsValue,
+            affected,
+            references
+        )
         .filter(Objects::nonNull)
         .map(Objects::toString)
         .filter(s -> !s.isEmpty())
@@ -159,23 +159,23 @@ public final class EntryImpl implements Entry {
   public static class EntryBuilder {
 
     private final Id id;
-    private final Modified modified;
+    private final ModifiedValue modified;
     private Aliases aliases = null;
     private Related related = null;
-    private Published published = null;
-    private Withdrawn withdrawn = null;
-    private Summary summary = null;
-    private Details details = null;
+    private PublishedValue published = null;
+    private WithdrawnValue withdrawn = null;
+    private SummaryValue summary = null;
+    private DetailsValue detailsValue = null;
     private List<Affected> affected = null;
     private List<References> references = null;
 
     /**
      * Entry builder.
      *
-     * @param id ID of this entry
+     * @param id       ID of this entry
      * @param modified Modified of this entry
      */
-    public EntryBuilder(Id id, Modified modified) {
+    public EntryBuilder(Id id, ModifiedValue modified) {
       Objects.requireNonNull(id, "argument id must not be null");
       Objects.requireNonNull(modified, "argument modified must not be null");
       this.id = id;
@@ -192,23 +192,23 @@ public final class EntryImpl implements Entry {
       return this;
     }
 
-    public EntryBuilder published(Published published) {
+    public EntryBuilder published(PublishedValue published) {
       this.published = published;
       return this;
     }
 
-    public EntryBuilder withdrawn(Withdrawn withdrawn) {
+    public EntryBuilder withdrawn(WithdrawnValue withdrawn) {
       this.withdrawn = withdrawn;
       return this;
     }
 
-    public EntryBuilder summary(Summary summary) {
+    public EntryBuilder summary(SummaryValue summary) {
       this.summary = summary;
       return this;
     }
 
-    public EntryBuilder details(Details details) {
-      this.details = details;
+    public EntryBuilder details(DetailsValue detailsValue) {
+      this.detailsValue = detailsValue;
       return this;
     }
 
@@ -234,7 +234,7 @@ public final class EntryImpl implements Entry {
       entry.published = published;
       entry.withdrawn = withdrawn;
       entry.summary = summary;
-      entry.details = details;
+      entry.detailsValue = detailsValue;
       entry.affected = affected;
       entry.references = references;
       return entry;

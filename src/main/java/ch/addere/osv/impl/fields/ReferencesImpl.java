@@ -3,8 +3,8 @@ package ch.addere.osv.impl.fields;
 import static java.lang.String.join;
 
 import ch.addere.osv.fields.References;
-import ch.addere.osv.fields.references.ReferenceType;
-import ch.addere.osv.fields.references.ReferenceUrl;
+import ch.addere.osv.impl.fields.references.ReferenceTypeValue;
+import ch.addere.osv.impl.fields.references.ReferenceUrlValue;
 import java.util.Objects;
 
 /**
@@ -14,28 +14,29 @@ public final class ReferencesImpl implements References {
 
   public static final String REFERENCES_KEY = "references";
 
-  private final ReferenceType referenceType;
-  private final ReferenceUrl referenceUrl;
+  private final ReferenceTypeValue referenceType;
+  private final ReferenceUrlValue referenceUrl;
 
-  private ReferencesImpl(ReferenceType referenceType,
-      ReferenceUrl referenceUrl) {
+  private ReferencesImpl(
+      ReferenceTypeValue referenceType,
+      ReferenceUrlValue referenceUrl) {
     Objects.requireNonNull(referenceType, "argument referenceType must not be null");
     Objects.requireNonNull(referenceUrl, "argument referenceUrl must not be null");
     this.referenceType = referenceType;
     this.referenceUrl = referenceUrl;
   }
 
-  public static References of(ReferenceType referenceType, ReferenceUrl referenceUrl) {
+  public static References of(ReferenceTypeValue referenceType, ReferenceUrlValue referenceUrl) {
     return new ReferencesImpl(referenceType, referenceUrl);
   }
 
   @Override
-  public ReferenceType referenceType() {
+  public ReferenceTypeValue referenceType() {
     return referenceType;
   }
 
   @Override
-  public ReferenceUrl referenceUrl() {
+  public ReferenceUrlValue referenceUrl() {
     return referenceUrl;
   }
 

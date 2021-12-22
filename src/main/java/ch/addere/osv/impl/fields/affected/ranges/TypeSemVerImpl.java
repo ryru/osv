@@ -4,8 +4,6 @@ import static java.util.stream.Collectors.joining;
 
 import ch.addere.osv.fields.affected.Ranges;
 import ch.addere.osv.fields.affected.ranges.Event;
-import ch.addere.osv.fields.affected.ranges.RangeType;
-import ch.addere.osv.fields.affected.ranges.Repo;
 import ch.addere.osv.impl.fields.affected.ranges.events.SemVerEvent;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,13 +16,13 @@ import java.util.stream.Stream;
  */
 public final class TypeSemVerImpl implements Ranges {
 
-  private final RangeType type;
-  private final Repo repo;
+  private final RangeTypeValue type;
+  private final RepoValue repo;
   private final List<SemVerEvent> events;
 
-  private TypeSemVerImpl(Repo repo, SemVerEvent... events) {
+  private TypeSemVerImpl(RepoValue repo, SemVerEvent... events) {
     Objects.requireNonNull(events, "argument events must not be null");
-    this.type = RangeTypeImpl.SEMVER;
+    this.type = RangeTypeValue.SEMVER;
     this.repo = repo;
     this.events = List.of(events);
   }
@@ -33,17 +31,17 @@ public final class TypeSemVerImpl implements Ranges {
     return new TypeSemVerImpl(null, events);
   }
 
-  public static TypeSemVerImpl of(Repo repo, SemVerEvent... events) {
+  public static TypeSemVerImpl of(RepoValue repo, SemVerEvent... events) {
     return new TypeSemVerImpl(repo, events);
   }
 
   @Override
-  public RangeType type() {
+  public RangeTypeValue type() {
     return type;
   }
 
   @Override
-  public Optional<Repo> repo() {
+  public Optional<RepoValue> repo() {
     return Optional.ofNullable(repo);
   }
 

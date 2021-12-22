@@ -5,8 +5,6 @@ import static java.util.stream.Collectors.joining;
 
 import ch.addere.osv.fields.affected.Ranges;
 import ch.addere.osv.fields.affected.ranges.Event;
-import ch.addere.osv.fields.affected.ranges.RangeType;
-import ch.addere.osv.fields.affected.ranges.Repo;
 import ch.addere.osv.impl.fields.affected.ranges.events.GitEvent;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,29 +16,29 @@ import java.util.Optional;
  */
 public final class TypeGitImpl implements Ranges {
 
-  private final RangeType type;
-  private final Repo repo;
+  private final RangeTypeValue type;
+  private final RepoValue repo;
   private final List<GitEvent> events;
 
-  private TypeGitImpl(Repo repo, GitEvent... events) {
+  private TypeGitImpl(RepoValue repo, GitEvent... events) {
     Objects.requireNonNull(repo, "argument repo must not be null");
     Objects.requireNonNull(events, "argument events must not be null");
-    this.type = RangeTypeImpl.GIT;
+    this.type = RangeTypeValue.GIT;
     this.repo = repo;
     this.events = List.of(events);
   }
 
-  public static TypeGitImpl of(Repo repo, GitEvent... events) {
+  public static TypeGitImpl of(RepoValue repo, GitEvent... events) {
     return new TypeGitImpl(repo, events);
   }
 
   @Override
-  public RangeType type() {
+  public RangeTypeValue type() {
     return type;
   }
 
   @Override
-  public Optional<Repo> repo() {
+  public Optional<RepoValue> repo() {
     return Optional.of(repo);
   }
 

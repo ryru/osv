@@ -5,10 +5,10 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import ch.addere.osv.Entry;
 import ch.addere.osv.impl.EntryImpl.EntryBuilder;
-import ch.addere.osv.impl.fields.IdDatabaseImpl;
+import ch.addere.osv.impl.fields.IdDatabaseValue;
 import ch.addere.osv.impl.fields.IdImpl;
-import ch.addere.osv.impl.fields.ModifiedImpl;
-import ch.addere.osv.impl.fields.PublishedImpl;
+import ch.addere.osv.impl.fields.ModifiedValue;
+import ch.addere.osv.impl.fields.PublishedValue;
 import java.time.Instant;
 import org.junit.jupiter.api.Test;
 
@@ -20,8 +20,8 @@ class EntryImplTest {
 
   private static EntryBuilder entryBuilder() {
     return EntryImpl.builder(
-        IdImpl.of(IdDatabaseImpl.GO, "2021-99999"),
-        ModifiedImpl.of(Instant.parse("2021-03-10T23:20:53Z")));
+        IdImpl.of(IdDatabaseValue.GO, "2021-99999"),
+        ModifiedValue.of(Instant.parse("2021-03-10T23:20:53Z")));
   }
 
   @Test
@@ -33,14 +33,14 @@ class EntryImplTest {
 
   @Test
   void testOfIdNull() {
-    assertThatThrownBy(() -> EntryImpl.builder(null, ModifiedImpl.of(Instant.now())))
+    assertThatThrownBy(() -> EntryImpl.builder(null, ModifiedValue.of(Instant.now())))
         .isInstanceOf(NullPointerException.class)
         .hasMessageContaining("argument id must not be null");
   }
 
   @Test
   void testOfModifiedNull() {
-    assertThatThrownBy(() -> EntryImpl.builder(IdImpl.of(IdDatabaseImpl.CVE, "anId"), null))
+    assertThatThrownBy(() -> EntryImpl.builder(IdImpl.of(IdDatabaseValue.CVE, "anId"), null))
         .isInstanceOf(NullPointerException.class)
         .hasMessageContaining("argument modified must not be null");
   }
@@ -56,7 +56,7 @@ class EntryImplTest {
   void testNonEquality() {
     Entry entry = minimalEntry();
     Entry otherEntry = entryBuilder().published(
-        PublishedImpl.of(Instant.parse("2019-04-11T20:21:53Z"))).build();
+        PublishedValue.of(Instant.parse("2019-04-11T20:21:53Z"))).build();
     assertThat(entry).isNotEqualTo(otherEntry);
   }
 

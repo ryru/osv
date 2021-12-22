@@ -6,11 +6,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import ch.addere.osv.fields.References;
-import ch.addere.osv.fields.references.ReferenceType;
-import ch.addere.osv.fields.references.ReferenceUrl;
-import ch.addere.osv.impl.fields.references.ReferenceTypeImpl;
-import ch.addere.osv.impl.fields.references.ReferenceUrlImpl;
-import java.net.URI;
+import ch.addere.osv.impl.fields.references.ReferenceTypeValue;
+import ch.addere.osv.impl.fields.references.ReferenceUrlValue;
+import java.net.MalformedURLException;
+import java.net.URL;
 import org.junit.jupiter.api.Test;
 
 class ReferencesImplTest {
@@ -36,57 +35,63 @@ class ReferencesImplTest {
         .hasMessageContaining("argument referenceUrl must not be null");
   }
 
+  private static ReferenceTypeValue type() {
+    return ReferenceTypeValue.ARTICLE;
+  }
+
+  private static ReferenceUrlValue url() throws MalformedURLException {
+    return ReferenceUrlValue.of(new URL(VALID_URL));
+  }
+
   @Test
-  void testOfValueObjectCreation() {
+  void testOfValueObjectCreation() throws MalformedURLException {
     References ref1 = ReferencesImpl.of(type(), url());
     References ref2 = ReferencesImpl.of(ref1.referenceType(), ref1.referenceUrl());
     assertThat(ref1).isEqualTo(ref2);
   }
 
   @Test
-  void testValidReference() {
+  void testEquality() throws MalformedURLException {
     References references = ReferencesImpl.of(type(), url());
-    assertThat(references).satisfies(ref -> {
-      assertThat(ref.referenceType()).isEqualTo(ReferenceTypeImpl.ARTICLE);
-      assertThat(ref.referenceUrl().value()).isEqualTo(VALID_URL);
+    References otherReferences = ReferencesImpl.of(type(), url());
+    assertThat(references).satisfies(r -> {
+      assertThat(r).isEqualTo(references);
+      assertThat(r).isEqualTo(otherReferences);
     });
   }
 
   @Test
-  void testEquality() {
+  void testNonEquality() throws MalformedURLException {
     References references = ReferencesImpl.of(type(), url());
-    References otherReferences = ReferencesImpl.of(type(), url());
-    assertThat(references).isEqualTo(otherReferences);
+    References otherReferences = ReferencesImpl.of(ReferenceTypeValue.FIX, url());
+    assertThat(references).satisfies(r -> {
+      assertThat(references).isNotEqualTo(null);
+      assertThat(references).isNotEqualTo(otherReferences);
+    });
   }
 
   @Test
-  void testNonEquality() {
-    References references = ReferencesImpl.of(type(), url());
-    References otherReferences = ReferencesImpl.of(ReferenceTypeImpl.FIX, url());
-    assertThat(references).isNotEqualTo(otherReferences);
-  }
-
-  @Test
-  void testHashCode() {
+  void testHashCode() throws MalformedURLException {
     References references = ReferencesImpl.of(type(), url());
     References otherReferences = ReferencesImpl.of(type(), url());
     assertThat(references).hasSameHashCodeAs(otherReferences);
   }
 
   @Test
-  void testToString() {
+  void testToString() throws MalformedURLException {
     References references = ReferencesImpl.of(type(), url());
     assertThat(references).hasToString(REFERENCES_KEY + ": " + join(", ",
         typeToString(),
         urlToString()));
   }
 
-  private static ReferenceType type() {
-    return ReferenceTypeImpl.ARTICLE;
-  }
-
-  private static ReferenceUrl url() {
-    return ReferenceUrlImpl.of(URI.create(VALID_URL));
+  @Test
+  void testValidReference() throws MalformedURLException {
+    References references = ReferencesImpl.of(type(), url());
+    assertThat(references).satisfies(ref -> {
+      assertThat(ref.referenceType()).isEqualTo(ReferenceTypeValue.ARTICLE);
+      assertThat(ref.referenceUrl().value()).hasToString(VALID_URL);
+    });
   }
 
   private static String typeToString() {

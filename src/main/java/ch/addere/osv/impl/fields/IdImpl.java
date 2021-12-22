@@ -5,7 +5,6 @@ import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.joining;
 
 import ch.addere.osv.fields.Id;
-import ch.addere.osv.fields.IdDatabase;
 import java.util.Objects;
 
 /**
@@ -15,10 +14,10 @@ public final class IdImpl implements Id {
 
   public static final String ID_KEY = "id";
 
-  private final IdDatabase database;
+  private final IdDatabaseValue database;
   private final String entryId;
 
-  private IdImpl(IdDatabase database, String entryId) {
+  private IdImpl(IdDatabaseValue database, String entryId) {
     Objects.requireNonNull(database, "argument database must not be null");
     Objects.requireNonNull(entryId, "argument entryId must not be null");
     this.database = database;
@@ -32,7 +31,7 @@ public final class IdImpl implements Id {
    * @param entryId  EntryID property
    * @return a valid ID property
    */
-  public static IdImpl of(IdDatabase database, String entryId) {
+  public static IdImpl of(IdDatabaseValue database, String entryId) {
     return new IdImpl(database, entryId);
   }
 
@@ -45,13 +44,13 @@ public final class IdImpl implements Id {
   public static IdImpl of(String id) {
     String separator = "-";
     String[] inputId = id.split(separator);
-    IdDatabase database = IdDatabaseImpl.of(inputId[0]);
+    IdDatabaseValue database = IdDatabaseValue.of(inputId[0]);
     String entryId = stream(inputId).skip(1).collect(joining(separator));
     return new IdImpl(database, entryId);
   }
 
   @Override
-  public IdDatabase getDatabase() {
+  public IdDatabaseValue getDatabase() {
     return database;
   }
 

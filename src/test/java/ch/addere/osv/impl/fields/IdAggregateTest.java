@@ -1,7 +1,7 @@
 package ch.addere.osv.impl.fields;
 
-import static ch.addere.osv.impl.fields.IdDatabaseImpl.GO;
-import static ch.addere.osv.impl.fields.IdDatabaseImpl.OSV;
+import static ch.addere.osv.impl.fields.IdDatabaseValue.GO;
+import static ch.addere.osv.impl.fields.IdDatabaseValue.OSV;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
