@@ -9,7 +9,7 @@ import static ch.addere.osv.impl.fields.IdAggregate.RELATED_KEY;
 import static ch.addere.osv.impl.fields.IdImpl.ID_KEY;
 import static ch.addere.osv.impl.fields.ModifiedValue.MODIFIED_KEY;
 import static ch.addere.osv.impl.fields.PublishedValue.PUBLISHED_KEY;
-import static ch.addere.osv.impl.fields.ReferencesImpl.REFERENCES_KEY;
+import static ch.addere.osv.impl.fields.ReferencesValues.REFERENCES_KEY;
 import static ch.addere.osv.impl.fields.SummaryValue.SUMMARY_KEY;
 import static ch.addere.osv.impl.fields.WithdrawnValue.WITHDRAWN_KEY;
 import static ch.addere.osv.impl.fields.affected.DatabaseSpecificValue.DATABASE_SPECIFIC_KEY;
@@ -27,7 +27,6 @@ import static ch.addere.osv.impl.fields.references.ReferenceUrlValue.REFERENCE_U
 import ch.addere.osv.Entry;
 import ch.addere.osv.fields.Affected;
 import ch.addere.osv.fields.Id;
-import ch.addere.osv.fields.References;
 import ch.addere.osv.fields.Value;
 import ch.addere.osv.fields.affected.Package;
 import ch.addere.osv.fields.affected.Ranges;
@@ -35,6 +34,7 @@ import ch.addere.osv.fields.affected.ranges.Event;
 import ch.addere.osv.impl.fields.DetailsValue;
 import ch.addere.osv.impl.fields.ModifiedValue;
 import ch.addere.osv.impl.fields.PublishedValue;
+import ch.addere.osv.impl.fields.ReferencesValues;
 import ch.addere.osv.impl.fields.SummaryValue;
 import ch.addere.osv.impl.fields.WithdrawnValue;
 import ch.addere.osv.impl.fields.affected.DatabaseSpecificValue;
@@ -259,13 +259,13 @@ public class EntrySerializer extends StdSerializer<Entry> {
       throws IOException {
     gen.writeFieldName(REFERENCES_KEY);
     gen.writeStartArray();
-    for (References r : entry.references()) {
+    for (ReferencesValues r : entry.references()) {
       writeReference(r, gen);
     }
     gen.writeEndArray();
   }
 
-  private static void writeReference(References reference, JsonGenerator gen)
+  private static void writeReference(ReferencesValues reference, JsonGenerator gen)
       throws IOException {
     gen.writeStartObject();
     gen.writeFieldName(REFERENCE_TYPE_KEY);

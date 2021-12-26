@@ -7,7 +7,7 @@ import static ch.addere.osv.impl.fields.IdAggregate.RELATED_KEY;
 import static ch.addere.osv.impl.fields.IdImpl.ID_KEY;
 import static ch.addere.osv.impl.fields.ModifiedValue.MODIFIED_KEY;
 import static ch.addere.osv.impl.fields.PublishedValue.PUBLISHED_KEY;
-import static ch.addere.osv.impl.fields.ReferencesImpl.REFERENCES_KEY;
+import static ch.addere.osv.impl.fields.ReferencesValues.REFERENCES_KEY;
 import static ch.addere.osv.impl.fields.SummaryValue.SUMMARY_KEY;
 import static ch.addere.osv.impl.fields.WithdrawnValue.WITHDRAWN_KEY;
 import static ch.addere.osv.impl.fields.references.ReferenceTypeValue.REFERENCE_TYPE_KEY;
@@ -16,14 +16,13 @@ import static ch.addere.osv.impl.fields.references.ReferenceUrlValue.REFERENCE_U
 import ch.addere.osv.Entry;
 import ch.addere.osv.fields.Affected;
 import ch.addere.osv.fields.Id;
-import ch.addere.osv.fields.References;
 import ch.addere.osv.impl.EntryImpl;
 import ch.addere.osv.impl.fields.DetailsValue;
 import ch.addere.osv.impl.fields.IdAggregate;
 import ch.addere.osv.impl.fields.IdImpl;
 import ch.addere.osv.impl.fields.ModifiedValue;
 import ch.addere.osv.impl.fields.PublishedValue;
-import ch.addere.osv.impl.fields.ReferencesImpl;
+import ch.addere.osv.impl.fields.ReferencesValues;
 import ch.addere.osv.impl.fields.SummaryValue;
 import ch.addere.osv.impl.fields.WithdrawnValue;
 import ch.addere.osv.impl.fields.references.ReferenceTypeValue;
@@ -127,12 +126,12 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
     return Optional.of(DetailsValue.fromString(details.asText()));
   }
 
-  private static List<References> readReferences(JsonNode references)
+  private static List<ReferencesValues> readReferences(JsonNode references)
       throws OsvParserException {
     if (references.isArray()) {
-      List<References> referencesList = new LinkedList<>();
+      List<ReferencesValues> referencesList = new LinkedList<>();
       for (JsonNode jsonNode : references) {
-        Optional<References> reference = readReference(jsonNode);
+        Optional<ReferencesValues> reference = readReference(jsonNode);
         reference.ifPresent(referencesList::add);
       }
       return referencesList;
@@ -141,14 +140,14 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
     }
   }
 
-  private static Optional<References> readReference(JsonNode reference) {
+  private static Optional<ReferencesValues> readReference(JsonNode reference) {
     Optional<JsonNode> referenceTypeNode = Optional.ofNullable(reference.get(REFERENCE_TYPE_KEY));
     Optional<JsonNode> urlNode = Optional.ofNullable(reference.get(REFERENCE_URL_KEY));
 
     if (referenceTypeNode.isPresent() && urlNode.isPresent()) {
       ReferenceTypeValue type = ReferenceTypeValue.of(referenceTypeNode.get().asText());
       ReferenceUrlValue url = ReferenceUrlValue.fromString(urlNode.get().asText());
-      return Optional.of(ReferencesImpl.of(type, url));
+      return Optional.of(ReferencesValues.of(type, url));
     } else {
       return Optional.empty();
     }
@@ -186,7 +185,7 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
     if (affecedNode != null && !affecedNode.isNull()) {
       affected = AffectedDeserializer.deserialize(affecedNode);
     }
-    List<References> references = null;
+    List<ReferencesValues> references = null;
     JsonNode referenceNode = node.get(REFERENCES_KEY);
     if (referenceNode != null && !referenceNode.isNull()) {
       references = readReferences(referenceNode);
@@ -204,7 +203,7 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
     }
 
     if (references != null) {
-      builder.references(references.toArray(new References[0]));
+      builder.references(references.toArray(new ReferencesValues[0]));
     }
     return builder.build();
   }

@@ -2,11 +2,11 @@ package ch.addere.osv;
 
 import ch.addere.osv.fields.Affected;
 import ch.addere.osv.fields.Id;
-import ch.addere.osv.fields.References;
 import ch.addere.osv.impl.fields.DetailsValue;
 import ch.addere.osv.impl.fields.IdAggregate;
 import ch.addere.osv.impl.fields.ModifiedValue;
 import ch.addere.osv.impl.fields.PublishedValue;
+import ch.addere.osv.impl.fields.ReferencesValues;
 import ch.addere.osv.impl.fields.SummaryValue;
 import ch.addere.osv.impl.fields.WithdrawnValue;
 import java.util.List;
@@ -35,5 +35,5 @@ public interface Entry {
 
   List<Affected> affected();
 
-  List<References> references();
+  List<ReferencesValues> references();
 }

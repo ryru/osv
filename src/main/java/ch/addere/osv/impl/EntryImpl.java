@@ -5,11 +5,11 @@ import static java.util.stream.Collectors.joining;
 import ch.addere.osv.Entry;
 import ch.addere.osv.fields.Affected;
 import ch.addere.osv.fields.Id;
-import ch.addere.osv.fields.References;
 import ch.addere.osv.impl.fields.DetailsValue;
 import ch.addere.osv.impl.fields.IdAggregate;
 import ch.addere.osv.impl.fields.ModifiedValue;
 import ch.addere.osv.impl.fields.PublishedValue;
+import ch.addere.osv.impl.fields.ReferencesValues;
 import ch.addere.osv.impl.fields.SummaryValue;
 import ch.addere.osv.impl.fields.WithdrawnValue;
 import java.util.LinkedList;
@@ -32,7 +32,7 @@ public final class EntryImpl implements Entry {
   private SummaryValue summary;
   private DetailsValue detailsValue;
   private List<Affected> affected;
-  private List<References> references;
+  private List<ReferencesValues> references;
 
   private EntryImpl(Id id, ModifiedValue modified) {
     this.id = id;
@@ -101,7 +101,7 @@ public final class EntryImpl implements Entry {
   }
 
   @Override
-  public List<References> references() {
+  public List<ReferencesValues> references() {
     if (references != null) {
       return new LinkedList<>(references);
     } else {
@@ -166,7 +166,7 @@ public final class EntryImpl implements Entry {
     private SummaryValue summary = null;
     private DetailsValue detailsValue = null;
     private List<Affected> affected = null;
-    private List<References> references = null;
+    private List<ReferencesValues> references = null;
 
     /**
      * Entry builder.
@@ -216,7 +216,7 @@ public final class EntryImpl implements Entry {
       return this;
     }
 
-    public EntryBuilder references(References... references) {
+    public EntryBuilder references(ReferencesValues... references) {
       this.references = List.of(references);
       return this;
     }

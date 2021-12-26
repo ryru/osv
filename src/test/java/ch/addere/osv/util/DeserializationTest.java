@@ -13,7 +13,7 @@ import ch.addere.osv.impl.fields.IdDatabaseValue;
 import ch.addere.osv.impl.fields.IdImpl;
 import ch.addere.osv.impl.fields.ModifiedValue;
 import ch.addere.osv.impl.fields.PublishedValue;
-import ch.addere.osv.impl.fields.ReferencesImpl;
+import ch.addere.osv.impl.fields.ReferencesValues;
 import ch.addere.osv.impl.fields.SummaryValue;
 import ch.addere.osv.impl.fields.affected.DatabaseSpecificValue;
 import ch.addere.osv.impl.fields.affected.EcosystemSpecificValue;
@@ -89,9 +89,9 @@ class DeserializationTest {
                 + "elliptic-curve-differential-fuzzer project running on OSS-Fuzz and reported by "
                 + "Philippe Antoine (Catena cyber)."))
         .references(
-            ReferencesImpl.of(ReferenceTypeValue.REPORT,
+            ReferencesValues.of(ReferenceTypeValue.REPORT,
                 ReferenceUrlValue.of(new URL("https://golang.org/issue/43786"))),
-            ReferencesImpl.of(ReferenceTypeValue.WEB, ReferenceUrlValue.of(
+            ReferencesValues.of(ReferenceTypeValue.WEB, ReferenceUrlValue.of(
                 new URL("https://github.com/catenacyber/elliptic-curve-differential-fuzzer")))
         )
         .affected(new AffectedBuilder(
@@ -126,7 +126,7 @@ class DeserializationTest {
                 + "have \".\" listed explicitly in their PATH and are running \"go get\" or build "
                 + "commands outside of a module or with module mode disabled.\n\nThanks to RyotaK "
                 + "(https://twitter.com/ryotkak) for reporting this issue."))
-        .references(ReferencesImpl.of(ReferenceTypeValue.REPORT,
+        .references(ReferencesValues.of(ReferenceTypeValue.REPORT,
             ReferenceUrlValue.of(new URL("https://golang.org/issue/43783"))))
         .affected(
             new AffectedBuilder(PackageImpl.of(EcosystemValue.GO, NameValue.fromString("cmd/go")))
@@ -170,22 +170,22 @@ class DeserializationTest {
                 + "operations are performed.\n\nRemediation: Upgrade elliptic to version 6.5.4 or "
                 + "higher.\n"))
         .references(
-            ReferencesImpl.of(ReferenceTypeValue.ADVISORY,
+            ReferencesValues.of(ReferenceTypeValue.ADVISORY,
                 ReferenceUrlValue.of(new URL("https://www.npmjs.com/advisories/1648"))),
-            ReferencesImpl.of(ReferenceTypeValue.ADVISORY,
+            ReferencesValues.of(ReferenceTypeValue.ADVISORY,
                 ReferenceUrlValue.of(
                     new URL("https://nvd.nist.gov/vuln/detail/CVE-2020-28498"))),
-            ReferencesImpl.of(ReferenceTypeValue.FIX,
+            ReferencesValues.of(ReferenceTypeValue.FIX,
                 ReferenceUrlValue.of(
                     new URL("https://github.com/indutny/elliptic/commit/441b7428"))),
-            ReferencesImpl.of(ReferenceTypeValue.ARTICLE,
+            ReferencesValues.of(ReferenceTypeValue.ARTICLE,
                 ReferenceUrlValue.of(new URL(
                     "https://github.com/christianlundkvist/blog/blob/master/"
                         + "2020_05_26_secp256k1_twist_attacks/secp256k1_twist_attacks.md"))),
-            ReferencesImpl.of(ReferenceTypeValue.ADVISORY,
+            ReferencesValues.of(ReferenceTypeValue.ADVISORY,
                 ReferenceUrlValue.of(
                     new URL("https://snyk.io/vuln/SNYK-JS-ELLIPTIC-1064899"))),
-            ReferencesImpl.of(ReferenceTypeValue.PACKAGE,
+            ReferencesValues.of(ReferenceTypeValue.PACKAGE,
                 ReferenceUrlValue.of(new URL("https://www.npmjs.com/package/elliptic")))
         )
         .affected(
@@ -216,7 +216,7 @@ class DeserializationTest {
             "OSS-Fuzz report: https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=15499\n\nCrash "
                 + "type: Heap-buffer-overflow WRITE 3\nCrash state:\ncollator_compare_fuzzer"
                 + ".cpp\n"))
-        .references(ReferencesImpl.of(
+        .references(ReferencesValues.of(
             ReferenceTypeValue.REPORT, ReferenceUrlValue.of(
                 new URL("https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=15499"))
         ))
@@ -253,7 +253,7 @@ class DeserializationTest {
         .details(DetailsValue.fromString(
             "models/metadata.py in the pikepdf package 2.8.0 through 2.9.2 for Python allows XXE "
                 + "when parsing XMP metadata entries."))
-        .references(ReferencesImpl.of(ReferenceTypeValue.FIX, ReferenceUrlValue.of(
+        .references(ReferencesValues.of(ReferenceTypeValue.FIX, ReferenceUrlValue.of(
             new URL("https://github.com/pikepdf/pikepdf/commit/"
                 + "3f38f73218e5e782fe411ccbb3b44a793c0b343a"))))
         .affected(
@@ -345,7 +345,7 @@ class DeserializationTest {
                     "2.1.0.pre.3"
                 ))
                 .build())
-        .references(ReferencesImpl.of(ReferenceTypeValue.ADVISORY,
+        .references(ReferencesValues.of(ReferenceTypeValue.ADVISORY,
             ReferenceUrlValue.of(
                 new URL("https://github.com/advisories/GHSA-g98m-96g9-wfjq"))))
         .build();
@@ -370,9 +370,9 @@ class DeserializationTest {
             + "probing. This allows an attacker who controls\nthe argument to reserve() to cause a "
             + "potential denial of service (DoS).\n\nThe flaw was corrected in 0.1.20 release of "
             + "http crate.\n"))
-        .references(ReferencesImpl.of(ReferenceTypeValue.REPORT,
+        .references(ReferencesValues.of(ReferenceTypeValue.REPORT,
                 ReferenceUrlValue.of(new URL("https://github.com/hyperium/http/issues/352"))),
-            ReferencesImpl.of(ReferenceTypeValue.ADVISORY, ReferenceUrlValue.of(
+            ReferencesValues.of(ReferenceTypeValue.ADVISORY, ReferenceUrlValue.of(
                 new URL("https://rustsec.org/advisories/RUSTSEC-2019-0033.html"))))
         .affected(
             new AffectedBuilder(

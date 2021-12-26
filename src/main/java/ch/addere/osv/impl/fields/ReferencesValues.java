@@ -2,7 +2,6 @@ package ch.addere.osv.impl.fields;
 
 import static java.lang.String.join;
 
-import ch.addere.osv.fields.References;
 import ch.addere.osv.impl.fields.references.ReferenceTypeValue;
 import ch.addere.osv.impl.fields.references.ReferenceUrlValue;
 import java.util.Objects;
@@ -10,14 +9,14 @@ import java.util.Objects;
 /**
  * Reference field property.
  */
-public final class ReferencesImpl implements References {
+public final class ReferencesValues {
 
   public static final String REFERENCES_KEY = "references";
 
   private final ReferenceTypeValue referenceType;
   private final ReferenceUrlValue referenceUrl;
 
-  private ReferencesImpl(
+  private ReferencesValues(
       ReferenceTypeValue referenceType,
       ReferenceUrlValue referenceUrl) {
     Objects.requireNonNull(referenceType, "argument referenceType must not be null");
@@ -26,16 +25,15 @@ public final class ReferencesImpl implements References {
     this.referenceUrl = referenceUrl;
   }
 
-  public static References of(ReferenceTypeValue referenceType, ReferenceUrlValue referenceUrl) {
-    return new ReferencesImpl(referenceType, referenceUrl);
+  public static ReferencesValues of(ReferenceTypeValue referenceType,
+      ReferenceUrlValue referenceUrl) {
+    return new ReferencesValues(referenceType, referenceUrl);
   }
 
-  @Override
   public ReferenceTypeValue referenceType() {
     return referenceType;
   }
 
-  @Override
   public ReferenceUrlValue referenceUrl() {
     return referenceUrl;
   }
@@ -48,7 +46,7 @@ public final class ReferencesImpl implements References {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ReferencesImpl that = (ReferencesImpl) o;
+    ReferencesValues that = (ReferencesValues) o;
     return Objects.equals(referenceType, that.referenceType) && Objects.equals(
         referenceUrl, that.referenceUrl);
   }
