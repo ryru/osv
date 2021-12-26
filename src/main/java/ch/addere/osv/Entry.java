@@ -1,11 +1,10 @@
 package ch.addere.osv;
 
 import ch.addere.osv.fields.Affected;
-import ch.addere.osv.fields.Aliases;
 import ch.addere.osv.fields.Id;
 import ch.addere.osv.fields.References;
-import ch.addere.osv.fields.Related;
 import ch.addere.osv.impl.fields.DetailsValue;
+import ch.addere.osv.impl.fields.IdAggregate;
 import ch.addere.osv.impl.fields.ModifiedValue;
 import ch.addere.osv.impl.fields.PublishedValue;
 import ch.addere.osv.impl.fields.SummaryValue;
@@ -22,9 +21,9 @@ public interface Entry {
 
   ModifiedValue modified();
 
-  Optional<Aliases> aliases();
+  Optional<IdAggregate> aliases();
 
-  Optional<Related> related();
+  Optional<IdAggregate> related();
 
   Optional<PublishedValue> published();
 

@@ -1,8 +1,7 @@
 package ch.addere.osv.impl.fields;
 
-import ch.addere.osv.fields.Aliases;
 import ch.addere.osv.fields.Id;
-import ch.addere.osv.fields.Related;
+import ch.addere.osv.fields.Value;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -10,7 +9,7 @@ import java.util.Objects;
 /**
  * Aggregate of IDs representing other vulnerability entries.
  */
-public final class IdAggregate implements Aliases, Related {
+public final class IdAggregate implements Value<List<Id>> {
 
   public static final String ALIASES_KEY = "aliases";
   public static final String RELATED_KEY = "related";
@@ -41,7 +40,7 @@ public final class IdAggregate implements Aliases, Related {
    * @return List of IDs
    */
   @Override
-  public List<Id> values() {
+  public List<Id> value() {
     return List.copyOf(ids);
   }
 

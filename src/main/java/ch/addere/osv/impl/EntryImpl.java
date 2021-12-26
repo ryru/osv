@@ -4,11 +4,10 @@ import static java.util.stream.Collectors.joining;
 
 import ch.addere.osv.Entry;
 import ch.addere.osv.fields.Affected;
-import ch.addere.osv.fields.Aliases;
 import ch.addere.osv.fields.Id;
 import ch.addere.osv.fields.References;
-import ch.addere.osv.fields.Related;
 import ch.addere.osv.impl.fields.DetailsValue;
+import ch.addere.osv.impl.fields.IdAggregate;
 import ch.addere.osv.impl.fields.ModifiedValue;
 import ch.addere.osv.impl.fields.PublishedValue;
 import ch.addere.osv.impl.fields.SummaryValue;
@@ -26,8 +25,8 @@ public final class EntryImpl implements Entry {
 
   private final Id id;
   private final ModifiedValue modified;
-  private Aliases aliases;
-  private Related related;
+  private IdAggregate aliases;
+  private IdAggregate related;
   private PublishedValue published;
   private WithdrawnValue withdrawn;
   private SummaryValue summary;
@@ -63,12 +62,12 @@ public final class EntryImpl implements Entry {
   }
 
   @Override
-  public Optional<Aliases> aliases() {
+  public Optional<IdAggregate> aliases() {
     return Optional.ofNullable(aliases);
   }
 
   @Override
-  public Optional<Related> related() {
+  public Optional<IdAggregate> related() {
     return Optional.ofNullable(related);
   }
 
@@ -160,8 +159,8 @@ public final class EntryImpl implements Entry {
 
     private final Id id;
     private final ModifiedValue modified;
-    private Aliases aliases = null;
-    private Related related = null;
+    private IdAggregate aliases = null;
+    private IdAggregate related = null;
     private PublishedValue published = null;
     private WithdrawnValue withdrawn = null;
     private SummaryValue summary = null;
@@ -182,12 +181,12 @@ public final class EntryImpl implements Entry {
       this.modified = modified;
     }
 
-    public EntryBuilder aliases(Aliases aliases) {
+    public EntryBuilder aliases(IdAggregate aliases) {
       this.aliases = aliases;
       return this;
     }
 
-    public EntryBuilder related(Related related) {
+    public EntryBuilder related(IdAggregate related) {
       this.related = related;
       return this;
     }

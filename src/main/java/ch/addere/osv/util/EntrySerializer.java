@@ -26,10 +26,9 @@ import static ch.addere.osv.impl.fields.references.ReferenceUrlValue.REFERENCE_U
 
 import ch.addere.osv.Entry;
 import ch.addere.osv.fields.Affected;
-import ch.addere.osv.fields.Aliases;
 import ch.addere.osv.fields.Id;
 import ch.addere.osv.fields.References;
-import ch.addere.osv.fields.Related;
+import ch.addere.osv.fields.Value;
 import ch.addere.osv.fields.affected.Package;
 import ch.addere.osv.fields.affected.Ranges;
 import ch.addere.osv.fields.affected.ranges.Event;
@@ -91,7 +90,7 @@ public class EntrySerializer extends StdSerializer<Entry> {
   private static void writeAliases(Entry value, JsonGenerator gen) throws IOException {
     gen.writeFieldName(ALIASES_KEY);
     gen.writeStartArray();
-    var ids = value.aliases().map(Aliases::values).orElse(List.of());
+    var ids = value.aliases().map(Value::value).orElse(List.of());
     for (var id : ids) {
       gen.writeString(writeId(id));
     }
@@ -101,7 +100,7 @@ public class EntrySerializer extends StdSerializer<Entry> {
   private static void writeRelated(Entry value, JsonGenerator gen) throws IOException {
     gen.writeFieldName(RELATED_KEY);
     gen.writeStartArray();
-    var ids = value.related().map(Related::values).orElse(List.of());
+    var ids = value.related().map(Value::value).orElse(List.of());
     for (var id : ids) {
       gen.writeString(writeId(id));
     }
