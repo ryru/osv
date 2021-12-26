@@ -4,9 +4,9 @@ import static ch.addere.osv.fields.affected.Ranges.RANGES_KEY;
 import static ch.addere.osv.fields.affected.ranges.Event.EVENTS_KEY;
 import static ch.addere.osv.impl.fields.AffectedImpl.AFFECTED_KEY;
 import static ch.addere.osv.impl.fields.DetailsValue.DETAILS_KEY;
+import static ch.addere.osv.impl.fields.Id.ID_KEY;
 import static ch.addere.osv.impl.fields.IdAggregate.ALIASES_KEY;
 import static ch.addere.osv.impl.fields.IdAggregate.RELATED_KEY;
-import static ch.addere.osv.impl.fields.IdImpl.ID_KEY;
 import static ch.addere.osv.impl.fields.ModifiedValue.MODIFIED_KEY;
 import static ch.addere.osv.impl.fields.PublishedValue.PUBLISHED_KEY;
 import static ch.addere.osv.impl.fields.ReferencesValues.REFERENCES_KEY;
@@ -26,12 +26,12 @@ import static ch.addere.osv.impl.fields.references.ReferenceUrlValue.REFERENCE_U
 
 import ch.addere.osv.Entry;
 import ch.addere.osv.fields.Affected;
-import ch.addere.osv.fields.Id;
 import ch.addere.osv.fields.Value;
 import ch.addere.osv.fields.affected.Package;
 import ch.addere.osv.fields.affected.Ranges;
 import ch.addere.osv.fields.affected.ranges.Event;
 import ch.addere.osv.impl.fields.DetailsValue;
+import ch.addere.osv.impl.fields.Id;
 import ch.addere.osv.impl.fields.ModifiedValue;
 import ch.addere.osv.impl.fields.PublishedValue;
 import ch.addere.osv.impl.fields.ReferencesValues;

@@ -8,9 +8,9 @@ import ch.addere.osv.Entry;
 import ch.addere.osv.impl.EntryImpl;
 import ch.addere.osv.impl.fields.AffectedImpl.AffectedBuilder;
 import ch.addere.osv.impl.fields.DetailsValue;
+import ch.addere.osv.impl.fields.Id;
 import ch.addere.osv.impl.fields.IdAggregate;
 import ch.addere.osv.impl.fields.IdDatabaseValue;
-import ch.addere.osv.impl.fields.IdImpl;
 import ch.addere.osv.impl.fields.ModifiedValue;
 import ch.addere.osv.impl.fields.PublishedValue;
 import ch.addere.osv.impl.fields.ReferencesValues;
@@ -67,17 +67,17 @@ class DeserializationTest {
 
   private static Entry minimalEntry() {
     return EntryImpl.builder(
-            IdImpl.of(IdDatabaseValue.GO, "2021-99998"),
+            Id.of(IdDatabaseValue.GO, "2021-99998"),
             ModifiedValue.of(Instant.parse("2021-03-10T23:20:53Z")))
         .build();
   }
 
   private static Entry goEntry() throws MalformedURLException {
     return EntryImpl.builder(
-            IdImpl.of(IdDatabaseValue.GO, "2021-99998"),
+            Id.of(IdDatabaseValue.GO, "2021-99998"),
             ModifiedValue.of(Instant.parse("2021-03-10T23:20:53Z")))
         .published(PublishedValue.of(Instant.parse("2021-01-21T19:15:00Z")))
-        .aliases(IdAggregate.of(IdImpl.of(IdDatabaseValue.CVE, "2021-3114")))
+        .aliases(IdAggregate.of(Id.of(IdDatabaseValue.CVE, "2021-3114")))
         .summary(SummaryValue.fromString("incorrect P-224 curve operations"))
         .details(DetailsValue.fromString(
             "The P224() Curve implementation can in rare circumstances generate incorrect outputs, "
@@ -110,11 +110,11 @@ class DeserializationTest {
 
   private static Entry goToolEntry() throws MalformedURLException {
     return EntryImpl.builder(
-            IdImpl.of(IdDatabaseValue.GO, "2021-99999"),
+            Id.of(IdDatabaseValue.GO, "2021-99999"),
             ModifiedValue.of(Instant.parse("2021-03-10T23:20:53Z"))
         )
         .published(PublishedValue.of(Instant.parse("2021-01-21T19:15:00Z")))
-        .aliases(IdAggregate.of(IdImpl.of(IdDatabaseValue.CVE, "2021-3115")))
+        .aliases(IdAggregate.of(Id.of(IdDatabaseValue.CVE, "2021-3115")))
         .summary(
             SummaryValue.fromString(
                 "packages using cgo can cause arbitrary code execution at build time"))
@@ -144,20 +144,20 @@ class DeserializationTest {
 
   private static Entry npmEntry() throws MalformedURLException {
     return EntryImpl.builder(
-            IdImpl.of(IdDatabaseValue.GHSA, "r9p9-mrjm-926w"),
+            Id.of(IdDatabaseValue.GHSA, "r9p9-mrjm-926w"),
             ModifiedValue.of(Instant.parse("2021-03-10T23:40:39Z"))
         )
         .published(PublishedValue.of(Instant.parse("2021-03-07T11:27:00Z")))
         .aliases(
             IdAggregate.of(
-                IdImpl.of(IdDatabaseValue.NPM, "1648"),
-                IdImpl.of(IdDatabaseValue.CVE, "2020-28498"),
-                IdImpl.of(IdDatabaseValue.SNYK, "JS-ELLIPTIC-1064899"))
+                Id.of(IdDatabaseValue.NPM, "1648"),
+                Id.of(IdDatabaseValue.CVE, "2020-28498"),
+                Id.of(IdDatabaseValue.SNYK, "JS-ELLIPTIC-1064899"))
         )
         .related(
             IdAggregate.of(
-                IdImpl.of(IdDatabaseValue.NPM, "1649"),
-                IdImpl.of(IdDatabaseValue.SNYK, "JAVA-ORGWEBJARSNPM-1069836"))
+                Id.of(IdDatabaseValue.NPM, "1649"),
+                Id.of(IdDatabaseValue.SNYK, "JAVA-ORGWEBJARSNPM-1069836"))
         )
         .summary(SummaryValue.fromString("Use of a Broken or Risky Cryptographic Algorithm"))
         .details(DetailsValue.fromString(
@@ -207,7 +207,7 @@ class DeserializationTest {
 
   private static Entry osvEntry() throws MalformedURLException {
     return EntryImpl.builder(
-            IdImpl.of(IdDatabaseValue.OSV, "2020-584"),
+            Id.of(IdDatabaseValue.OSV, "2020-584"),
             ModifiedValue.of(Instant.parse("2021-03-09T04:49:05.965964Z"))
         )
         .published(PublishedValue.of(Instant.parse("2020-07-01T00:00:18.401815Z")))
@@ -244,11 +244,11 @@ class DeserializationTest {
 
   private static Entry pythonEntry() throws MalformedURLException {
     return EntryImpl.builder(
-            IdImpl.of(IdDatabaseValue.PYSEC, "2021-XXXX"),
+            Id.of(IdDatabaseValue.PYSEC, "2021-XXXX"),
             ModifiedValue.of(Instant.parse("2021-04-07T15:14:00Z"))
         )
         .published(PublishedValue.of(Instant.parse("2021-04-01T20:15:00Z")))
-        .aliases(IdAggregate.of(IdImpl.of(IdDatabaseValue.CVE, "2021-29421")))
+        .aliases(IdAggregate.of(Id.of(IdDatabaseValue.CVE, "2021-29421")))
         .summary(SummaryValue.fromString("XXE in pikepdf"))
         .details(DetailsValue.fromString(
             "models/metadata.py in the pikepdf package 2.8.0 through 2.9.2 for Python allows XXE "
@@ -282,7 +282,7 @@ class DeserializationTest {
 
   private static Entry rubyEntry() throws MalformedURLException {
     return EntryImpl.builder(
-            IdImpl.of(IdDatabaseValue.CVE, "2019-3881"),
+            Id.of(IdDatabaseValue.CVE, "2019-3881"),
             ModifiedValue.of(Instant.parse("2021-05-10T00:00:00Z"))
         )
         .published(PublishedValue.of(Instant.parse("2018-04-23T00:00:00Z")))
@@ -353,13 +353,13 @@ class DeserializationTest {
 
   private static Entry rustEntry() throws MalformedURLException {
     return EntryImpl.builder(
-            IdImpl.of(IdDatabaseValue.RUSTSEC, "2019-0033"),
+            Id.of(IdDatabaseValue.RUSTSEC, "2019-0033"),
             ModifiedValue.of(Instant.parse("2021-01-04T19:02:00Z"))
         )
         .published(PublishedValue.of(Instant.parse("2019-11-16T00:00:00Z")))
         .aliases(IdAggregate.of(
-            IdImpl.of(IdDatabaseValue.CVE, "2020-25574"),
-            IdImpl.of(IdDatabaseValue.CVE, "2019-25008")))
+            Id.of(IdDatabaseValue.CVE, "2020-25574"),
+            Id.of(IdDatabaseValue.CVE, "2019-25008")))
         .summary(SummaryValue.fromString("Integer Overflow in HeaderMap::reserve() can cause "
             + "Denial of Service"))
         .details(DetailsValue.fromString("HeaderMap::reserve() used usize::next_power_of_two() "

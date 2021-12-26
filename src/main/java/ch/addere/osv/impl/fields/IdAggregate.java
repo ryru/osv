@@ -1,6 +1,5 @@
 package ch.addere.osv.impl.fields;
 
-import ch.addere.osv.fields.Id;
 import ch.addere.osv.fields.Value;
 import java.util.LinkedList;
 import java.util.List;

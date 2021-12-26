@@ -1,8 +1,8 @@
 package ch.addere.osv;
 
 import ch.addere.osv.fields.Affected;
-import ch.addere.osv.fields.Id;
 import ch.addere.osv.impl.fields.DetailsValue;
+import ch.addere.osv.impl.fields.Id;
 import ch.addere.osv.impl.fields.IdAggregate;
 import ch.addere.osv.impl.fields.ModifiedValue;
 import ch.addere.osv.impl.fields.PublishedValue;

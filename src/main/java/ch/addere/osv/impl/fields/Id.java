@@ -4,20 +4,19 @@ import static java.lang.String.join;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.joining;
 
-import ch.addere.osv.fields.Id;
 import java.util.Objects;
 
 /**
  * ID is a unique identifier for a vulnerability entry.
  */
-public final class IdImpl implements Id {
+public final class Id {
 
   public static final String ID_KEY = "id";
 
   private final IdDatabaseValue database;
   private final String entryId;
 
-  private IdImpl(IdDatabaseValue database, String entryId) {
+  private Id(IdDatabaseValue database, String entryId) {
     Objects.requireNonNull(database, "argument database must not be null");
     Objects.requireNonNull(entryId, "argument entryId must not be null");
     this.database = database;
@@ -31,8 +30,8 @@ public final class IdImpl implements Id {
    * @param entryId  EntryID property
    * @return a valid ID property
    */
-  public static IdImpl of(IdDatabaseValue database, String entryId) {
-    return new IdImpl(database, entryId);
+  public static Id of(IdDatabaseValue database, String entryId) {
+    return new Id(database, entryId);
   }
 
   /**
@@ -41,25 +40,22 @@ public final class IdImpl implements Id {
    * @param id ID string
    * @return valid ID property
    */
-  public static IdImpl of(String id) {
+  public static Id fromString(String id) {
     String separator = "-";
     String[] inputId = id.split(separator);
     IdDatabaseValue database = IdDatabaseValue.of(inputId[0]);
     String entryId = stream(inputId).skip(1).collect(joining(separator));
-    return new IdImpl(database, entryId);
+    return new Id(database, entryId);
   }
 
-  @Override
   public IdDatabaseValue getDatabase() {
     return database;
   }
 
-  @Override
   public String getEntryId() {
     return entryId;
   }
 
-  @Override
   public String value() {
     return database.toString() + '-' + entryId;
   }
@@ -72,7 +68,7 @@ public final class IdImpl implements Id {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    IdImpl id = (IdImpl) o;
+    Id id = (Id) o;
     return database.equals(id.database) && Objects.equals(entryId, id.entryId);
   }
 
