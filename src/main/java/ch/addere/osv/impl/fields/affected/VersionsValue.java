@@ -2,7 +2,7 @@ package ch.addere.osv.impl.fields.affected;
 
 import static java.lang.String.join;
 
-import ch.addere.osv.fields.affected.Versions;
+import ch.addere.osv.fields.Value;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -10,13 +10,13 @@ import java.util.Objects;
 /**
  * Version identifies the affected version this vulnerability refers to.
  */
-public final class VersionsImpl implements Versions {
+public final class VersionsValue implements Value<List<String>> {
 
   public static final String VERSIONS_KEY = "versions";
 
   private final List<String> versions;
 
-  private VersionsImpl(String... versions) {
+  private VersionsValue(String... versions) {
     Objects.requireNonNull(versions, "argument versions must not be null");
     this.versions = new LinkedList<>(List.of(versions));
   }
@@ -27,8 +27,8 @@ public final class VersionsImpl implements Versions {
    * @param versions version strings
    * @return valid versions
    */
-  public static VersionsImpl of(String... versions) {
-    return new VersionsImpl(versions);
+  public static VersionsValue of(String... versions) {
+    return new VersionsValue(versions);
   }
 
   @Override
@@ -44,7 +44,7 @@ public final class VersionsImpl implements Versions {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    VersionsImpl that = (VersionsImpl) o;
+    VersionsValue that = (VersionsValue) o;
     return Objects.equals(versions, that.versions);
   }
 

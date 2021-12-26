@@ -18,7 +18,7 @@ import ch.addere.osv.impl.fields.SummaryValue;
 import ch.addere.osv.impl.fields.affected.DatabaseSpecificValue;
 import ch.addere.osv.impl.fields.affected.EcosystemSpecificValue;
 import ch.addere.osv.impl.fields.affected.PackageImpl;
-import ch.addere.osv.impl.fields.affected.VersionsImpl;
+import ch.addere.osv.impl.fields.affected.VersionsValue;
 import ch.addere.osv.impl.fields.affected.pckg.EcosystemValue;
 import ch.addere.osv.impl.fields.affected.pckg.NameValue;
 import ch.addere.osv.impl.fields.affected.ranges.RepoValue;
@@ -232,7 +232,7 @@ class DeserializationTest {
                             "c43455749b914feef56b178b256f29b3016146eb")
                     )
                 )
-                .versions(VersionsImpl.of("aVersion"))
+                .versions(VersionsValue.of("aVersion"))
                 .ecosystemSpecific(EcosystemSpecificValue.fromString("{\"severity\":\"HIGH\"}"))
                 .databaseSpecific(DatabaseSpecificValue.fromString(
                     "{\"source\":\"https://github.com/google/oss-fuzz-vulns/blob/main/vulns/icu/"
@@ -269,7 +269,7 @@ class DeserializationTest {
                     TypeEcosystemImpl.of(
                         EcosystemEvent.of(EventSpecifierValue.INTRODUCED, "2.8.0"),
                         EcosystemEvent.of(EventSpecifierValue.FIXED, "2.10.0")))
-                .versions(VersionsImpl.of("2.8.0",
+                .versions(VersionsValue.of("2.8.0",
                     "2.8.0.post1",
                     "2.8.0.post2",
                     "2.9.0",
@@ -301,7 +301,7 @@ class DeserializationTest {
                         EcosystemEvent.of(EventSpecifierValue.INTRODUCED, "1.14.0"),
                         EcosystemEvent.of(EventSpecifierValue.FIXED, "2.1.0")
                     ))
-                .versions(VersionsImpl.of(
+                .versions(VersionsValue.of(
                     "1.14.0",
                     "1.14.1",
                     "1.14.2",

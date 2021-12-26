@@ -6,7 +6,7 @@ import static ch.addere.osv.impl.fields.AffectedImpl.AFFECTED_KEY;
 import static ch.addere.osv.impl.fields.affected.DatabaseSpecificValue.DATABASE_SPECIFIC_KEY;
 import static ch.addere.osv.impl.fields.affected.EcosystemSpecificValue.ECOSYSTEM_SPECIFIC_KEY;
 import static ch.addere.osv.impl.fields.affected.PackageImpl.PACKAGE_KEY;
-import static ch.addere.osv.impl.fields.affected.VersionsImpl.VERSIONS_KEY;
+import static ch.addere.osv.impl.fields.affected.VersionsValue.VERSIONS_KEY;
 import static ch.addere.osv.impl.fields.affected.pckg.EcosystemValue.ECOSYSTEM_KEY;
 import static ch.addere.osv.impl.fields.affected.pckg.NameValue.NAME_KEY;
 import static ch.addere.osv.impl.fields.affected.pckg.PurlValue.PURL_KEY;
@@ -18,12 +18,11 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import ch.addere.osv.fields.Affected;
 import ch.addere.osv.fields.affected.Package;
 import ch.addere.osv.fields.affected.Ranges;
-import ch.addere.osv.fields.affected.Versions;
 import ch.addere.osv.impl.fields.AffectedImpl.AffectedBuilder;
 import ch.addere.osv.impl.fields.affected.DatabaseSpecificValue;
 import ch.addere.osv.impl.fields.affected.EcosystemSpecificValue;
 import ch.addere.osv.impl.fields.affected.PackageImpl;
-import ch.addere.osv.impl.fields.affected.VersionsImpl;
+import ch.addere.osv.impl.fields.affected.VersionsValue;
 import ch.addere.osv.impl.fields.affected.pckg.EcosystemValue;
 import ch.addere.osv.impl.fields.affected.pckg.NameValue;
 import ch.addere.osv.impl.fields.affected.pckg.PurlValue;
@@ -122,29 +121,25 @@ class AffectedImplTest {
         .hasMessageContaining("no versions or no range of type semantic version");
   }
 
+  private static VersionsValue versions() {
+    return VersionsValue.of("1.0.0");
+  }
+
   @Test
   void testEquality() {
-    Affected affected = new AffectedBuilder(pckg()).versions(VersionsImpl.of(VERSION)).build();
-    Affected otherAffected = new AffectedBuilder(pckg()).versions(VersionsImpl.of(VERSION)).build();
+    Affected affected = new AffectedBuilder(pckg()).versions(VersionsValue.of(VERSION)).build();
+    Affected otherAffected = new AffectedBuilder(
+        pckg()).versions(VersionsValue.of(VERSION)).build();
     assertThat(affected).isEqualTo(otherAffected);
   }
 
   @Test
   void testNonEquality() {
-    Affected affected = new AffectedBuilder(pckg()).versions(VersionsImpl.of(VERSION)).build();
-    Affected otherAffected = new AffectedBuilder(pckg()).versions(VersionsImpl.of("anotherVersion"))
+    Affected affected = new AffectedBuilder(pckg()).versions(VersionsValue.of(VERSION)).build();
+    Affected otherAffected = new AffectedBuilder(
+        pckg()).versions(VersionsValue.of("anotherVersion"))
         .build();
     assertThat(affected).isNotEqualTo(otherAffected);
-  }
-
-  @Test
-  void testHashCode() {
-    Affected affected = new AffectedBuilder(pckg()).ranges(ranges())
-        .versions(VersionsImpl.of(VERSION))
-        .build();
-    Affected otherAffected = new AffectedBuilder(pckg()).ranges(ranges())
-        .versions(VersionsImpl.of(VERSION)).build();
-    assertThat(affected).hasSameHashCodeAs(otherAffected);
   }
 
   private static Package pckg() {
@@ -162,8 +157,14 @@ class AffectedImplTest {
     return DatabaseSpecificValue.fromString("a database specific value");
   }
 
-  private static Versions versions() {
-    return VersionsImpl.of("1.0.0");
+  @Test
+  void testHashCode() {
+    Affected affected = new AffectedBuilder(pckg()).ranges(ranges())
+        .versions(VersionsValue.of(VERSION))
+        .build();
+    Affected otherAffected = new AffectedBuilder(pckg()).ranges(ranges())
+        .versions(VersionsValue.of(VERSION)).build();
+    assertThat(affected).hasSameHashCodeAs(otherAffected);
   }
 
   private static EcosystemSpecificValue ecosystemSpecific() {
@@ -174,7 +175,7 @@ class AffectedImplTest {
   void testToString() {
     Affected affected = new AffectedBuilder(pckg())
         .ranges(ranges())
-        .versions(VersionsImpl.of(VERSION))
+        .versions(VersionsValue.of(VERSION))
         .ecosystemSpecific(
             EcosystemSpecificValue.fromString("{\"some\":\"ecosystem specific properties\"}"))
         .databaseSpecific(

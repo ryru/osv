@@ -6,10 +6,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import ch.addere.osv.fields.Affected;
 import ch.addere.osv.fields.affected.Package;
 import ch.addere.osv.fields.affected.Ranges;
-import ch.addere.osv.fields.affected.Versions;
 import ch.addere.osv.impl.fields.AffectedImpl.AffectedBuilder;
 import ch.addere.osv.impl.fields.affected.PackageImpl;
-import ch.addere.osv.impl.fields.affected.VersionsImpl;
+import ch.addere.osv.impl.fields.affected.VersionsValue;
 import ch.addere.osv.impl.fields.affected.pckg.EcosystemValue;
 import ch.addere.osv.impl.fields.affected.pckg.NameValue;
 import ch.addere.osv.impl.fields.affected.pckg.PurlValue;
@@ -91,8 +90,8 @@ class AffectedDeserializerTest {
 
   private static Affected affectedWithVersion() {
     Package pckg = PackageImpl.of(EcosystemValue.GO, NameValue.fromString("crypto/elliptic"));
-    Versions version = VersionsImpl.of("2.8.0", "2.8.0.post1", "2.8.0.post2", "2.9.0", "2.9.1",
-        "2.9.2");
+    VersionsValue version = VersionsValue.of("2.8.0", "2.8.0.post1", "2.8.0.post2", "2.9.0",
+        "2.9.1", "2.9.2");
     return new AffectedBuilder(pckg).versions(version).build();
   }
 

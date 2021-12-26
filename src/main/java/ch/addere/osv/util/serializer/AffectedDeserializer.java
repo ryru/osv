@@ -5,7 +5,7 @@ import static ch.addere.osv.impl.fields.AffectedImpl.AFFECTED_KEY;
 import static ch.addere.osv.impl.fields.affected.DatabaseSpecificValue.DATABASE_SPECIFIC_KEY;
 import static ch.addere.osv.impl.fields.affected.EcosystemSpecificValue.ECOSYSTEM_SPECIFIC_KEY;
 import static ch.addere.osv.impl.fields.affected.PackageImpl.PACKAGE_KEY;
-import static ch.addere.osv.impl.fields.affected.VersionsImpl.VERSIONS_KEY;
+import static ch.addere.osv.impl.fields.affected.VersionsValue.VERSIONS_KEY;
 
 import ch.addere.osv.fields.Affected;
 import ch.addere.osv.fields.affected.Package;
@@ -13,7 +13,7 @@ import ch.addere.osv.fields.affected.Ranges;
 import ch.addere.osv.impl.fields.AffectedImpl.AffectedBuilder;
 import ch.addere.osv.impl.fields.affected.DatabaseSpecificValue;
 import ch.addere.osv.impl.fields.affected.EcosystemSpecificValue;
-import ch.addere.osv.impl.fields.affected.VersionsImpl;
+import ch.addere.osv.impl.fields.affected.VersionsValue;
 import ch.addere.osv.util.OsvParserException;
 import ch.addere.osv.util.serializer.pckg.PackageDeserializer;
 import ch.addere.osv.util.serializer.ranges.RangesDeserializer;
@@ -78,14 +78,14 @@ public final class AffectedDeserializer {
     return Optional.of(affectedBuilder.build());
   }
 
-  private static VersionsImpl readVersions(JsonNode versionsNode) {
+  private static VersionsValue readVersions(JsonNode versionsNode) {
     List<String> versions = new ArrayList<>();
     if (versionsNode.isArray()) {
       for (final JsonNode versionNote : versionsNode) {
         versions.add(versionNote.asText());
       }
     }
-    return VersionsImpl.of(versions.toArray(new String[0]));
+    return VersionsValue.of(versions.toArray(new String[0]));
   }
 
   private static EcosystemSpecificValue readEcosystemSpecific(JsonNode ecosystemSpecificNode) {
