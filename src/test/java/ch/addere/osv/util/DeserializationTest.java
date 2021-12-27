@@ -17,7 +17,7 @@ import ch.addere.osv.impl.fields.ReferencesValues;
 import ch.addere.osv.impl.fields.SummaryValue;
 import ch.addere.osv.impl.fields.affected.DatabaseSpecificValue;
 import ch.addere.osv.impl.fields.affected.EcosystemSpecificValue;
-import ch.addere.osv.impl.fields.affected.PackageImpl;
+import ch.addere.osv.impl.fields.affected.PackageValues.PackageValueBuilder;
 import ch.addere.osv.impl.fields.affected.VersionsValue;
 import ch.addere.osv.impl.fields.affected.pckg.EcosystemValue;
 import ch.addere.osv.impl.fields.affected.pckg.NameValue;
@@ -95,7 +95,7 @@ class DeserializationTest {
                 new URL("https://github.com/catenacyber/elliptic-curve-differential-fuzzer")))
         )
         .affected(new AffectedBuilder(
-            PackageImpl.of(EcosystemValue.GO, NameValue.fromString("crypto/elliptic")))
+            builder(EcosystemValue.GO, NameValue.fromString("crypto/elliptic")).build())
             .ranges(TypeSemVerImpl.of(
                 SemVerEvent.of(EventSpecifierValue.INTRODUCED, "1.0.0"),
                 SemVerEvent.of(EventSpecifierValue.FIXED, "1.14.14"),
@@ -129,7 +129,8 @@ class DeserializationTest {
         .references(ReferencesValues.of(ReferenceTypeValue.REPORT,
             ReferenceUrlValue.of(new URL("https://golang.org/issue/43783"))))
         .affected(
-            new AffectedBuilder(PackageImpl.of(EcosystemValue.GO, NameValue.fromString("cmd/go")))
+            new AffectedBuilder(
+                builder(EcosystemValue.GO, NameValue.fromString("cmd/go")).build())
                 .ranges(TypeSemVerImpl.of(
                     SemVerEvent.of(EventSpecifierValue.INTRODUCED, "1.0.0"),
                     SemVerEvent.of(EventSpecifierValue.FIXED, "1.14.14"),
@@ -190,7 +191,7 @@ class DeserializationTest {
         )
         .affected(
             new AffectedBuilder(
-                PackageImpl.of(EcosystemValue.NPM, NameValue.fromString("elliptic")))
+                builder(EcosystemValue.NPM, NameValue.fromString("elliptic")).build())
                 .ranges(TypeSemVerImpl.of(
                     SemVerEvent.of(EventSpecifierValue.INTRODUCED, "1.15.0"),
                     SemVerEvent.of(EventSpecifierValue.FIXED, "1.15.17"),
@@ -222,7 +223,7 @@ class DeserializationTest {
         ))
         .affected(
             new AffectedBuilder(
-                PackageImpl.of(EcosystemValue.OSS_FUZZ, NameValue.fromString("icu")))
+                builder(EcosystemValue.OSS_FUZZ, NameValue.fromString("icu")).build())
                 .ranges(
                     TypeGitImpl.of(RepoValue.of(
                             new URL("https://github.com/unicode-org/icu.git")),
@@ -258,7 +259,7 @@ class DeserializationTest {
                 + "3f38f73218e5e782fe411ccbb3b44a793c0b343a"))))
         .affected(
             new AffectedBuilder(
-                PackageImpl.of(EcosystemValue.PYPI, NameValue.fromString("pikepdf")))
+                builder(EcosystemValue.PYPI, NameValue.fromString("pikepdf")).build())
                 .ranges(
                     TypeGitImpl.of(RepoValue.of(
                             new URL("https://github.com/pikepdf/pikepdf")),
@@ -295,7 +296,8 @@ class DeserializationTest {
                 + "in this directory that would be later loaded and executed."))
         .affected(
             new AffectedBuilder(
-                PackageImpl.of(EcosystemValue.RUBY_GEMS, NameValue.fromString("bundler")))
+                new PackageValueBuilder(EcosystemValue.RUBY_GEMS, NameValue.fromString("bundler"))
+                    .build())
                 .ranges(
                     TypeEcosystemImpl.of(
                         EcosystemEvent.of(EventSpecifierValue.INTRODUCED, "1.14.0"),
@@ -376,7 +378,7 @@ class DeserializationTest {
                 new URL("https://rustsec.org/advisories/RUSTSEC-2019-0033.html"))))
         .affected(
             new AffectedBuilder(
-                PackageImpl.of(EcosystemValue.CRATES_IO, NameValue.fromString("http")))
+                builder(EcosystemValue.CRATES_IO, NameValue.fromString("http")).build())
                 .ranges(
                     TypeSemVerImpl.of(
                         SemVerEvent.of(EventSpecifierValue.INTRODUCED, "0.0.0-0"),
@@ -458,5 +460,9 @@ class DeserializationTest {
     Entry entry = deserialize(readJsonFile(RUST_EXAMPLE_PATH));
     Entry expected = rustEntry();
     assertThat(entry).isEqualTo(expected);
+  }
+
+  private static PackageValueBuilder builder(EcosystemValue ecosystem, NameValue name) {
+    return new PackageValueBuilder(ecosystem, name);
   }
 }

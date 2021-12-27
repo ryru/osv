@@ -14,7 +14,7 @@ import static ch.addere.osv.impl.fields.SummaryValue.SUMMARY_KEY;
 import static ch.addere.osv.impl.fields.WithdrawnValue.WITHDRAWN_KEY;
 import static ch.addere.osv.impl.fields.affected.DatabaseSpecificValue.DATABASE_SPECIFIC_KEY;
 import static ch.addere.osv.impl.fields.affected.EcosystemSpecificValue.ECOSYSTEM_SPECIFIC_KEY;
-import static ch.addere.osv.impl.fields.affected.PackageImpl.PACKAGE_KEY;
+import static ch.addere.osv.impl.fields.affected.PackageValues.PACKAGE_KEY;
 import static ch.addere.osv.impl.fields.affected.VersionsValue.VERSIONS_KEY;
 import static ch.addere.osv.impl.fields.affected.pckg.EcosystemValue.ECOSYSTEM_KEY;
 import static ch.addere.osv.impl.fields.affected.pckg.NameValue.NAME_KEY;
@@ -27,7 +27,6 @@ import static ch.addere.osv.impl.fields.references.ReferenceUrlValue.REFERENCE_U
 import ch.addere.osv.Entry;
 import ch.addere.osv.fields.Affected;
 import ch.addere.osv.fields.Value;
-import ch.addere.osv.fields.affected.Package;
 import ch.addere.osv.fields.affected.Ranges;
 import ch.addere.osv.fields.affected.ranges.Event;
 import ch.addere.osv.impl.fields.DetailsValue;
@@ -39,6 +38,7 @@ import ch.addere.osv.impl.fields.SummaryValue;
 import ch.addere.osv.impl.fields.WithdrawnValue;
 import ch.addere.osv.impl.fields.affected.DatabaseSpecificValue;
 import ch.addere.osv.impl.fields.affected.EcosystemSpecificValue;
+import ch.addere.osv.impl.fields.affected.PackageValues;
 import ch.addere.osv.impl.fields.affected.VersionsValue;
 import ch.addere.osv.impl.fields.affected.pckg.EcosystemValue;
 import ch.addere.osv.impl.fields.affected.pckg.NameValue;
@@ -182,7 +182,7 @@ public class EntrySerializer extends StdSerializer<Entry> {
     gen.writeEndObject();
   }
 
-  private static void writePackage(Package pckg, JsonGenerator gen) throws IOException {
+  private static void writePackage(PackageValues pckg, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
     gen.writeFieldName(ECOSYSTEM_KEY);
     gen.writeString(writeEcosystem(pckg.ecosystem()));

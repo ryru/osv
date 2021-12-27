@@ -48,7 +48,6 @@ class IdTest {
     });
   }
 
-
   @Test
   void testGoToJson() {
     Id id1 = Id.of(GO, ENTRY_ID);

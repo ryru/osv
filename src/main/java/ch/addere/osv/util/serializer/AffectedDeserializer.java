@@ -4,15 +4,15 @@ import static ch.addere.osv.fields.affected.Ranges.RANGES_KEY;
 import static ch.addere.osv.impl.fields.AffectedImpl.AFFECTED_KEY;
 import static ch.addere.osv.impl.fields.affected.DatabaseSpecificValue.DATABASE_SPECIFIC_KEY;
 import static ch.addere.osv.impl.fields.affected.EcosystemSpecificValue.ECOSYSTEM_SPECIFIC_KEY;
-import static ch.addere.osv.impl.fields.affected.PackageImpl.PACKAGE_KEY;
+import static ch.addere.osv.impl.fields.affected.PackageValues.PACKAGE_KEY;
 import static ch.addere.osv.impl.fields.affected.VersionsValue.VERSIONS_KEY;
 
 import ch.addere.osv.fields.Affected;
-import ch.addere.osv.fields.affected.Package;
 import ch.addere.osv.fields.affected.Ranges;
 import ch.addere.osv.impl.fields.AffectedImpl.AffectedBuilder;
 import ch.addere.osv.impl.fields.affected.DatabaseSpecificValue;
 import ch.addere.osv.impl.fields.affected.EcosystemSpecificValue;
+import ch.addere.osv.impl.fields.affected.PackageValues;
 import ch.addere.osv.impl.fields.affected.VersionsValue;
 import ch.addere.osv.util.OsvParserException;
 import ch.addere.osv.util.serializer.pckg.PackageDeserializer;
@@ -52,7 +52,7 @@ public final class AffectedDeserializer {
   }
 
   private static Optional<Affected> readAffected(JsonNode affected) throws OsvParserException {
-    Package pckg = PackageDeserializer.deserialize(affected.get(PACKAGE_KEY));
+    PackageValues pckg = PackageDeserializer.deserialize(affected.get(PACKAGE_KEY));
     List<Ranges> ranges = List.of();
     JsonNode rangesNode = affected.withArray(RANGES_KEY);
     if (!rangesNode.isNull()) {

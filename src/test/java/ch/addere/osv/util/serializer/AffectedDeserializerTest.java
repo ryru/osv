@@ -4,10 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ch.addere.osv.fields.Affected;
-import ch.addere.osv.fields.affected.Package;
 import ch.addere.osv.fields.affected.Ranges;
 import ch.addere.osv.impl.fields.AffectedImpl.AffectedBuilder;
-import ch.addere.osv.impl.fields.affected.PackageImpl;
+import ch.addere.osv.impl.fields.affected.PackageValues;
+import ch.addere.osv.impl.fields.affected.PackageValues.PackageValueBuilder;
 import ch.addere.osv.impl.fields.affected.VersionsValue;
 import ch.addere.osv.impl.fields.affected.pckg.EcosystemValue;
 import ch.addere.osv.impl.fields.affected.pckg.NameValue;
@@ -72,7 +72,9 @@ class AffectedDeserializerTest {
   }
 
   private static Affected affected(PurlValue purl) {
-    Package pckg = PackageImpl.of(EcosystemValue.GO, NameValue.fromString("crypto/elliptic"), purl);
+    PackageValues pckg = builder(EcosystemValue.GO, NameValue.fromString("crypto/elliptic"))
+        .purl(purl)
+        .build();
     SemVerEvent introduced1 = SemVerEvent.of(EventSpecifierValue.INTRODUCED, "1.0.0");
     SemVerEvent fixed1 = SemVerEvent.of(EventSpecifierValue.FIXED, "1.14.14");
     SemVerEvent introduced2 = SemVerEvent.of(EventSpecifierValue.INTRODUCED, "1.15.0");
@@ -81,18 +83,16 @@ class AffectedDeserializerTest {
     return new AffectedBuilder(pckg).ranges(ranges).build();
   }
 
-  @Test
-  void testValidAffectedWithVerson() throws JsonProcessingException, OsvParserException {
-    Affected affected = affectedWithVersion();
-    List<Affected> deserializedAffected = deserialize(AFFECTED_WITH_VERSION);
-    assertThat(deserializedAffected).containsExactly(affected);
-  }
-
   private static Affected affectedWithVersion() {
-    Package pckg = PackageImpl.of(EcosystemValue.GO, NameValue.fromString("crypto/elliptic"));
+    PackageValues pckg = builder(EcosystemValue.GO, NameValue.fromString("crypto/elliptic"))
+        .build();
     VersionsValue version = VersionsValue.of("2.8.0", "2.8.0.post1", "2.8.0.post2", "2.9.0",
         "2.9.1", "2.9.2");
     return new AffectedBuilder(pckg).versions(version).build();
+  }
+
+  private static PackageValueBuilder builder(EcosystemValue ecosystem, NameValue name) {
+    return new PackageValueBuilder(ecosystem, name);
   }
 
   @Test
@@ -109,5 +109,12 @@ class AffectedDeserializerTest {
 
   private static JsonNode toJsonNode(String jsonData) throws JsonProcessingException {
     return mapper.readTree(jsonData);
+  }
+
+  @Test
+  void testValidAffectedWithVersion() throws JsonProcessingException, OsvParserException {
+    Affected affected = affectedWithVersion();
+    List<Affected> deserializedAffected = deserialize(AFFECTED_WITH_VERSION);
+    assertThat(deserializedAffected).containsExactly(affected);
   }
 }

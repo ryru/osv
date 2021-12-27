@@ -5,7 +5,7 @@ import static ch.addere.osv.fields.affected.ranges.Event.EVENTS_KEY;
 import static ch.addere.osv.impl.fields.AffectedImpl.AFFECTED_KEY;
 import static ch.addere.osv.impl.fields.affected.DatabaseSpecificValue.DATABASE_SPECIFIC_KEY;
 import static ch.addere.osv.impl.fields.affected.EcosystemSpecificValue.ECOSYSTEM_SPECIFIC_KEY;
-import static ch.addere.osv.impl.fields.affected.PackageImpl.PACKAGE_KEY;
+import static ch.addere.osv.impl.fields.affected.PackageValues.PACKAGE_KEY;
 import static ch.addere.osv.impl.fields.affected.VersionsValue.VERSIONS_KEY;
 import static ch.addere.osv.impl.fields.affected.pckg.EcosystemValue.ECOSYSTEM_KEY;
 import static ch.addere.osv.impl.fields.affected.pckg.NameValue.NAME_KEY;
@@ -16,12 +16,12 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import ch.addere.osv.fields.Affected;
-import ch.addere.osv.fields.affected.Package;
 import ch.addere.osv.fields.affected.Ranges;
 import ch.addere.osv.impl.fields.AffectedImpl.AffectedBuilder;
 import ch.addere.osv.impl.fields.affected.DatabaseSpecificValue;
 import ch.addere.osv.impl.fields.affected.EcosystemSpecificValue;
-import ch.addere.osv.impl.fields.affected.PackageImpl;
+import ch.addere.osv.impl.fields.affected.PackageValues;
+import ch.addere.osv.impl.fields.affected.PackageValues.PackageValueBuilder;
 import ch.addere.osv.impl.fields.affected.VersionsValue;
 import ch.addere.osv.impl.fields.affected.pckg.EcosystemValue;
 import ch.addere.osv.impl.fields.affected.pckg.NameValue;
@@ -142,11 +142,10 @@ class AffectedImplTest {
     assertThat(affected).isNotEqualTo(otherAffected);
   }
 
-  private static Package pckg() {
-    return PackageImpl.of(
-        EcosystemValue.GO,
-        NameValue.fromString("aName"),
-        PurlValue.fromString("pkg:deb/debian/curl@7.50.3-1?arch=i386&distro=jessie"));
+  private static PackageValues pckg() {
+    return new PackageValueBuilder(EcosystemValue.GO, NameValue.fromString("aName"))
+        .purl(PurlValue.fromString("pkg:deb/debian/curl@7.50.3-1?arch=i386&distro=jessie"))
+        .build();
   }
 
   private static Ranges ranges() {

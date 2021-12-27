@@ -4,10 +4,10 @@ import static java.util.stream.Collectors.joining;
 import static java.util.stream.Stream.concat;
 
 import ch.addere.osv.fields.Affected;
-import ch.addere.osv.fields.affected.Package;
 import ch.addere.osv.fields.affected.Ranges;
 import ch.addere.osv.impl.fields.affected.DatabaseSpecificValue;
 import ch.addere.osv.impl.fields.affected.EcosystemSpecificValue;
+import ch.addere.osv.impl.fields.affected.PackageValues;
 import ch.addere.osv.impl.fields.affected.VersionsValue;
 import ch.addere.osv.impl.fields.affected.ranges.RangeTypeValue;
 import java.util.List;
@@ -22,18 +22,18 @@ public final class AffectedImpl implements Affected {
 
   public static final String AFFECTED_KEY = "affected";
 
-  private final Package pckg;
+  private final PackageValues pckg;
   private final List<Ranges> ranges;
   private final VersionsValue versions;
   private final EcosystemSpecificValue ecosystemSpecific;
   private final DatabaseSpecificValue databaseSpecificValue;
 
-  private AffectedImpl(Package pckge,
+  private AffectedImpl(PackageValues pckg,
       List<Ranges> ranges,
       VersionsValue versions,
       EcosystemSpecificValue ecosystemSpecific,
       DatabaseSpecificValue databaseSpecificValue) {
-    this.pckg = pckge;
+    this.pckg = pckg;
     this.ranges = ranges;
     this.versions = versions;
     this.ecosystemSpecific = ecosystemSpecific;
@@ -41,7 +41,7 @@ public final class AffectedImpl implements Affected {
   }
 
   @Override
-  public Package pckg() {
+  public PackageValues pckg() {
     return pckg;
   }
 
@@ -87,7 +87,7 @@ public final class AffectedImpl implements Affected {
 
   @Override
   public String toString() {
-    Stream<Package> packageStream = Stream.of(pckg);
+    Stream<PackageValues> packageStream = Stream.of(pckg);
     Stream<Ranges> rangesStream = ranges.stream().filter(Objects::nonNull);
     Stream<Object> objectStream = Stream.of(versions, ecosystemSpecific, databaseSpecificValue);
     Stream<Object> concat = concat(packageStream, concat(rangesStream, objectStream));
@@ -104,7 +104,7 @@ public final class AffectedImpl implements Affected {
    */
   public static class AffectedBuilder {
 
-    private final Package pckg;
+    private final PackageValues pckg;
     private List<Ranges> ranges = List.of();
     private VersionsValue versions = null;
     private EcosystemSpecificValue ecosystemSpecific = null;
@@ -115,7 +115,7 @@ public final class AffectedImpl implements Affected {
      *
      * @param pckg valid Package
      */
-    public AffectedBuilder(Package pckg) {
+    public AffectedBuilder(PackageValues pckg) {
       Objects.requireNonNull(pckg, "argument package must not be null");
       this.pckg = pckg;
     }
