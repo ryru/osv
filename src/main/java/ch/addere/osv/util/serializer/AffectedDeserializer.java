@@ -1,15 +1,15 @@
 package ch.addere.osv.util.serializer;
 
 import static ch.addere.osv.fields.affected.Ranges.RANGES_KEY;
-import static ch.addere.osv.impl.fields.AffectedImpl.AFFECTED_KEY;
+import static ch.addere.osv.impl.fields.AffectedValues.AFFECTED_KEY;
 import static ch.addere.osv.impl.fields.affected.DatabaseSpecificValue.DATABASE_SPECIFIC_KEY;
 import static ch.addere.osv.impl.fields.affected.EcosystemSpecificValue.ECOSYSTEM_SPECIFIC_KEY;
 import static ch.addere.osv.impl.fields.affected.PackageValues.PACKAGE_KEY;
 import static ch.addere.osv.impl.fields.affected.VersionsValue.VERSIONS_KEY;
 
-import ch.addere.osv.fields.Affected;
 import ch.addere.osv.fields.affected.Ranges;
-import ch.addere.osv.impl.fields.AffectedImpl.AffectedBuilder;
+import ch.addere.osv.impl.fields.AffectedValues;
+import ch.addere.osv.impl.fields.AffectedValues.AffectedValuesBuilder;
 import ch.addere.osv.impl.fields.affected.DatabaseSpecificValue;
 import ch.addere.osv.impl.fields.affected.EcosystemSpecificValue;
 import ch.addere.osv.impl.fields.affected.PackageValues;
@@ -38,11 +38,11 @@ public final class AffectedDeserializer {
    * @return Set of affected
    * @throws OsvParserException if parser exception
    */
-  public static List<Affected> deserialize(JsonNode affectedNode) throws OsvParserException {
+  public static List<AffectedValues> deserialize(JsonNode affectedNode) throws OsvParserException {
     if (affectedNode.isArray()) {
-      List<Affected> affectedSet = new LinkedList<>();
+      List<AffectedValues> affectedSet = new LinkedList<>();
       for (JsonNode jsonNode : affectedNode) {
-        Optional<Affected> affected = readAffected(jsonNode);
+        Optional<AffectedValues> affected = readAffected(jsonNode);
         affected.ifPresent(affectedSet::add);
       }
       return affectedSet;
@@ -51,7 +51,8 @@ public final class AffectedDeserializer {
     }
   }
 
-  private static Optional<Affected> readAffected(JsonNode affected) throws OsvParserException {
+  private static Optional<AffectedValues> readAffected(JsonNode affected)
+      throws OsvParserException {
     PackageValues pckg = PackageDeserializer.deserialize(affected.get(PACKAGE_KEY));
     List<Ranges> ranges = List.of();
     JsonNode rangesNode = affected.withArray(RANGES_KEY);
@@ -64,18 +65,18 @@ public final class AffectedDeserializer {
     Optional<JsonNode> databaseSpecificNode = Optional.ofNullable(
         affected.get(DATABASE_SPECIFIC_KEY));
 
-    AffectedBuilder affectedBuilder = new AffectedBuilder(pckg).ranges(
+    AffectedValuesBuilder affectedValuesBuilder = new AffectedValuesBuilder(pckg).ranges(
         ranges.toArray(new Ranges[0]));
 
-    versionsNode.ifPresent(jsonNode -> affectedBuilder.versions(readVersions(jsonNode)));
+    versionsNode.ifPresent(jsonNode -> affectedValuesBuilder.versions(readVersions(jsonNode)));
 
     ecosystemSpecificNode.ifPresent(
-        jsonNode -> affectedBuilder.ecosystemSpecific(readEcosystemSpecific(jsonNode)));
+        jsonNode -> affectedValuesBuilder.ecosystemSpecific(readEcosystemSpecific(jsonNode)));
 
     databaseSpecificNode.ifPresent(
-        jsonNode -> affectedBuilder.databaseSpecific(readDatabaseSpecific(jsonNode)));
+        jsonNode -> affectedValuesBuilder.databaseSpecific(readDatabaseSpecific(jsonNode)));
 
-    return Optional.of(affectedBuilder.build());
+    return Optional.of(affectedValuesBuilder.build());
   }
 
   private static VersionsValue readVersions(JsonNode versionsNode) {

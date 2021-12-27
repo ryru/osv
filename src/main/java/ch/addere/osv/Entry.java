@@ -1,6 +1,6 @@
 package ch.addere.osv;
 
-import ch.addere.osv.fields.Affected;
+import ch.addere.osv.impl.fields.AffectedValues;
 import ch.addere.osv.impl.fields.DetailsValue;
 import ch.addere.osv.impl.fields.Id;
 import ch.addere.osv.impl.fields.IdAggregate;
@@ -33,7 +33,7 @@ public interface Entry {
 
   Optional<DetailsValue> details();
 
-  List<Affected> affected();
+  List<AffectedValues> affected();
 
   List<ReferencesValues> references();
 }

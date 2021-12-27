@@ -3,7 +3,7 @@ package ch.addere.osv.impl;
 import static java.util.stream.Collectors.joining;
 
 import ch.addere.osv.Entry;
-import ch.addere.osv.fields.Affected;
+import ch.addere.osv.impl.fields.AffectedValues;
 import ch.addere.osv.impl.fields.DetailsValue;
 import ch.addere.osv.impl.fields.Id;
 import ch.addere.osv.impl.fields.IdAggregate;
@@ -31,7 +31,7 @@ public final class EntryImpl implements Entry {
   private WithdrawnValue withdrawn;
   private SummaryValue summary;
   private DetailsValue detailsValue;
-  private List<Affected> affected;
+  private List<AffectedValues> affected;
   private List<ReferencesValues> references;
 
   private EntryImpl(Id id, ModifiedValue modified) {
@@ -92,7 +92,7 @@ public final class EntryImpl implements Entry {
   }
 
   @Override
-  public List<Affected> affected() {
+  public List<AffectedValues> affected() {
     if (affected != null) {
       return new LinkedList<>(affected);
     } else {
@@ -165,7 +165,7 @@ public final class EntryImpl implements Entry {
     private WithdrawnValue withdrawn = null;
     private SummaryValue summary = null;
     private DetailsValue detailsValue = null;
-    private List<Affected> affected = null;
+    private List<AffectedValues> affected = null;
     private List<ReferencesValues> references = null;
 
     /**
@@ -211,7 +211,7 @@ public final class EntryImpl implements Entry {
       return this;
     }
 
-    public EntryBuilder affected(Affected... affected) {
+    public EntryBuilder affected(AffectedValues... affected) {
       this.affected = List.of(affected);
       return this;
     }

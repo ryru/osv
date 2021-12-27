@@ -2,7 +2,7 @@ package ch.addere.osv.util;
 
 import static ch.addere.osv.fields.affected.Ranges.RANGES_KEY;
 import static ch.addere.osv.fields.affected.ranges.Event.EVENTS_KEY;
-import static ch.addere.osv.impl.fields.AffectedImpl.AFFECTED_KEY;
+import static ch.addere.osv.impl.fields.AffectedValues.AFFECTED_KEY;
 import static ch.addere.osv.impl.fields.DetailsValue.DETAILS_KEY;
 import static ch.addere.osv.impl.fields.Id.ID_KEY;
 import static ch.addere.osv.impl.fields.IdAggregate.ALIASES_KEY;
@@ -25,10 +25,10 @@ import static ch.addere.osv.impl.fields.references.ReferenceTypeValue.REFERENCE_
 import static ch.addere.osv.impl.fields.references.ReferenceUrlValue.REFERENCE_URL_KEY;
 
 import ch.addere.osv.Entry;
-import ch.addere.osv.fields.Affected;
 import ch.addere.osv.fields.Value;
 import ch.addere.osv.fields.affected.Ranges;
 import ch.addere.osv.fields.affected.ranges.Event;
+import ch.addere.osv.impl.fields.AffectedValues;
 import ch.addere.osv.impl.fields.DetailsValue;
 import ch.addere.osv.impl.fields.Id;
 import ch.addere.osv.impl.fields.ModifiedValue;
@@ -66,9 +66,9 @@ public class EntrySerializer extends StdSerializer<Entry> {
   private static void writeAllAffected(Entry value, JsonGenerator gen) throws IOException {
     gen.writeFieldName(AFFECTED_KEY);
     gen.writeStartArray();
-    List<Affected> affected = new ArrayList<>(value.affected());
+    List<AffectedValues> affected = new ArrayList<>(value.affected());
     if (!affected.isEmpty()) {
-      for (Affected aff : affected) {
+      for (AffectedValues aff : affected) {
         writeAffected(gen, aff);
       }
     }
@@ -119,7 +119,7 @@ public class EntrySerializer extends StdSerializer<Entry> {
     return detailsValue.value().replace("\\n", "\n");
   }
 
-  private static void writeAffected(JsonGenerator gen, Affected aff) throws IOException {
+  private static void writeAffected(JsonGenerator gen, AffectedValues aff) throws IOException {
     gen.writeStartObject();
     if (aff.pckg() != null) {
       gen.writeFieldName(PACKAGE_KEY);

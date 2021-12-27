@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ch.addere.osv.Entry;
 import ch.addere.osv.impl.EntryImpl;
-import ch.addere.osv.impl.fields.AffectedImpl.AffectedBuilder;
+import ch.addere.osv.impl.fields.AffectedValues.AffectedValuesBuilder;
 import ch.addere.osv.impl.fields.DetailsValue;
 import ch.addere.osv.impl.fields.Id;
 import ch.addere.osv.impl.fields.IdAggregate;
@@ -94,7 +94,7 @@ class DeserializationTest {
             ReferencesValues.of(ReferenceTypeValue.WEB, ReferenceUrlValue.of(
                 new URL("https://github.com/catenacyber/elliptic-curve-differential-fuzzer")))
         )
-        .affected(new AffectedBuilder(
+        .affected(new AffectedValuesBuilder(
             builder(EcosystemValue.GO, NameValue.fromString("crypto/elliptic")).build())
             .ranges(TypeSemVerImpl.of(
                 SemVerEvent.of(EventSpecifierValue.INTRODUCED, "1.0.0"),
@@ -129,7 +129,7 @@ class DeserializationTest {
         .references(ReferencesValues.of(ReferenceTypeValue.REPORT,
             ReferenceUrlValue.of(new URL("https://golang.org/issue/43783"))))
         .affected(
-            new AffectedBuilder(
+            new AffectedValuesBuilder(
                 builder(EcosystemValue.GO, NameValue.fromString("cmd/go")).build())
                 .ranges(TypeSemVerImpl.of(
                     SemVerEvent.of(EventSpecifierValue.INTRODUCED, "1.0.0"),
@@ -190,7 +190,7 @@ class DeserializationTest {
                 ReferenceUrlValue.of(new URL("https://www.npmjs.com/package/elliptic")))
         )
         .affected(
-            new AffectedBuilder(
+            new AffectedValuesBuilder(
                 builder(EcosystemValue.NPM, NameValue.fromString("elliptic")).build())
                 .ranges(TypeSemVerImpl.of(
                     SemVerEvent.of(EventSpecifierValue.INTRODUCED, "1.15.0"),
@@ -222,7 +222,7 @@ class DeserializationTest {
                 new URL("https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=15499"))
         ))
         .affected(
-            new AffectedBuilder(
+            new AffectedValuesBuilder(
                 builder(EcosystemValue.OSS_FUZZ, NameValue.fromString("icu")).build())
                 .ranges(
                     TypeGitImpl.of(RepoValue.of(
@@ -258,7 +258,7 @@ class DeserializationTest {
             new URL("https://github.com/pikepdf/pikepdf/commit/"
                 + "3f38f73218e5e782fe411ccbb3b44a793c0b343a"))))
         .affected(
-            new AffectedBuilder(
+            new AffectedValuesBuilder(
                 builder(EcosystemValue.PYPI, NameValue.fromString("pikepdf")).build())
                 .ranges(
                     TypeGitImpl.of(RepoValue.of(
@@ -295,7 +295,7 @@ class DeserializationTest {
                 + "does not have a writable home directory, an attacker could place malicious code "
                 + "in this directory that would be later loaded and executed."))
         .affected(
-            new AffectedBuilder(
+            new AffectedValuesBuilder(
                 new PackageValueBuilder(EcosystemValue.RUBY_GEMS, NameValue.fromString("bundler"))
                     .build())
                 .ranges(
@@ -377,7 +377,7 @@ class DeserializationTest {
             ReferencesValues.of(ReferenceTypeValue.ADVISORY, ReferenceUrlValue.of(
                 new URL("https://rustsec.org/advisories/RUSTSEC-2019-0033.html"))))
         .affected(
-            new AffectedBuilder(
+            new AffectedValuesBuilder(
                 builder(EcosystemValue.CRATES_IO, NameValue.fromString("http")).build())
                 .ranges(
                     TypeSemVerImpl.of(

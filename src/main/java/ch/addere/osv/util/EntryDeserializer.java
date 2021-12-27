@@ -1,6 +1,6 @@
 package ch.addere.osv.util;
 
-import static ch.addere.osv.impl.fields.AffectedImpl.AFFECTED_KEY;
+import static ch.addere.osv.impl.fields.AffectedValues.AFFECTED_KEY;
 import static ch.addere.osv.impl.fields.DetailsValue.DETAILS_KEY;
 import static ch.addere.osv.impl.fields.Id.ID_KEY;
 import static ch.addere.osv.impl.fields.IdAggregate.ALIASES_KEY;
@@ -14,8 +14,8 @@ import static ch.addere.osv.impl.fields.references.ReferenceTypeValue.REFERENCE_
 import static ch.addere.osv.impl.fields.references.ReferenceUrlValue.REFERENCE_URL_KEY;
 
 import ch.addere.osv.Entry;
-import ch.addere.osv.fields.Affected;
 import ch.addere.osv.impl.EntryImpl;
+import ch.addere.osv.impl.fields.AffectedValues;
 import ch.addere.osv.impl.fields.DetailsValue;
 import ch.addere.osv.impl.fields.Id;
 import ch.addere.osv.impl.fields.IdAggregate;
@@ -61,30 +61,13 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
     return ModifiedValue.of(instant);
   }
 
-  private static Optional<IdAggregate> readAliases(JsonNode aliasesNode) {
-    if (isEmptyJsonNode(aliasesNode)) {
+  private static Optional<IdAggregate> readIdAggregate(JsonNode idAggregateNode) {
+    if (isEmptyJsonNode(idAggregateNode)) {
       return Optional.empty();
     }
     List<Id> ids = new ArrayList<>();
-    if (aliasesNode.isArray()) {
-      for (final JsonNode idNote : aliasesNode) {
-        ids.add(readId(idNote));
-      }
-    }
-    if (ids.isEmpty()) {
-      return Optional.empty();
-    } else {
-      return Optional.of(IdAggregate.of(ids.toArray(new Id[0])));
-    }
-  }
-
-  private static Optional<IdAggregate> readRelated(JsonNode relatedNode) {
-    if (isEmptyJsonNode(relatedNode)) {
-      return Optional.empty();
-    }
-    List<Id> ids = new ArrayList<>();
-    if (relatedNode.isArray()) {
-      for (final JsonNode idNote : relatedNode) {
+    if (idAggregateNode.isArray()) {
+      for (final JsonNode idNote : idAggregateNode) {
         ids.add(readId(idNote));
       }
     }
@@ -173,16 +156,16 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
       throw new OsvParserException("deserialization error");
     }
     ModifiedValue modified = readModified(node.get(MODIFIED_KEY));
-    Optional<IdAggregate> aliases = readAliases(node.get(ALIASES_KEY));
-    Optional<IdAggregate> related = readRelated(node.get(RELATED_KEY));
+    Optional<IdAggregate> aliases = readIdAggregate(node.get(ALIASES_KEY));
+    Optional<IdAggregate> related = readIdAggregate(node.get(RELATED_KEY));
     Optional<PublishedValue> published = readPublished(node.get(PUBLISHED_KEY));
     Optional<WithdrawnValue> withdrawn = readWithdrawn(node.get(WITHDRAWN_KEY));
     Optional<SummaryValue> summary = readSummary(node.get(SUMMARY_KEY));
     Optional<DetailsValue> details = readDetails(node.get(DETAILS_KEY));
-    List<Affected> affected = null;
-    JsonNode affecedNode = node.get(AFFECTED_KEY);
-    if (affecedNode != null && !affecedNode.isNull()) {
-      affected = AffectedDeserializer.deserialize(affecedNode);
+    List<AffectedValues> affected = null;
+    JsonNode affectedNode = node.get(AFFECTED_KEY);
+    if (affectedNode != null && !affectedNode.isNull()) {
+      affected = AffectedDeserializer.deserialize(affectedNode);
     }
     List<ReferencesValues> references = null;
     JsonNode referenceNode = node.get(REFERENCES_KEY);
@@ -198,7 +181,7 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
         .summary(summary.orElse(null))
         .details(details.orElse(null));
     if (affected != null) {
-      builder.affected(affected.toArray(new Affected[0]));
+      builder.affected(affected.toArray(new AffectedValues[0]));
     }
 
     if (references != null) {
