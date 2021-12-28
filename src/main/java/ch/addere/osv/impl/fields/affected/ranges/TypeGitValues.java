@@ -5,7 +5,7 @@ import static java.util.stream.Collectors.joining;
 
 import ch.addere.osv.fields.affected.Ranges;
 import ch.addere.osv.fields.affected.ranges.Event;
-import ch.addere.osv.impl.fields.affected.ranges.events.GitEvent;
+import ch.addere.osv.impl.fields.affected.ranges.events.GitEventValues;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -14,22 +14,16 @@ import java.util.Optional;
 /**
  * Git type to be used in ranges.
  */
-public final class TypeGitImpl implements Ranges {
+public final class TypeGitValues implements Ranges {
 
   private final RangeTypeValue type;
   private final RepoValue repo;
-  private final List<GitEvent> events;
+  private final List<GitEventValues> events;
 
-  private TypeGitImpl(RepoValue repo, GitEvent... events) {
-    Objects.requireNonNull(repo, "argument repo must not be null");
-    Objects.requireNonNull(events, "argument events must not be null");
+  private TypeGitValues(RepoValue repo, List<GitEventValues> events) {
     this.type = RangeTypeValue.GIT;
     this.repo = repo;
-    this.events = List.of(events);
-  }
-
-  public static TypeGitImpl of(RepoValue repo, GitEvent... events) {
-    return new TypeGitImpl(repo, events);
+    this.events = events;
   }
 
   @Override
@@ -43,7 +37,7 @@ public final class TypeGitImpl implements Ranges {
   }
 
   @Override
-  public List<? extends Event> events() {
+  public List<Event> events() {
     return new LinkedList<>(events);
   }
 
@@ -55,7 +49,7 @@ public final class TypeGitImpl implements Ranges {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    TypeGitImpl that = (TypeGitImpl) o;
+    TypeGitValues that = (TypeGitValues) o;
     return type.equals(that.type) && Objects.equals(repo, that.repo) && Objects.equals(
         events, that.events);
   }
@@ -70,6 +64,37 @@ public final class TypeGitImpl implements Ranges {
     return RANGES_KEY + ": " + join(", ",
         type.toString(),
         repo.toString(),
-        events.stream().map(GitEvent::toString).collect(joining()));
+        events.stream().map(GitEventValues::toString).collect(joining()));
+  }
+
+  /**
+   * TypeGitBuilder builder to create TypeSemVerValues.
+   */
+  public static final class TypeGitBuilder {
+
+    private final RepoValue repo;
+    private final List<GitEventValues> events;
+
+    /**
+     * Builder constructor.
+     *
+     * @param repo   RepoValue to add
+     * @param events GitEventValues to add
+     */
+    public TypeGitBuilder(RepoValue repo, GitEventValues... events) {
+      Objects.requireNonNull(repo, "argument repo must not be null");
+      Objects.requireNonNull(events, "argument events must not be null");
+      this.repo = repo;
+      this.events = List.of(events);
+    }
+
+    /**
+     * Build TypeGitValues property.
+     *
+     * @return valid TypeGitValue
+     */
+    public TypeGitValues build() {
+      return new TypeGitValues(repo, events);
+    }
   }
 }

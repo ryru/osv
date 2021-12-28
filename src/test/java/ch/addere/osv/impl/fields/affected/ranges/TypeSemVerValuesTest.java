@@ -10,74 +10,81 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ch.addere.osv.fields.affected.Ranges;
 import ch.addere.osv.fields.affected.ranges.Event;
+import ch.addere.osv.impl.fields.affected.ranges.TypeSemVerValues.TypeSemVerBuilder;
 import ch.addere.osv.impl.fields.affected.ranges.events.EventSpecifierValue;
-import ch.addere.osv.impl.fields.affected.ranges.events.SemVerEvent;
+import ch.addere.osv.impl.fields.affected.ranges.events.SemVerEventValues;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
-class TypeSemVerImplTest {
+class TypeSemVerValuesTest {
 
 
-  @Test
-  void testOfEventsNull() {
-    assertThatThrownBy(() -> TypeSemVerImpl.of(repo(), (SemVerEvent[]) null))
-        .isInstanceOf(NullPointerException.class)
-        .hasMessageContaining("argument events must not be null");
+  private static SemVerEventValues introducedEvent() {
+    return SemVerEventValues.of(EventSpecifierValue.INTRODUCED, "1.0.0");
   }
 
-  @Test
-  void testOfValueObjectCreation() {
-    Ranges ranges1 = TypeSemVerImpl.of(repo(), introducedEvent());
-    Ranges ranges2 = TypeSemVerImpl.of(
-        ranges1.repo().get(),
-        ranges1.events().toArray(new SemVerEvent[0]));
-    assertThat(ranges1).isEqualTo(ranges2);
+  private static SemVerEventValues fixedEvent() {
+    return SemVerEventValues.of(EventSpecifierValue.FIXED, "1.0.1");
   }
 
   private static RepoValue repo() {
     return RepoValue.fromString("https://osv.dev");
   }
 
-  private static SemVerEvent introducedEvent() {
-    return SemVerEvent.of(EventSpecifierValue.INTRODUCED, "1.0.0");
+  @Test
+  void testOfEventsNull() {
+    assertThatThrownBy(() -> new TypeSemVerBuilder((SemVerEventValues[]) null))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("argument events must not be null");
   }
 
-  private static SemVerEvent fixedEvent() {
-    return SemVerEvent.of(EventSpecifierValue.FIXED, "1.0.1");
+  @Test
+  void testOfValueObjectCreation() {
+    Ranges ranges1 = new TypeSemVerBuilder(introducedEvent()).repo(repo()).build();
+    Ranges ranges2 = new TypeSemVerBuilder(ranges1.events().toArray(new SemVerEventValues[0]))
+        .repo(ranges1.repo().get())
+        .build();
+    assertThat(ranges1).isEqualTo(ranges2);
   }
 
   @Test
   void testType() {
-    Ranges typeSemVer = TypeSemVerImpl.of(introducedEvent());
+    Ranges typeSemVer = new TypeSemVerBuilder(introducedEvent()).build();
     RangeTypeValue type = typeSemVer.type();
     assertThat(type).isEqualTo(RangeTypeValue.SEMVER);
   }
 
   @Test
   void testEquality() {
-    Ranges type = TypeSemVerImpl.of(introducedEvent());
-    Ranges otherType = TypeSemVerImpl.of(introducedEvent());
-    assertThat(type).isEqualTo(otherType);
+    Ranges type = new TypeSemVerBuilder(introducedEvent()).build();
+    Ranges otherType = new TypeSemVerBuilder(introducedEvent()).build();
+    assertThat(type).satisfies(t -> {
+      assertThat(t).isEqualTo(type);
+      assertThat(t).isEqualTo(otherType);
+    });
   }
 
   @Test
   void testNonEquality() {
-    Ranges type = TypeSemVerImpl.of(introducedEvent());
-    Ranges otherType = TypeSemVerImpl.of(fixedEvent());
-    assertThat(type).isNotEqualTo(otherType);
+    Ranges type = new TypeSemVerBuilder(introducedEvent()).build();
+    Ranges otherType = new TypeSemVerBuilder(fixedEvent()).build();
+    assertThat(type).satisfies(t -> {
+      assertThat(t).isNotEqualTo(null);
+      assertThat(t).isNotEqualTo(otherType);
+    });
   }
 
   @Test
   void testHashCode() {
-    Ranges type = TypeSemVerImpl.of(introducedEvent());
-    Ranges otherType = TypeSemVerImpl.of(introducedEvent());
+    Ranges type = new TypeSemVerBuilder(introducedEvent()).build();
+    Ranges otherType = new TypeSemVerBuilder(introducedEvent()).build();
     assertThat(type).hasSameHashCodeAs(otherType);
   }
 
   @Test
   void testWithRepoToString() {
-    Ranges type = TypeSemVerImpl.of(repo(), introducedEvent());
+    Ranges type = new TypeSemVerBuilder(introducedEvent()).repo(repo()).build();
     assertThat(type).hasToString(RANGES_KEY + ": " + join(", ",
         typeToString(),
         repoToString(),
@@ -86,7 +93,7 @@ class TypeSemVerImplTest {
 
   @Test
   void testWithoutRepoToString() {
-    Ranges type = TypeSemVerImpl.of(introducedEvent());
+    Ranges type = new TypeSemVerBuilder(introducedEvent()).build();
     assertThat(type).hasToString(RANGES_KEY + ": " + join(", ",
         typeToString(),
         eventToString()));
@@ -94,24 +101,24 @@ class TypeSemVerImplTest {
 
   @Test
   void testWitRepo() {
-    Ranges typeSemVer = TypeSemVerImpl.of(repo(), introducedEvent());
+    Ranges typeSemVer = new TypeSemVerBuilder(introducedEvent()).repo(repo()).build();
     Optional<RepoValue> repo = typeSemVer.repo();
     assertThat(repo).contains(RepoValue.fromString("https://osv.dev"));
   }
 
   @Test
   void testWithoutRepo() {
-    Ranges typeSemVer = TypeSemVerImpl.of(introducedEvent());
+    Ranges typeSemVer = new TypeSemVerBuilder(introducedEvent()).build();
     Optional<RepoValue> repo = typeSemVer.repo();
     assertThat(repo).isEmpty();
   }
 
   @Test
   void testEvents() {
-    Ranges typeSemVer = TypeSemVerImpl.of(introducedEvent());
+    Ranges typeSemVer = new TypeSemVerBuilder(introducedEvent()).build();
     List<? extends Event> events = typeSemVer.events();
     assertThat(events.toArray()).containsExactly(
-        SemVerEvent.of(EventSpecifierValue.INTRODUCED, "1.0.0"));
+        SemVerEventValues.of(EventSpecifierValue.INTRODUCED, "1.0.0"));
   }
 
   private static String typeToString() {

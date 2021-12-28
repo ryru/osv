@@ -6,12 +6,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ch.addere.osv.fields.affected.Ranges;
 import ch.addere.osv.impl.fields.affected.ranges.RepoValue;
-import ch.addere.osv.impl.fields.affected.ranges.TypeEcosystemImpl;
-import ch.addere.osv.impl.fields.affected.ranges.TypeGitImpl;
-import ch.addere.osv.impl.fields.affected.ranges.TypeSemVerImpl;
-import ch.addere.osv.impl.fields.affected.ranges.events.EcosystemEvent;
-import ch.addere.osv.impl.fields.affected.ranges.events.GitEvent;
-import ch.addere.osv.impl.fields.affected.ranges.events.SemVerEvent;
+import ch.addere.osv.impl.fields.affected.ranges.TypeEcosystemValues.TypeEcosystemBuilder;
+import ch.addere.osv.impl.fields.affected.ranges.TypeGitValues.TypeGitBuilder;
+import ch.addere.osv.impl.fields.affected.ranges.TypeSemVerValues.TypeSemVerBuilder;
+import ch.addere.osv.impl.fields.affected.ranges.events.EcosystemEventValues;
+import ch.addere.osv.impl.fields.affected.ranges.events.GitEventValues;
+import ch.addere.osv.impl.fields.affected.ranges.events.SemVerEventValues;
 import ch.addere.osv.util.OsvParserException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -91,19 +91,21 @@ class RangesDeserializerTest {
   }
 
   private static Ranges semVerRange(RepoValue repo) {
+    var semVer = new TypeSemVerBuilder(SemVerEventValues.of(INTRODUCED, SEM_VER));
     return Optional.ofNullable(repo)
-        .map(value -> TypeSemVerImpl.of(value, SemVerEvent.of(INTRODUCED, SEM_VER)))
-        .orElseGet(() -> TypeSemVerImpl.of(SemVerEvent.of(INTRODUCED, SEM_VER)));
+        .map(value -> semVer.repo(value).build())
+        .orElseGet(semVer::build);
   }
 
   private static Ranges gitRange() {
-    return TypeGitImpl.of(getRepo(), GitEvent.of(INTRODUCED, "0"));
+    return new TypeGitBuilder(getRepo(), GitEventValues.of(INTRODUCED, "0")).build();
   }
 
   private static Ranges ecosystemRange(RepoValue repo) {
-    return Optional.ofNullable(repo).map(
-            value -> TypeEcosystemImpl.of(value, EcosystemEvent.of(INTRODUCED, "0")))
-        .orElseGet(() -> TypeEcosystemImpl.of(EcosystemEvent.of(INTRODUCED, "0")));
+    TypeEcosystemBuilder typeEcosystem = new TypeEcosystemBuilder(
+        EcosystemEventValues.of(INTRODUCED, "0"));
+    return Optional.ofNullable(repo).map(value -> typeEcosystem.repo(value).build())
+        .orElseGet(typeEcosystem::build);
   }
 
   private static RepoValue getRepo() {

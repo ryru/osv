@@ -22,13 +22,13 @@ import ch.addere.osv.impl.fields.affected.VersionsValue;
 import ch.addere.osv.impl.fields.affected.pckg.EcosystemValue;
 import ch.addere.osv.impl.fields.affected.pckg.NameValue;
 import ch.addere.osv.impl.fields.affected.ranges.RepoValue;
-import ch.addere.osv.impl.fields.affected.ranges.TypeEcosystemImpl;
-import ch.addere.osv.impl.fields.affected.ranges.TypeGitImpl;
-import ch.addere.osv.impl.fields.affected.ranges.TypeSemVerImpl;
-import ch.addere.osv.impl.fields.affected.ranges.events.EcosystemEvent;
+import ch.addere.osv.impl.fields.affected.ranges.TypeEcosystemValues.TypeEcosystemBuilder;
+import ch.addere.osv.impl.fields.affected.ranges.TypeGitValues.TypeGitBuilder;
+import ch.addere.osv.impl.fields.affected.ranges.TypeSemVerValues.TypeSemVerBuilder;
+import ch.addere.osv.impl.fields.affected.ranges.events.EcosystemEventValues;
 import ch.addere.osv.impl.fields.affected.ranges.events.EventSpecifierValue;
-import ch.addere.osv.impl.fields.affected.ranges.events.GitEvent;
-import ch.addere.osv.impl.fields.affected.ranges.events.SemVerEvent;
+import ch.addere.osv.impl.fields.affected.ranges.events.GitEventValues;
+import ch.addere.osv.impl.fields.affected.ranges.events.SemVerEventValues;
 import ch.addere.osv.impl.fields.references.ReferenceTypeValue;
 import ch.addere.osv.impl.fields.references.ReferenceUrlValue;
 import java.io.IOException;
@@ -96,12 +96,12 @@ class DeserializationTest {
         )
         .affected(new AffectedValuesBuilder(
             builder(EcosystemValue.GO, NameValue.fromString("crypto/elliptic")).build())
-            .ranges(TypeSemVerImpl.of(
-                SemVerEvent.of(EventSpecifierValue.INTRODUCED, "1.0.0"),
-                SemVerEvent.of(EventSpecifierValue.FIXED, "1.14.14"),
-                SemVerEvent.of(EventSpecifierValue.INTRODUCED, "1.15.0"),
-                SemVerEvent.of(EventSpecifierValue.FIXED, "1.15.17")
-            ))
+            .ranges(new TypeSemVerBuilder(
+                SemVerEventValues.of(EventSpecifierValue.INTRODUCED, "1.0.0"),
+                SemVerEventValues.of(EventSpecifierValue.FIXED, "1.14.14"),
+                SemVerEventValues.of(EventSpecifierValue.INTRODUCED, "1.15.0"),
+                SemVerEventValues.of(EventSpecifierValue.FIXED, "1.15.17")
+            ).build())
             .ecosystemSpecific(EcosystemSpecificValue.fromString(
                 "{\"functions\":[\"P224\"],\"module\":\"std\",\"severity\":\"HIGH\"}"))
             .build())
@@ -131,12 +131,12 @@ class DeserializationTest {
         .affected(
             new AffectedValuesBuilder(
                 builder(EcosystemValue.GO, NameValue.fromString("cmd/go")).build())
-                .ranges(TypeSemVerImpl.of(
-                    SemVerEvent.of(EventSpecifierValue.INTRODUCED, "1.0.0"),
-                    SemVerEvent.of(EventSpecifierValue.FIXED, "1.14.14"),
-                    SemVerEvent.of(EventSpecifierValue.INTRODUCED, "1.15.10"),
-                    SemVerEvent.of(EventSpecifierValue.FIXED, "1.15.17")
-                ))
+                .ranges(new TypeSemVerBuilder(
+                    SemVerEventValues.of(EventSpecifierValue.INTRODUCED, "1.0.0"),
+                    SemVerEventValues.of(EventSpecifierValue.FIXED, "1.14.14"),
+                    SemVerEventValues.of(EventSpecifierValue.INTRODUCED, "1.15.10"),
+                    SemVerEventValues.of(EventSpecifierValue.FIXED, "1.15.17")
+                ).build())
                 .ecosystemSpecific(EcosystemSpecificValue.fromString(
                     "{\"severity\":\"HIGH\"}"))
                 .build())
@@ -192,12 +192,12 @@ class DeserializationTest {
         .affected(
             new AffectedValuesBuilder(
                 builder(EcosystemValue.NPM, NameValue.fromString("elliptic")).build())
-                .ranges(TypeSemVerImpl.of(
-                    SemVerEvent.of(EventSpecifierValue.INTRODUCED, "1.15.0"),
-                    SemVerEvent.of(EventSpecifierValue.FIXED, "1.15.17"),
-                    SemVerEvent.of(EventSpecifierValue.INTRODUCED, "6.5.0"),
-                    SemVerEvent.of(EventSpecifierValue.FIXED, "6.5.4")
-                ))
+                .ranges(new TypeSemVerBuilder(
+                    SemVerEventValues.of(EventSpecifierValue.INTRODUCED, "1.15.0"),
+                    SemVerEventValues.of(EventSpecifierValue.FIXED, "1.15.17"),
+                    SemVerEventValues.of(EventSpecifierValue.INTRODUCED, "6.5.0"),
+                    SemVerEventValues.of(EventSpecifierValue.FIXED, "6.5.4")
+                ).build())
                 .databaseSpecific(DatabaseSpecificValue.fromString(
                     "{\"CWE\":\"CWE-327\",\"CVSS\":{\"Score\":\"6.8\",\"Severity\":\"Medium\","
                         + "\"Code\":\"CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:C/C:H/I:N/A:N\"}}"
@@ -225,13 +225,13 @@ class DeserializationTest {
             new AffectedValuesBuilder(
                 builder(EcosystemValue.OSS_FUZZ, NameValue.fromString("icu")).build())
                 .ranges(
-                    TypeGitImpl.of(RepoValue.of(
-                            new URL("https://github.com/unicode-org/icu.git")),
-                        GitEvent.of(EventSpecifierValue.INTRODUCED,
+                    new TypeGitBuilder(RepoValue.of(
+                        new URL("https://github.com/unicode-org/icu.git")),
+                        GitEventValues.of(EventSpecifierValue.INTRODUCED,
                             "6e5755a2a833bc64852eae12967d0a54d7adf629"),
-                        GitEvent.of(EventSpecifierValue.FIXED,
+                        GitEventValues.of(EventSpecifierValue.FIXED,
                             "c43455749b914feef56b178b256f29b3016146eb")
-                    )
+                    ).build()
                 )
                 .versions(VersionsValue.of("aVersion"))
                 .ecosystemSpecific(EcosystemSpecificValue.fromString("{\"severity\":\"HIGH\"}"))
@@ -261,15 +261,16 @@ class DeserializationTest {
             new AffectedValuesBuilder(
                 builder(EcosystemValue.PYPI, NameValue.fromString("pikepdf")).build())
                 .ranges(
-                    TypeGitImpl.of(RepoValue.of(
-                            new URL("https://github.com/pikepdf/pikepdf")),
-                        GitEvent.of(EventSpecifierValue.INTRODUCED, "0"),
-                        GitEvent.of(EventSpecifierValue.FIXED,
+                    new TypeGitBuilder(RepoValue.of(
+                        new URL("https://github.com/pikepdf/pikepdf")),
+                        GitEventValues.of(EventSpecifierValue.INTRODUCED, "0"),
+                        GitEventValues.of(EventSpecifierValue.FIXED,
                             "3f38f73218e5e782fe411ccbb3b44a793c0b343a")
-                    ),
-                    TypeEcosystemImpl.of(
-                        EcosystemEvent.of(EventSpecifierValue.INTRODUCED, "2.8.0"),
-                        EcosystemEvent.of(EventSpecifierValue.FIXED, "2.10.0")))
+                    ).build(),
+                    new TypeEcosystemBuilder(
+                        EcosystemEventValues.of(EventSpecifierValue.INTRODUCED, "2.8.0"),
+                        EcosystemEventValues.of(EventSpecifierValue.FIXED, "2.10.0"))
+                        .build())
                 .versions(VersionsValue.of("2.8.0",
                     "2.8.0.post1",
                     "2.8.0.post2",
@@ -299,10 +300,10 @@ class DeserializationTest {
                 new PackageValueBuilder(EcosystemValue.RUBY_GEMS, NameValue.fromString("bundler"))
                     .build())
                 .ranges(
-                    TypeEcosystemImpl.of(
-                        EcosystemEvent.of(EventSpecifierValue.INTRODUCED, "1.14.0"),
-                        EcosystemEvent.of(EventSpecifierValue.FIXED, "2.1.0")
-                    ))
+                    new TypeEcosystemBuilder(
+                        EcosystemEventValues.of(EventSpecifierValue.INTRODUCED, "1.14.0"),
+                        EcosystemEventValues.of(EventSpecifierValue.FIXED, "2.1.0")
+                    ).build())
                 .versions(VersionsValue.of(
                     "1.14.0",
                     "1.14.1",
@@ -380,10 +381,10 @@ class DeserializationTest {
             new AffectedValuesBuilder(
                 builder(EcosystemValue.CRATES_IO, NameValue.fromString("http")).build())
                 .ranges(
-                    TypeSemVerImpl.of(
-                        SemVerEvent.of(EventSpecifierValue.INTRODUCED, "0.0.0-0"),
-                        SemVerEvent.of(EventSpecifierValue.FIXED, "0.1.20")
-                    ))
+                    new TypeSemVerBuilder(
+                        SemVerEventValues.of(EventSpecifierValue.INTRODUCED, "0.0.0-0"),
+                        SemVerEventValues.of(EventSpecifierValue.FIXED, "0.1.20")
+                    ).build())
                 .ecosystemSpecific(EcosystemSpecificValue.fromString("{\"functions\":"
                     + "[\"http::header::HeaderMap::reserve\"],\"keywords\":[\"http\",\""
                     + "integer-overflow\",\"DoS\"],\"categories\":[\"denial-of-service\"],"

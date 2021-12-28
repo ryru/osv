@@ -7,41 +7,42 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import ch.addere.osv.fields.affected.ranges.Event;
 import org.junit.jupiter.api.Test;
 
-class SemVerEventTest {
+class SemVerEventValuesTest {
 
   private static final String VERSION = "1.0.0";
 
   @Test
   void testOfEventNull() {
-    assertThatThrownBy(() -> SemVerEvent.of(null, VERSION))
+    assertThatThrownBy(() -> SemVerEventValues.of(null, VERSION))
         .isInstanceOf(NullPointerException.class)
         .hasMessageContaining("argument event must not be null");
   }
 
   @Test
   void testOfVersionNull() {
-    assertThatThrownBy(() -> SemVerEvent.of(EventSpecifierValue.INTRODUCED, null))
+    assertThatThrownBy(() -> SemVerEventValues.of(EventSpecifierValue.INTRODUCED, null))
         .isInstanceOf(NullPointerException.class)
         .hasMessageContaining("argument semVer must not be null");
   }
 
   @Test
   void testInvalidSemVer() {
-    assertThatThrownBy(() -> SemVerEvent.of(EventSpecifierValue.FIXED, "not-a-semantic-version"))
+    assertThatThrownBy(() -> SemVerEventValues.of(
+        EventSpecifierValue.FIXED, "not-a-semantic-version"))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("invalid semantic version: 'not-a-semantic-version'");
   }
 
   @Test
   void testOfValueObjectCreation() {
-    Event event1 = SemVerEvent.of(EventSpecifierValue.INTRODUCED, VERSION);
-    Event event2 = SemVerEvent.of(event1.event(), event1.release());
+    Event event1 = SemVerEventValues.of(EventSpecifierValue.INTRODUCED, VERSION);
+    Event event2 = SemVerEventValues.of(event1.event(), event1.release());
     assertThat(event1).isEqualTo(event2);
   }
 
   @Test
   void testIntroducedEvent() {
-    Event semVerEvent = SemVerEvent.of(EventSpecifierValue.INTRODUCED, VERSION);
+    Event semVerEvent = SemVerEventValues.of(EventSpecifierValue.INTRODUCED, VERSION);
     assertThat(semVerEvent).satisfies(semVer -> {
       assertThat(semVer.event()).isEqualTo(EventSpecifierValue.INTRODUCED);
       assertThat(semVer.release()).isEqualTo(VERSION);
@@ -50,7 +51,7 @@ class SemVerEventTest {
 
   @Test
   void testFixedEvent() {
-    Event semVerEvent = SemVerEvent.of(EventSpecifierValue.FIXED, VERSION);
+    Event semVerEvent = SemVerEventValues.of(EventSpecifierValue.FIXED, VERSION);
     assertThat(semVerEvent).satisfies(semVer -> {
       assertThat(semVer.event()).isEqualTo(EventSpecifierValue.FIXED);
       assertThat(semVer.release()).isEqualTo(VERSION);
@@ -59,7 +60,7 @@ class SemVerEventTest {
 
   @Test
   void testLimitedEvent() {
-    Event semVerEvent = SemVerEvent.of(EventSpecifierValue.LIMITED, VERSION);
+    Event semVerEvent = SemVerEventValues.of(EventSpecifierValue.LIMITED, VERSION);
     assertThat(semVerEvent).satisfies(semVer -> {
       assertThat(semVer.event()).isEqualTo(EventSpecifierValue.LIMITED);
       assertThat(semVer.release()).isEqualTo(VERSION);
@@ -68,8 +69,8 @@ class SemVerEventTest {
 
   @Test
   void testEquality() {
-    Event semVerEvent = SemVerEvent.of(EventSpecifierValue.INTRODUCED, VERSION);
-    Event otherSemVerEvent = SemVerEvent.of(EventSpecifierValue.INTRODUCED, VERSION);
+    Event semVerEvent = SemVerEventValues.of(EventSpecifierValue.INTRODUCED, VERSION);
+    Event otherSemVerEvent = SemVerEventValues.of(EventSpecifierValue.INTRODUCED, VERSION);
     assertThat(semVerEvent).satisfies(s -> {
       assertThat(s).isEqualTo(semVerEvent);
       assertThat(s).isEqualTo(otherSemVerEvent);
@@ -78,8 +79,8 @@ class SemVerEventTest {
 
   @Test
   void testNonEquality() {
-    Event semVerEvent = SemVerEvent.of(EventSpecifierValue.INTRODUCED, VERSION);
-    Event otherSemVerEvent = SemVerEvent.of(EventSpecifierValue.LIMITED, VERSION);
+    Event semVerEvent = SemVerEventValues.of(EventSpecifierValue.INTRODUCED, VERSION);
+    Event otherSemVerEvent = SemVerEventValues.of(EventSpecifierValue.LIMITED, VERSION);
     assertThat(semVerEvent).satisfies(s -> {
       assertThat(s).isNotEqualTo(null);
       assertThat(s).isNotEqualTo(otherSemVerEvent);
@@ -88,14 +89,14 @@ class SemVerEventTest {
 
   @Test
   void testHashCode() {
-    Event semVerEvent = SemVerEvent.of(EventSpecifierValue.INTRODUCED, VERSION);
-    Event otherSemVerEvent = SemVerEvent.of(EventSpecifierValue.INTRODUCED, VERSION);
+    Event semVerEvent = SemVerEventValues.of(EventSpecifierValue.INTRODUCED, VERSION);
+    Event otherSemVerEvent = SemVerEventValues.of(EventSpecifierValue.INTRODUCED, VERSION);
     assertThat(semVerEvent).hasSameHashCodeAs(otherSemVerEvent);
   }
 
   @Test
   void testToString() {
-    Event semVerEvent = SemVerEvent.of(EventSpecifierValue.INTRODUCED, VERSION);
+    Event semVerEvent = SemVerEventValues.of(EventSpecifierValue.INTRODUCED, VERSION);
     assertThat(semVerEvent)
         .hasToString(EVENTS_KEY + ": " + semVerEvent.event() + ", " + semVerEvent.release());
   }

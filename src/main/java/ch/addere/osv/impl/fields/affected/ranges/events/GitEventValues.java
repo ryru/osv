@@ -6,20 +6,20 @@ import java.util.Objects;
 /**
  * Git event to be used in ranges.
  */
-public final class GitEvent implements Event {
+public final class GitEventValues implements Event {
 
   private final EventSpecifierValue event;
   private final String gitCommit;
 
-  private GitEvent(EventSpecifierValue event, String gitCommit) {
+  private GitEventValues(EventSpecifierValue event, String gitCommit) {
     Objects.requireNonNull(event, "argument event must not be null");
     Objects.requireNonNull(gitCommit, "argument gitCommit must not be null");
     this.event = event;
     this.gitCommit = gitCommit;
   }
 
-  public static GitEvent of(EventSpecifierValue event, String gitCommit) {
-    return new GitEvent(event, gitCommit);
+  public static GitEventValues of(EventSpecifierValue event, String gitCommit) {
+    return new GitEventValues(event, gitCommit);
   }
 
   @Override
@@ -40,7 +40,7 @@ public final class GitEvent implements Event {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    GitEvent that = (GitEvent) o;
+    GitEventValues that = (GitEventValues) o;
     return event.equals(that.event) && Objects.equals(gitCommit, that.gitCommit);
   }
 

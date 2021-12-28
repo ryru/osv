@@ -10,35 +10,28 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ch.addere.osv.fields.affected.Ranges;
 import ch.addere.osv.fields.affected.ranges.Event;
+import ch.addere.osv.impl.fields.affected.ranges.TypeGitValues.TypeGitBuilder;
 import ch.addere.osv.impl.fields.affected.ranges.events.EventSpecifierValue;
-import ch.addere.osv.impl.fields.affected.ranges.events.GitEvent;
+import ch.addere.osv.impl.fields.affected.ranges.events.GitEventValues;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
-class TypeGitImplTest {
+class TypeGitValuesTest {
+
+  private static GitEventValues introducedEvent() {
+    return GitEventValues.of(EventSpecifierValue.INTRODUCED, "1.0.0");
+  }
+
+  private static GitEventValues fixedEvent() {
+    return GitEventValues.of(EventSpecifierValue.FIXED, "1.0.1");
+  }
 
   @Test
   void testOfRepoNull() {
-    assertThatThrownBy(() -> TypeGitImpl.of(null, introducedEvent()))
+    assertThatThrownBy(() -> new TypeGitBuilder(null, introducedEvent()))
         .isInstanceOf(NullPointerException.class)
         .hasMessageContaining("argument repo must not be null");
-  }
-
-  @Test
-  void testOfEventsNull() {
-    assertThatThrownBy(() -> TypeGitImpl.of(repo(), (GitEvent[]) null))
-        .isInstanceOf(NullPointerException.class)
-        .hasMessageContaining("argument events must not be null");
-  }
-
-  @Test
-  void testOfValueObjectCreation() {
-    Ranges ranges1 = TypeGitImpl.of(repo(), introducedEvent());
-    Ranges ranges2 = TypeGitImpl.of(
-        ranges1.repo().get(),
-        ranges1.events().toArray(new GitEvent[0]));
-    assertThat(ranges1).isEqualTo(ranges2);
   }
 
 
@@ -46,38 +39,52 @@ class TypeGitImplTest {
     return RepoValue.fromString("https://osv.dev");
   }
 
-  private static GitEvent introducedEvent() {
-    return GitEvent.of(EventSpecifierValue.INTRODUCED, "1.0.0");
+  @Test
+  void testOfEventsNull() {
+    assertThatThrownBy(() -> new TypeGitBuilder(repo(), (GitEventValues[]) null))
+        .isInstanceOf(NullPointerException.class)
+        .hasMessageContaining("argument events must not be null");
   }
 
-  private static GitEvent fixedEvent() {
-    return GitEvent.of(EventSpecifierValue.FIXED, "1.0.1");
+  @Test
+  void testOfValueObjectCreation() {
+    Ranges ranges1 = new TypeGitBuilder(repo(), introducedEvent()).build();
+    Ranges ranges2 = new TypeGitBuilder(
+        ranges1.repo().get(),
+        ranges1.events().toArray(new GitEventValues[0])).build();
+    assertThat(ranges1).isEqualTo(ranges2);
   }
 
   @Test
   void testEquality() {
-    Ranges type = TypeGitImpl.of(repo(), introducedEvent());
-    Ranges otherType = TypeGitImpl.of(repo(), introducedEvent());
-    assertThat(type).isEqualTo(otherType);
+    Ranges type = new TypeGitBuilder(repo(), introducedEvent()).build();
+    Ranges otherType = new TypeGitBuilder(repo(), introducedEvent()).build();
+    assertThat(type).satisfies(t -> {
+      assertThat(t).isEqualTo(type);
+      assertThat(t).isEqualTo(otherType);
+    });
   }
 
   @Test
   void testNonEquality() {
-    Ranges type = TypeGitImpl.of(repo(), introducedEvent());
-    Ranges otherType = TypeGitImpl.of(repo(), fixedEvent());
-    assertThat(type).isNotEqualTo(otherType);
+    Ranges type = new TypeGitBuilder(repo(), introducedEvent()).build();
+    Ranges otherType = new TypeGitBuilder(repo(), fixedEvent()).build();
+    assertThat(type).satisfies(t -> {
+      assertThat(t).isNotEqualTo(null);
+      assertThat(t).isNotEqualTo(otherType);
+    });
   }
 
   @Test
   void testHashCode() {
-    Ranges type = TypeGitImpl.of(repo(), introducedEvent());
-    Ranges otherType = TypeGitImpl.of(repo(), introducedEvent());
+    Ranges type = new TypeGitBuilder(repo(), introducedEvent()).build();
+    Ranges otherType = new TypeGitBuilder(repo(), introducedEvent()).build();
     assertThat(type).hasSameHashCodeAs(otherType);
   }
 
   @Test
   void testToString() {
-    Ranges type = TypeGitImpl.of(repo(), introducedEvent());
+    Ranges type = new TypeGitBuilder(repo(), introducedEvent()).build();
     assertThat(type).hasToString(RANGES_KEY + ": " + join(", ",
         typeToString(),
         repoToString(),
@@ -86,24 +93,24 @@ class TypeGitImplTest {
 
   @Test
   void testType() {
-    Ranges typeEcosystem = TypeGitImpl.of(repo(), introducedEvent());
+    Ranges typeEcosystem = new TypeGitBuilder(repo(), introducedEvent()).build();
     RangeTypeValue type = typeEcosystem.type();
     assertThat(type).isEqualTo(RangeTypeValue.GIT);
   }
 
   @Test
   void testWitRepo() {
-    Ranges typeEcosystem = TypeGitImpl.of(repo(), introducedEvent());
+    Ranges typeEcosystem = new TypeGitBuilder(repo(), introducedEvent()).build();
     Optional<RepoValue> repo = typeEcosystem.repo();
     assertThat(repo).contains(RepoValue.fromString("https://osv.dev"));
   }
 
   @Test
   void testEvents() {
-    Ranges typeEcosystem = TypeGitImpl.of(repo(), introducedEvent());
+    Ranges typeEcosystem = new TypeGitBuilder(repo(), introducedEvent()).build();
     List<? extends Event> events = typeEcosystem.events();
     assertThat(events.toArray()).containsExactly(
-        GitEvent.of(EventSpecifierValue.INTRODUCED, "1.0.0"));
+        GitEventValues.of(EventSpecifierValue.INTRODUCED, "1.0.0"));
   }
 
   private static String typeToString() {

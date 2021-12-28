@@ -25,9 +25,9 @@ import ch.addere.osv.impl.fields.affected.VersionsValue;
 import ch.addere.osv.impl.fields.affected.pckg.EcosystemValue;
 import ch.addere.osv.impl.fields.affected.pckg.NameValue;
 import ch.addere.osv.impl.fields.affected.pckg.PurlValue;
-import ch.addere.osv.impl.fields.affected.ranges.TypeSemVerImpl;
+import ch.addere.osv.impl.fields.affected.ranges.TypeSemVerValues.TypeSemVerBuilder;
 import ch.addere.osv.impl.fields.affected.ranges.events.EventSpecifierValue;
-import ch.addere.osv.impl.fields.affected.ranges.events.SemVerEvent;
+import ch.addere.osv.impl.fields.affected.ranges.events.SemVerEventValues;
 import org.junit.jupiter.api.Test;
 
 class AffectedValuesTest {
@@ -50,7 +50,9 @@ class AffectedValuesTest {
   }
 
   private static Ranges ranges() {
-    return TypeSemVerImpl.of(SemVerEvent.of(EventSpecifierValue.INTRODUCED, "1.0.0"));
+    return new TypeSemVerBuilder(
+        SemVerEventValues.of(EventSpecifierValue.INTRODUCED, "1.0.0"))
+        .build();
   }
 
   private static EcosystemSpecificValue ecosystemSpecific() {

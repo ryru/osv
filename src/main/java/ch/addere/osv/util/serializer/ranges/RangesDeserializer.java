@@ -9,13 +9,13 @@ import static java.lang.String.format;
 import ch.addere.osv.fields.affected.Ranges;
 import ch.addere.osv.impl.fields.affected.ranges.RangeTypeValue;
 import ch.addere.osv.impl.fields.affected.ranges.RepoValue;
-import ch.addere.osv.impl.fields.affected.ranges.TypeEcosystemImpl;
-import ch.addere.osv.impl.fields.affected.ranges.TypeGitImpl;
-import ch.addere.osv.impl.fields.affected.ranges.TypeSemVerImpl;
-import ch.addere.osv.impl.fields.affected.ranges.events.EcosystemEvent;
+import ch.addere.osv.impl.fields.affected.ranges.TypeEcosystemValues.TypeEcosystemBuilder;
+import ch.addere.osv.impl.fields.affected.ranges.TypeGitValues.TypeGitBuilder;
+import ch.addere.osv.impl.fields.affected.ranges.TypeSemVerValues.TypeSemVerBuilder;
+import ch.addere.osv.impl.fields.affected.ranges.events.EcosystemEventValues;
 import ch.addere.osv.impl.fields.affected.ranges.events.EventSpecifierValue;
-import ch.addere.osv.impl.fields.affected.ranges.events.GitEvent;
-import ch.addere.osv.impl.fields.affected.ranges.events.SemVerEvent;
+import ch.addere.osv.impl.fields.affected.ranges.events.GitEventValues;
+import ch.addere.osv.impl.fields.affected.ranges.events.SemVerEventValues;
 import ch.addere.osv.util.OsvParserException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -74,30 +74,33 @@ public final class RangesDeserializer {
   }
 
   private static Optional<Ranges> getSemVerRanges(JsonNode rangeNode) throws OsvParserException {
-    List<SemVerEvent> events = readRangeSemVerEvents(rangeNode.withArray(EVENTS_KEY));
+    List<SemVerEventValues> events = readRangeSemVerEvents(rangeNode.withArray(EVENTS_KEY));
     Optional<JsonNode> repoNode = Optional.ofNullable(rangeNode.get(REPO_KEY));
+    TypeSemVerBuilder semVer = new TypeSemVerBuilder(events.toArray(new SemVerEventValues[0]));
     if (repoNode.isPresent()) {
-      return Optional.of(
-          TypeSemVerImpl.of(readRangeRepo(repoNode.get()), events.toArray(new SemVerEvent[0])));
+      return Optional.of(semVer.repo(readRangeRepo(repoNode.get())).build());
     } else {
-      return Optional.of(TypeSemVerImpl.of(events.toArray(new SemVerEvent[0])));
+      return Optional.of(semVer.build());
     }
   }
 
   private static Optional<Ranges> getGitRanges(JsonNode rangeNode) throws OsvParserException {
-    List<GitEvent> events = readRangeGitEvents(rangeNode.withArray(EVENTS_KEY));
+    List<GitEventValues> events = readRangeGitEvents(rangeNode.withArray(EVENTS_KEY));
     RepoValue repo = readRangeRepo(rangeNode.get(REPO_KEY));
-    return Optional.of(TypeGitImpl.of(repo, events.toArray(new GitEvent[0])));
+    return Optional.of(new TypeGitBuilder(repo, events.toArray(new GitEventValues[0])).build());
   }
 
   private static Optional<Ranges> getEcosystemRanges(JsonNode rangeNode) throws OsvParserException {
-    List<EcosystemEvent> events = readRangeEcosystem(rangeNode.withArray(EVENTS_KEY));
+    List<EcosystemEventValues> events = readRangeEcosystem(rangeNode.withArray(EVENTS_KEY));
     Optional<JsonNode> repoNode = Optional.ofNullable(rangeNode.get(REPO_KEY));
+    TypeEcosystemBuilder typeEcosystem = new TypeEcosystemBuilder(
+        events.toArray(new EcosystemEventValues[0]));
     if (repoNode.isPresent()) {
-      return Optional.of(TypeEcosystemImpl.of(readRangeRepo(repoNode.get()),
-          events.toArray(new EcosystemEvent[0])));
+      return Optional.of(typeEcosystem
+          .repo(readRangeRepo(repoNode.get()))
+          .build());
     } else {
-      return Optional.of(TypeEcosystemImpl.of(events.toArray(new EcosystemEvent[0])));
+      return Optional.of(typeEcosystem.build());
     }
   }
 
@@ -109,35 +112,35 @@ public final class RangesDeserializer {
     }
   }
 
-  private static List<SemVerEvent> readRangeSemVerEvents(ArrayNode eventArray) {
-    List<SemVerEvent> eventList = new LinkedList<>();
+  private static List<SemVerEventValues> readRangeSemVerEvents(ArrayNode eventArray) {
+    List<SemVerEventValues> eventList = new LinkedList<>();
     for (JsonNode jsonNode : eventArray) {
       var entry = jsonNode.fields().next();
       EventSpecifierValue specifier = EventSpecifierValue.of(entry.getKey());
       String version = entry.getValue().asText();
-      eventList.add(SemVerEvent.of(specifier, version));
+      eventList.add(SemVerEventValues.of(specifier, version));
     }
     return eventList;
   }
 
-  private static List<GitEvent> readRangeGitEvents(ArrayNode eventArray) {
-    List<GitEvent> eventList = new LinkedList<>();
+  private static List<GitEventValues> readRangeGitEvents(ArrayNode eventArray) {
+    List<GitEventValues> eventList = new LinkedList<>();
     for (JsonNode jsonNode : eventArray) {
       var entry = jsonNode.fields().next();
       EventSpecifierValue specifier = EventSpecifierValue.of(entry.getKey());
       String version = entry.getValue().asText();
-      eventList.add(GitEvent.of(specifier, version));
+      eventList.add(GitEventValues.of(specifier, version));
     }
     return eventList;
   }
 
-  private static List<EcosystemEvent> readRangeEcosystem(ArrayNode eventArray) {
-    List<EcosystemEvent> eventList = new LinkedList<>();
+  private static List<EcosystemEventValues> readRangeEcosystem(ArrayNode eventArray) {
+    List<EcosystemEventValues> eventList = new LinkedList<>();
     for (JsonNode jsonNode : eventArray) {
       var entry = jsonNode.fields().next();
       EventSpecifierValue specifier = EventSpecifierValue.of(entry.getKey());
       String version = entry.getValue().asText();
-      eventList.add(EcosystemEvent.of(specifier, version));
+      eventList.add(EcosystemEventValues.of(specifier, version));
     }
     return eventList;
   }

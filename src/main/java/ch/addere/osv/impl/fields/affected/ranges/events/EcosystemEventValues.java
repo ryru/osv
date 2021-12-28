@@ -6,20 +6,20 @@ import java.util.Objects;
 /**
  * Ecosystem event to be used in ranges.
  */
-public final class EcosystemEvent implements Event {
+public final class EcosystemEventValues implements Event {
 
   private final EventSpecifierValue event;
   private final String version;
 
-  private EcosystemEvent(EventSpecifierValue event, String version) {
+  private EcosystemEventValues(EventSpecifierValue event, String version) {
     Objects.requireNonNull(event, "argument event must not be null");
     Objects.requireNonNull(version, "argument version must not be null");
     this.event = event;
     this.version = version;
   }
 
-  public static EcosystemEvent of(EventSpecifierValue event, String version) {
-    return new EcosystemEvent(event, version);
+  public static EcosystemEventValues of(EventSpecifierValue event, String version) {
+    return new EcosystemEventValues(event, version);
   }
 
   @Override
@@ -40,7 +40,7 @@ public final class EcosystemEvent implements Event {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    EcosystemEvent that = (EcosystemEvent) o;
+    EcosystemEventValues that = (EcosystemEventValues) o;
     return event.equals(that.event) && Objects.equals(version, that.version);
   }
 

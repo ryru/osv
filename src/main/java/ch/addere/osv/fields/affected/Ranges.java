@@ -17,6 +17,6 @@ public interface Ranges {
 
   Optional<RepoValue> repo();
 
-  List<? extends Event> events();
+  List<Event> events();
 
 }

@@ -12,9 +12,9 @@ import ch.addere.osv.impl.fields.affected.VersionsValue;
 import ch.addere.osv.impl.fields.affected.pckg.EcosystemValue;
 import ch.addere.osv.impl.fields.affected.pckg.NameValue;
 import ch.addere.osv.impl.fields.affected.pckg.PurlValue;
-import ch.addere.osv.impl.fields.affected.ranges.TypeSemVerImpl;
+import ch.addere.osv.impl.fields.affected.ranges.TypeSemVerValues.TypeSemVerBuilder;
 import ch.addere.osv.impl.fields.affected.ranges.events.EventSpecifierValue;
-import ch.addere.osv.impl.fields.affected.ranges.events.SemVerEvent;
+import ch.addere.osv.impl.fields.affected.ranges.events.SemVerEventValues;
 import ch.addere.osv.util.OsvParserException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -68,11 +68,11 @@ class AffectedDeserializerTest {
     PackageValues pckg = builder(EcosystemValue.GO, NameValue.fromString("crypto/elliptic"))
         .purl(purl)
         .build();
-    SemVerEvent introduced1 = SemVerEvent.of(EventSpecifierValue.INTRODUCED, "1.0.0");
-    SemVerEvent fixed1 = SemVerEvent.of(EventSpecifierValue.FIXED, "1.14.14");
-    SemVerEvent introduced2 = SemVerEvent.of(EventSpecifierValue.INTRODUCED, "1.15.0");
-    SemVerEvent fixed2 = SemVerEvent.of(EventSpecifierValue.FIXED, "1.15.17");
-    Ranges ranges = TypeSemVerImpl.of(introduced1, fixed1, introduced2, fixed2);
+    SemVerEventValues introduced1 = SemVerEventValues.of(EventSpecifierValue.INTRODUCED, "1.0.0");
+    SemVerEventValues fixed1 = SemVerEventValues.of(EventSpecifierValue.FIXED, "1.14.14");
+    SemVerEventValues introduced2 = SemVerEventValues.of(EventSpecifierValue.INTRODUCED, "1.15.0");
+    SemVerEventValues fixed2 = SemVerEventValues.of(EventSpecifierValue.FIXED, "1.15.17");
+    Ranges ranges = new TypeSemVerBuilder(introduced1, fixed1, introduced2, fixed2).build();
     return new AffectedValuesBuilder(pckg).ranges(ranges).build();
   }
 

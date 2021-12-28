@@ -10,12 +10,12 @@ import java.util.Objects;
 /**
  * Semantic version event to be used in ranges.
  */
-public final class SemVerEvent implements Event {
+public final class SemVerEventValues implements Event {
 
   private final EventSpecifierValue event;
   private final Version semVer;
 
-  private SemVerEvent(EventSpecifierValue event, String semVer) {
+  private SemVerEventValues(EventSpecifierValue event, String semVer) {
     Objects.requireNonNull(event, "argument event must not be null");
     Objects.requireNonNull(semVer, "argument semVer must not be null");
     this.event = event;
@@ -26,8 +26,8 @@ public final class SemVerEvent implements Event {
     }
   }
 
-  public static SemVerEvent of(EventSpecifierValue event, String semVer) {
-    return new SemVerEvent(event, semVer);
+  public static SemVerEventValues of(EventSpecifierValue event, String semVer) {
+    return new SemVerEventValues(event, semVer);
   }
 
   @Override
@@ -48,7 +48,7 @@ public final class SemVerEvent implements Event {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    SemVerEvent that = (SemVerEvent) o;
+    SemVerEventValues that = (SemVerEventValues) o;
     return event.equals(that.event) && Objects.equals(semVer, that.semVer);
   }
 

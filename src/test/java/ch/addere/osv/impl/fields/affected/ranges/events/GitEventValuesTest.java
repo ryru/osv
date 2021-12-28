@@ -7,34 +7,34 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import ch.addere.osv.fields.affected.ranges.Event;
 import org.junit.jupiter.api.Test;
 
-class GitEventTest {
+class GitEventValuesTest {
 
   private static final String VERSION = "aVersion";
 
   @Test
   void testOfEventNull() {
-    assertThatThrownBy(() -> GitEvent.of(null, VERSION))
+    assertThatThrownBy(() -> GitEventValues.of(null, VERSION))
         .isInstanceOf(NullPointerException.class)
         .hasMessageContaining("argument event must not be null");
   }
 
   @Test
   void testOfVersionNull() {
-    assertThatThrownBy(() -> GitEvent.of(EventSpecifierValue.INTRODUCED, null))
+    assertThatThrownBy(() -> GitEventValues.of(EventSpecifierValue.INTRODUCED, null))
         .isInstanceOf(NullPointerException.class)
         .hasMessageContaining("argument gitCommit must not be null");
   }
 
   @Test
   void testOfValueObjectCreation() {
-    Event event1 = GitEvent.of(EventSpecifierValue.INTRODUCED, VERSION);
-    Event event2 = GitEvent.of(event1.event(), event1.release());
+    Event event1 = GitEventValues.of(EventSpecifierValue.INTRODUCED, VERSION);
+    Event event2 = GitEventValues.of(event1.event(), event1.release());
     assertThat(event1).isEqualTo(event2);
   }
 
   @Test
   void testIntroducedEvent() {
-    Event gitEvent = GitEvent.of(EventSpecifierValue.INTRODUCED, VERSION);
+    Event gitEvent = GitEventValues.of(EventSpecifierValue.INTRODUCED, VERSION);
     assertThat(gitEvent).satisfies(git -> {
       assertThat(git.event()).isEqualTo(EventSpecifierValue.INTRODUCED);
       assertThat(git.release()).isEqualTo(VERSION);
@@ -43,7 +43,7 @@ class GitEventTest {
 
   @Test
   void testFixedEvent() {
-    Event gitEvent = GitEvent.of(EventSpecifierValue.FIXED, VERSION);
+    Event gitEvent = GitEventValues.of(EventSpecifierValue.FIXED, VERSION);
     assertThat(gitEvent).satisfies(git -> {
       assertThat(git.event()).isEqualTo(EventSpecifierValue.FIXED);
       assertThat(git.release()).isEqualTo(VERSION);
@@ -52,7 +52,7 @@ class GitEventTest {
 
   @Test
   void testLimitedEvent() {
-    Event gitEvent = GitEvent.of(EventSpecifierValue.LIMITED, VERSION);
+    Event gitEvent = GitEventValues.of(EventSpecifierValue.LIMITED, VERSION);
     assertThat(gitEvent).satisfies(git -> {
       assertThat(git.event()).isEqualTo(EventSpecifierValue.LIMITED);
       assertThat(git.release()).isEqualTo(VERSION);
@@ -61,8 +61,8 @@ class GitEventTest {
 
   @Test
   void testEquality() {
-    Event gitEvent = GitEvent.of(EventSpecifierValue.INTRODUCED, VERSION);
-    Event otherGitEvent = GitEvent.of(EventSpecifierValue.INTRODUCED, VERSION);
+    Event gitEvent = GitEventValues.of(EventSpecifierValue.INTRODUCED, VERSION);
+    Event otherGitEvent = GitEventValues.of(EventSpecifierValue.INTRODUCED, VERSION);
     assertThat(gitEvent).satisfies(g -> {
       assertThat(g).isEqualTo(gitEvent);
       assertThat(g).isEqualTo(otherGitEvent);
@@ -71,8 +71,8 @@ class GitEventTest {
 
   @Test
   void testNonEquality() {
-    Event gitEvent = GitEvent.of(EventSpecifierValue.INTRODUCED, VERSION);
-    Event otherGitEvent = GitEvent.of(EventSpecifierValue.LIMITED, VERSION);
+    Event gitEvent = GitEventValues.of(EventSpecifierValue.INTRODUCED, VERSION);
+    Event otherGitEvent = GitEventValues.of(EventSpecifierValue.LIMITED, VERSION);
     assertThat(gitEvent).satisfies(g -> {
       assertThat(g).isNotEqualTo(null);
       assertThat(g).isNotEqualTo(otherGitEvent);
@@ -81,14 +81,14 @@ class GitEventTest {
 
   @Test
   void testHashCode() {
-    Event gitEvent = GitEvent.of(EventSpecifierValue.INTRODUCED, VERSION);
-    Event otherGitEvent = GitEvent.of(EventSpecifierValue.INTRODUCED, VERSION);
+    Event gitEvent = GitEventValues.of(EventSpecifierValue.INTRODUCED, VERSION);
+    Event otherGitEvent = GitEventValues.of(EventSpecifierValue.INTRODUCED, VERSION);
     assertThat(gitEvent).hasSameHashCodeAs(otherGitEvent);
   }
 
   @Test
   void testToString() {
-    Event gitEvent = GitEvent.of(EventSpecifierValue.INTRODUCED, VERSION);
+    Event gitEvent = GitEventValues.of(EventSpecifierValue.INTRODUCED, VERSION);
     assertThat(gitEvent)
         .hasToString(EVENTS_KEY + ": " + gitEvent.event() + ", " + gitEvent.release());
   }
