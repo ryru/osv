@@ -6,13 +6,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ch.addere.osv.impl.Entry;
 import ch.addere.osv.impl.fields.AffectedValues.AffectedValuesBuilder;
+import ch.addere.osv.impl.fields.AliasesValue;
 import ch.addere.osv.impl.fields.DetailsValue;
-import ch.addere.osv.impl.fields.IdAggregate;
 import ch.addere.osv.impl.fields.IdDatabaseValue;
 import ch.addere.osv.impl.fields.IdValue;
 import ch.addere.osv.impl.fields.ModifiedValue;
 import ch.addere.osv.impl.fields.PublishedValue;
 import ch.addere.osv.impl.fields.ReferencesValues;
+import ch.addere.osv.impl.fields.RelatedValue;
 import ch.addere.osv.impl.fields.SummaryValue;
 import ch.addere.osv.impl.fields.affected.DatabaseSpecificValue;
 import ch.addere.osv.impl.fields.affected.EcosystemSpecificValue;
@@ -76,7 +77,7 @@ class DeserializationTest {
             IdValue.of(IdDatabaseValue.GO, "2021-99998"),
             ModifiedValue.of(Instant.parse("2021-03-10T23:20:53Z")))
         .published(PublishedValue.of(Instant.parse("2021-01-21T19:15:00Z")))
-        .aliases(IdAggregate.of(IdValue.of(IdDatabaseValue.CVE, "2021-3114")))
+        .aliases(AliasesValue.of(IdValue.of(IdDatabaseValue.CVE, "2021-3114")))
         .summary(SummaryValue.fromString("incorrect P-224 curve operations"))
         .details(DetailsValue.fromString(
             "The P224() Curve implementation can in rare circumstances generate incorrect outputs, "
@@ -113,7 +114,7 @@ class DeserializationTest {
             ModifiedValue.of(Instant.parse("2021-03-10T23:20:53Z"))
         )
         .published(PublishedValue.of(Instant.parse("2021-01-21T19:15:00Z")))
-        .aliases(IdAggregate.of(IdValue.of(IdDatabaseValue.CVE, "2021-3115")))
+        .aliases(AliasesValue.of(IdValue.of(IdDatabaseValue.CVE, "2021-3115")))
         .summary(
             SummaryValue.fromString(
                 "packages using cgo can cause arbitrary code execution at build time"))
@@ -149,13 +150,13 @@ class DeserializationTest {
         )
         .published(PublishedValue.of(Instant.parse("2021-03-07T11:27:00Z")))
         .aliases(
-            IdAggregate.of(
+            AliasesValue.of(
                 IdValue.of(IdDatabaseValue.NPM, "1648"),
                 IdValue.of(IdDatabaseValue.CVE, "2020-28498"),
                 IdValue.of(IdDatabaseValue.SNYK, "JS-ELLIPTIC-1064899"))
         )
         .related(
-            IdAggregate.of(
+            RelatedValue.of(
                 IdValue.of(IdDatabaseValue.NPM, "1649"),
                 IdValue.of(IdDatabaseValue.SNYK, "JAVA-ORGWEBJARSNPM-1069836"))
         )
@@ -248,7 +249,7 @@ class DeserializationTest {
             ModifiedValue.of(Instant.parse("2021-04-07T15:14:00Z"))
         )
         .published(PublishedValue.of(Instant.parse("2021-04-01T20:15:00Z")))
-        .aliases(IdAggregate.of(IdValue.of(IdDatabaseValue.CVE, "2021-29421")))
+        .aliases(AliasesValue.of(IdValue.of(IdDatabaseValue.CVE, "2021-29421")))
         .summary(SummaryValue.fromString("XXE in pikepdf"))
         .details(DetailsValue.fromString(
             "models/metadata.py in the pikepdf package 2.8.0 through 2.9.2 for Python allows XXE "
@@ -359,7 +360,7 @@ class DeserializationTest {
             ModifiedValue.of(Instant.parse("2021-01-04T19:02:00Z"))
         )
         .published(PublishedValue.of(Instant.parse("2019-11-16T00:00:00Z")))
-        .aliases(IdAggregate.of(
+        .aliases(AliasesValue.of(
             IdValue.of(IdDatabaseValue.CVE, "2020-25574"),
             IdValue.of(IdDatabaseValue.CVE, "2019-25008")))
         .summary(SummaryValue.fromString("Integer Overflow in HeaderMap::reserve() can cause "

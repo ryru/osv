@@ -1,13 +1,13 @@
 package ch.addere.osv.util;
 
 import static ch.addere.osv.impl.fields.AffectedValues.AFFECTED_KEY;
+import static ch.addere.osv.impl.fields.AliasesValue.ALIASES_KEY;
 import static ch.addere.osv.impl.fields.DetailsValue.DETAILS_KEY;
-import static ch.addere.osv.impl.fields.IdAggregate.ALIASES_KEY;
-import static ch.addere.osv.impl.fields.IdAggregate.RELATED_KEY;
 import static ch.addere.osv.impl.fields.IdValue.ID_KEY;
 import static ch.addere.osv.impl.fields.ModifiedValue.MODIFIED_KEY;
 import static ch.addere.osv.impl.fields.PublishedValue.PUBLISHED_KEY;
 import static ch.addere.osv.impl.fields.ReferencesValues.REFERENCES_KEY;
+import static ch.addere.osv.impl.fields.RelatedValue.RELATED_KEY;
 import static ch.addere.osv.impl.fields.SummaryValue.SUMMARY_KEY;
 import static ch.addere.osv.impl.fields.WithdrawnValue.WITHDRAWN_KEY;
 import static ch.addere.osv.impl.fields.references.ReferenceTypeValue.REFERENCE_TYPE_KEY;
@@ -15,12 +15,13 @@ import static ch.addere.osv.impl.fields.references.ReferenceUrlValue.REFERENCE_U
 
 import ch.addere.osv.impl.Entry;
 import ch.addere.osv.impl.fields.AffectedValues;
+import ch.addere.osv.impl.fields.AliasesValue;
 import ch.addere.osv.impl.fields.DetailsValue;
-import ch.addere.osv.impl.fields.IdAggregate;
 import ch.addere.osv.impl.fields.IdValue;
 import ch.addere.osv.impl.fields.ModifiedValue;
 import ch.addere.osv.impl.fields.PublishedValue;
 import ch.addere.osv.impl.fields.ReferencesValues;
+import ch.addere.osv.impl.fields.RelatedValue;
 import ch.addere.osv.impl.fields.SummaryValue;
 import ch.addere.osv.impl.fields.WithdrawnValue;
 import ch.addere.osv.impl.fields.references.ReferenceTypeValue;
@@ -60,22 +61,40 @@ public final class EntryDeserializer extends StdDeserializer<Entry> {
     return ModifiedValue.of(instant);
   }
 
-  private static Optional<IdAggregate> readIdAggregate(JsonNode idAggregateNode) {
-    if (isEmptyJsonNode(idAggregateNode)) {
+  private static Optional<AliasesValue> readAliases(JsonNode aliasesNode) {
+    if (isEmptyJsonNode(aliasesNode)) {
       return Optional.empty();
     }
-    List<IdValue> ids = new ArrayList<>();
-    if (idAggregateNode.isArray()) {
-      for (final JsonNode idNote : idAggregateNode) {
-        ids.add(readId(idNote));
-      }
-    }
+    List<IdValue> ids = readMultipleIds(aliasesNode);
     if (ids.isEmpty()) {
       return Optional.empty();
     } else {
-      return Optional.of(IdAggregate.of(ids.toArray(new IdValue[0])));
+      return Optional.of(AliasesValue.of(ids.toArray(new IdValue[0])));
     }
   }
+
+  private static Optional<RelatedValue> readIdAggregate(JsonNode idAggregateNode) {
+    if (isEmptyJsonNode(idAggregateNode)) {
+      return Optional.empty();
+    }
+    List<IdValue> ids = readMultipleIds(idAggregateNode);
+    if (ids.isEmpty()) {
+      return Optional.empty();
+    } else {
+      return Optional.of(RelatedValue.of(ids.toArray(new IdValue[0])));
+    }
+  }
+
+  private static List<IdValue> readMultipleIds(JsonNode aliasesNode) {
+    List<IdValue> ids = new ArrayList<>();
+    if (aliasesNode.isArray()) {
+      for (final JsonNode idNote : aliasesNode) {
+        ids.add(readId(idNote));
+      }
+    }
+    return ids;
+  }
+
 
   private static Optional<PublishedValue> readPublished(JsonNode publishedNode) {
     if (isEmptyJsonNode(publishedNode)) {
@@ -155,8 +174,8 @@ public final class EntryDeserializer extends StdDeserializer<Entry> {
       throw new OsvParserException("deserialization error");
     }
     ModifiedValue modified = readModified(node.get(MODIFIED_KEY));
-    Optional<IdAggregate> aliases = readIdAggregate(node.get(ALIASES_KEY));
-    Optional<IdAggregate> related = readIdAggregate(node.get(RELATED_KEY));
+    Optional<AliasesValue> aliases = readAliases(node.get(ALIASES_KEY));
+    Optional<RelatedValue> related = readIdAggregate(node.get(RELATED_KEY));
     Optional<PublishedValue> published = readPublished(node.get(PUBLISHED_KEY));
     Optional<WithdrawnValue> withdrawn = readWithdrawn(node.get(WITHDRAWN_KEY));
     Optional<SummaryValue> summary = readSummary(node.get(SUMMARY_KEY));

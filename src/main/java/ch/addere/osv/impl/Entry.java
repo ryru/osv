@@ -3,12 +3,13 @@ package ch.addere.osv.impl;
 import static java.util.stream.Collectors.joining;
 
 import ch.addere.osv.impl.fields.AffectedValues;
+import ch.addere.osv.impl.fields.AliasesValue;
 import ch.addere.osv.impl.fields.DetailsValue;
-import ch.addere.osv.impl.fields.IdAggregate;
 import ch.addere.osv.impl.fields.IdValue;
 import ch.addere.osv.impl.fields.ModifiedValue;
 import ch.addere.osv.impl.fields.PublishedValue;
 import ch.addere.osv.impl.fields.ReferencesValues;
+import ch.addere.osv.impl.fields.RelatedValue;
 import ch.addere.osv.impl.fields.SummaryValue;
 import ch.addere.osv.impl.fields.WithdrawnValue;
 import java.util.LinkedList;
@@ -24,8 +25,8 @@ public final class Entry {
 
   private final IdValue id;
   private final ModifiedValue modified;
-  private IdAggregate aliases;
-  private IdAggregate related;
+  private AliasesValue aliases;
+  private RelatedValue related;
   private PublishedValue published;
   private WithdrawnValue withdrawn;
   private SummaryValue summary;
@@ -73,7 +74,7 @@ public final class Entry {
    *
    * @return IdAggregate if present, otherwise empty optional
    */
-  public Optional<IdAggregate> aliases() {
+  public Optional<AliasesValue> aliases() {
     return Optional.ofNullable(aliases);
   }
 
@@ -82,7 +83,7 @@ public final class Entry {
    *
    * @return IdAggregate if present, otherwise empty optional
    */
-  public Optional<IdAggregate> related() {
+  public Optional<RelatedValue> related() {
     return Optional.ofNullable(related);
   }
 
@@ -198,8 +199,8 @@ public final class Entry {
 
     private final IdValue id;
     private final ModifiedValue modified;
-    private IdAggregate aliases = null;
-    private IdAggregate related = null;
+    private AliasesValue aliases = null;
+    private RelatedValue related = null;
     private PublishedValue published = null;
     private WithdrawnValue withdrawn = null;
     private SummaryValue summary = null;
@@ -226,7 +227,7 @@ public final class Entry {
      * @param aliases Aliases IdAggregate to add
      * @return valid EntryBuilder
      */
-    public EntryBuilder aliases(IdAggregate aliases) {
+    public EntryBuilder aliases(AliasesValue aliases) {
       this.aliases = aliases;
       return this;
     }
@@ -237,7 +238,7 @@ public final class Entry {
      * @param related IdAggregate to add
      * @return valid EntryBuilder
      */
-    public EntryBuilder related(IdAggregate related) {
+    public EntryBuilder related(RelatedValue related) {
       this.related = related;
       return this;
     }

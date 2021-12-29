@@ -1,43 +1,39 @@
 package ch.addere.osv.impl.fields;
 
+import static java.util.stream.Collectors.joining;
+
 import ch.addere.osv.fields.Value;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * Aggregate of IDs representing other vulnerability entries.
+ * Aliases property.
  */
-public final class IdAggregate implements Value<List<IdValue>> {
+public class RelatedValue implements Value<List<IdValue>> {
 
-  public static final String ALIASES_KEY = "aliases";
   public static final String RELATED_KEY = "related";
 
   private final List<IdValue> ids;
 
-  private IdAggregate(IdValue... ids) {
-    Objects.requireNonNull(ids, "argument ids must not be null");
-    this.ids = List.of(ids);
-    if (ids.length == 0) {
+  private RelatedValue(List<IdValue> ids) {
+    if (ids.isEmpty()) {
       throw new IllegalArgumentException("no ID, at least one ID must be provided");
     }
+    this.ids = ids;
   }
 
   /**
    * Each ID represents a vulnerability database entry.
    *
-   * @param ids to be added to this aggregate
-   * @return a new aggregate with all ids
+   * @param ids to be added
+   * @return a new RelatedValue with all ids
    */
-  public static IdAggregate of(IdValue... ids) {
-    return new IdAggregate(ids);
+  public static RelatedValue of(IdValue... ids) {
+    Objects.requireNonNull(ids, "argument ids must not be null");
+    return new RelatedValue(List.of(ids));
   }
 
-  /**
-   * Get a copy of all IDs.
-   *
-   * @return List of IDs
-   */
   @Override
   public List<IdValue> value() {
     return List.copyOf(ids);
@@ -45,12 +41,12 @@ public final class IdAggregate implements Value<List<IdValue>> {
 
   /**
    * Add ID, if it is not already included.
-   * <p>IDs can not be duplicated within this aggregate.</p>
+   * <p>IDs can not be duplicated within this RelatedValue.</p>
    *
    * @param id which will be added if not already included
-   * @return a copy of the original aggregate, if ID is newly added
+   * @return a copy of the original RelatedValue, if ID is newly added
    */
-  public IdAggregate add(IdValue id) {
+  public RelatedValue add(IdValue id) {
     if (contains(id)) {
       return this;
     } else {
@@ -64,9 +60,9 @@ public final class IdAggregate implements Value<List<IdValue>> {
    * Remove ID, if it is included, otherwise return unmodified.
    *
    * @param id which will be removed if found
-   * @return a copy of the original aggregate, if found
+   * @return a copy of the original RelatedValue, if found
    */
-  public IdAggregate remove(IdValue id) {
+  public RelatedValue remove(IdValue id) {
     if (contains(id)) {
       List<IdValue> tmpIds = new LinkedList<>(ids);
       tmpIds.remove(id);
@@ -77,7 +73,7 @@ public final class IdAggregate implements Value<List<IdValue>> {
   }
 
   /**
-   * Check if ID is part of this aggregate.
+   * Check if ID is part of this RelatedValue.
    *
    * @param id which is looked up
    * @return ture if ID is included
@@ -94,12 +90,19 @@ public final class IdAggregate implements Value<List<IdValue>> {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    IdAggregate that = (IdAggregate) o;
+    RelatedValue that = (RelatedValue) o;
     return Objects.equals(ids, that.ids);
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(ids);
+  }
+
+  @Override
+  public String toString() {
+    return RELATED_KEY + ": " + ids.stream()
+        .map(IdValue::value)
+        .collect(joining(", "));
   }
 }
