@@ -96,7 +96,7 @@ public final class AffectedValues {
   /**
    * Builder for Affected.
    */
-  public static class AffectedValuesBuilder {
+  public static final class AffectedValuesBuilder {
 
     private final PackageValues pckg;
     private List<Ranges> ranges = List.of();

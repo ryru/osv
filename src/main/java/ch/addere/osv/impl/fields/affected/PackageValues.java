@@ -67,7 +67,7 @@ public final class PackageValues {
   /**
    * Builder for Package.
    */
-  public static class PackageValueBuilder {
+  public static final class PackageValueBuilder {
 
     private final EcosystemValue ecosystem;
     private final NameValue name;

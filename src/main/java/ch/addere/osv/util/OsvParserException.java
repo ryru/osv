@@ -5,7 +5,7 @@ import java.io.IOException;
 /**
  * Exception for all kind of JSON OSV parsing.
  */
-public class OsvParserException extends IOException {
+public final class OsvParserException extends IOException {
 
   public OsvParserException(String message) {
     super(message);

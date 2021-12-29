@@ -24,10 +24,10 @@ import static ch.addere.osv.impl.fields.affected.ranges.RepoValue.REPO_KEY;
 import static ch.addere.osv.impl.fields.references.ReferenceTypeValue.REFERENCE_TYPE_KEY;
 import static ch.addere.osv.impl.fields.references.ReferenceUrlValue.REFERENCE_URL_KEY;
 
-import ch.addere.osv.Entry;
 import ch.addere.osv.fields.Value;
 import ch.addere.osv.fields.affected.Ranges;
 import ch.addere.osv.fields.affected.ranges.Event;
+import ch.addere.osv.impl.Entry;
 import ch.addere.osv.impl.fields.AffectedValues;
 import ch.addere.osv.impl.fields.DetailsValue;
 import ch.addere.osv.impl.fields.Id;
@@ -53,13 +53,13 @@ import java.util.List;
 /**
  * Serializer for open source vulnerabilities.
  */
-public class EntrySerializer extends StdSerializer<Entry> {
+public final class EntrySerializer extends StdSerializer<Entry> {
 
-  protected EntrySerializer() {
+  EntrySerializer() {
     this(null);
   }
 
-  protected EntrySerializer(Class<Entry> t) {
+  private EntrySerializer(Class<Entry> t) {
     super(t);
   }
 

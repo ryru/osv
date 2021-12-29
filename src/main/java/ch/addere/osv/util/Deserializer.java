@@ -1,6 +1,6 @@
 package ch.addere.osv.util;
 
-import ch.addere.osv.Entry;
+import ch.addere.osv.impl.Entry;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -13,8 +13,7 @@ import static ch.addere.osv.impl.fields.WithdrawnValue.WITHDRAWN_KEY;
 import static ch.addere.osv.impl.fields.references.ReferenceTypeValue.REFERENCE_TYPE_KEY;
 import static ch.addere.osv.impl.fields.references.ReferenceUrlValue.REFERENCE_URL_KEY;
 
-import ch.addere.osv.Entry;
-import ch.addere.osv.impl.EntryImpl;
+import ch.addere.osv.impl.Entry;
 import ch.addere.osv.impl.fields.AffectedValues;
 import ch.addere.osv.impl.fields.DetailsValue;
 import ch.addere.osv.impl.fields.Id;
@@ -42,13 +41,13 @@ import java.util.Optional;
 /**
  * Deserializer for open source vulnerabilities.
  */
-public class EntryDeserializer extends StdDeserializer<Entry> {
+public final class EntryDeserializer extends StdDeserializer<Entry> {
 
-  protected EntryDeserializer() {
+  EntryDeserializer() {
     this(null);
   }
 
-  protected EntryDeserializer(Class<?> vc) {
+  private EntryDeserializer(Class<?> vc) {
     super(vc);
   }
 
@@ -173,7 +172,7 @@ public class EntryDeserializer extends StdDeserializer<Entry> {
       references = readReferences(referenceNode);
     }
 
-    EntryImpl.EntryBuilder builder = EntryImpl.builder(id, modified)
+    Entry.EntryBuilder builder = Entry.builder(id, modified)
         .published(published.orElse(null))
         .withdrawn(withdrawn.orElse(null))
         .aliases(aliases.orElse(null))

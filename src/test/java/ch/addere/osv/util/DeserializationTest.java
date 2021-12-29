@@ -4,8 +4,7 @@ import static java.nio.file.Files.readString;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import ch.addere.osv.Entry;
-import ch.addere.osv.impl.EntryImpl;
+import ch.addere.osv.impl.Entry;
 import ch.addere.osv.impl.fields.AffectedValues.AffectedValuesBuilder;
 import ch.addere.osv.impl.fields.DetailsValue;
 import ch.addere.osv.impl.fields.Id;
@@ -66,14 +65,14 @@ class DeserializationTest {
   }
 
   private static Entry minimalEntry() {
-    return EntryImpl.builder(
+    return Entry.builder(
             Id.of(IdDatabaseValue.GO, "2021-99998"),
             ModifiedValue.of(Instant.parse("2021-03-10T23:20:53Z")))
         .build();
   }
 
   private static Entry goEntry() throws MalformedURLException {
-    return EntryImpl.builder(
+    return Entry.builder(
             Id.of(IdDatabaseValue.GO, "2021-99998"),
             ModifiedValue.of(Instant.parse("2021-03-10T23:20:53Z")))
         .published(PublishedValue.of(Instant.parse("2021-01-21T19:15:00Z")))
@@ -109,7 +108,7 @@ class DeserializationTest {
   }
 
   private static Entry goToolEntry() throws MalformedURLException {
-    return EntryImpl.builder(
+    return Entry.builder(
             Id.of(IdDatabaseValue.GO, "2021-99999"),
             ModifiedValue.of(Instant.parse("2021-03-10T23:20:53Z"))
         )
@@ -144,7 +143,7 @@ class DeserializationTest {
   }
 
   private static Entry npmEntry() throws MalformedURLException {
-    return EntryImpl.builder(
+    return Entry.builder(
             Id.of(IdDatabaseValue.GHSA, "r9p9-mrjm-926w"),
             ModifiedValue.of(Instant.parse("2021-03-10T23:40:39Z"))
         )
@@ -207,7 +206,7 @@ class DeserializationTest {
   }
 
   private static Entry osvEntry() throws MalformedURLException {
-    return EntryImpl.builder(
+    return Entry.builder(
             Id.of(IdDatabaseValue.OSV, "2020-584"),
             ModifiedValue.of(Instant.parse("2021-03-09T04:49:05.965964Z"))
         )
@@ -244,7 +243,7 @@ class DeserializationTest {
   }
 
   private static Entry pythonEntry() throws MalformedURLException {
-    return EntryImpl.builder(
+    return Entry.builder(
             Id.of(IdDatabaseValue.PYSEC, "2021-XXXX"),
             ModifiedValue.of(Instant.parse("2021-04-07T15:14:00Z"))
         )
@@ -283,7 +282,7 @@ class DeserializationTest {
   }
 
   private static Entry rubyEntry() throws MalformedURLException {
-    return EntryImpl.builder(
+    return Entry.builder(
             Id.of(IdDatabaseValue.CVE, "2019-3881"),
             ModifiedValue.of(Instant.parse("2021-05-10T00:00:00Z"))
         )
@@ -355,7 +354,7 @@ class DeserializationTest {
   }
 
   private static Entry rustEntry() throws MalformedURLException {
-    return EntryImpl.builder(
+    return Entry.builder(
             Id.of(IdDatabaseValue.RUSTSEC, "2019-0033"),
             ModifiedValue.of(Instant.parse("2021-01-04T19:02:00Z"))
         )
