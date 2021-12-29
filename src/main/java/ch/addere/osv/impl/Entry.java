@@ -4,8 +4,8 @@ import static java.util.stream.Collectors.joining;
 
 import ch.addere.osv.impl.fields.AffectedValues;
 import ch.addere.osv.impl.fields.DetailsValue;
-import ch.addere.osv.impl.fields.Id;
 import ch.addere.osv.impl.fields.IdAggregate;
+import ch.addere.osv.impl.fields.IdValue;
 import ch.addere.osv.impl.fields.ModifiedValue;
 import ch.addere.osv.impl.fields.PublishedValue;
 import ch.addere.osv.impl.fields.ReferencesValues;
@@ -22,7 +22,7 @@ import java.util.stream.Stream;
  */
 public final class Entry {
 
-  private final Id id;
+  private final IdValue id;
   private final ModifiedValue modified;
   private IdAggregate aliases;
   private IdAggregate related;
@@ -33,7 +33,7 @@ public final class Entry {
   private List<AffectedValues> affected;
   private List<ReferencesValues> references;
 
-  private Entry(Id id, ModifiedValue modified) {
+  private Entry(IdValue id, ModifiedValue modified) {
     this.id = id;
     this.modified = modified;
   }
@@ -46,7 +46,7 @@ public final class Entry {
    * @param modified last modification date
    * @return valid entity
    */
-  public static EntryBuilder builder(Id id, ModifiedValue modified) {
+  public static EntryBuilder builder(IdValue id, ModifiedValue modified) {
     return new EntryBuilder(id, modified);
   }
 
@@ -55,7 +55,7 @@ public final class Entry {
    *
    * @return the ID of this Entry
    */
-  public Id id() {
+  public IdValue id() {
     return id;
   }
 
@@ -196,7 +196,7 @@ public final class Entry {
    */
   public static final class EntryBuilder {
 
-    private final Id id;
+    private final IdValue id;
     private final ModifiedValue modified;
     private IdAggregate aliases = null;
     private IdAggregate related = null;
@@ -213,7 +213,7 @@ public final class Entry {
      * @param id       ID of this entry
      * @param modified Modified of this entry
      */
-    public EntryBuilder(Id id, ModifiedValue modified) {
+    public EntryBuilder(IdValue id, ModifiedValue modified) {
       Objects.requireNonNull(id, "argument id must not be null");
       Objects.requireNonNull(modified, "argument modified must not be null");
       this.id = id;

@@ -7,15 +7,15 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 
-class IdAggregateTest {
+class IdValueAggregateTest {
 
-  private static final Id ID_1 = Id.of(GO, "id1");
-  private static final Id ID_2 = Id.of(GO, "id2");
-  private static final Id ID_3 = Id.of(GO, "id3");
+  private static final IdValue ID_1 = IdValue.of(GO, "id1");
+  private static final IdValue ID_2 = IdValue.of(GO, "id2");
+  private static final IdValue ID_3 = IdValue.of(GO, "id3");
 
   @Test
   void testOfNull() {
-    assertThatThrownBy(() -> IdAggregate.of((Id[]) null))
+    assertThatThrownBy(() -> IdAggregate.of((IdValue[]) null))
         .isInstanceOf(NullPointerException.class)
         .hasMessageContaining("argument ids must not be null");
   }
@@ -29,14 +29,14 @@ class IdAggregateTest {
 
   @Test
   void testOfValueObjectCreation() {
-    IdAggregate idAggregate1 = IdAggregate.of(Id.of(GO, "enEntryId"));
-    IdAggregate idAggregate2 = IdAggregate.of(idAggregate1.value().toArray(new Id[0]));
+    IdAggregate idAggregate1 = IdAggregate.of(IdValue.of(GO, "enEntryId"));
+    IdAggregate idAggregate2 = IdAggregate.of(idAggregate1.value().toArray(new IdValue[0]));
     assertThat(idAggregate1).isEqualTo(idAggregate2);
   }
 
   @Test
   void testValidArugment() {
-    Id id1 = Id.of(GO, "anEntryId");
+    IdValue id1 = IdValue.of(GO, "anEntryId");
     IdAggregate alias = IdAggregate.of(id1);
     assertThat(alias).satisfies(a -> {
       assertThat(a.value().size()).isEqualTo(1);
@@ -46,8 +46,8 @@ class IdAggregateTest {
 
   @Test
   void testValidArugments() {
-    var id1 = Id.of(GO, "anEntryId");
-    var id2 = Id.of(OSV, "anotherEntryId");
+    var id1 = IdValue.of(GO, "anEntryId");
+    var id2 = IdValue.of(OSV, "anotherEntryId");
     var alias = IdAggregate.of(id1, id2);
     assertThat(alias).satisfies(a -> {
       assertThat(a.value().size()).isEqualTo(2);

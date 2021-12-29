@@ -8,14 +8,14 @@ import java.util.Objects;
 /**
  * Aggregate of IDs representing other vulnerability entries.
  */
-public final class IdAggregate implements Value<List<Id>> {
+public final class IdAggregate implements Value<List<IdValue>> {
 
   public static final String ALIASES_KEY = "aliases";
   public static final String RELATED_KEY = "related";
 
-  private final List<Id> ids;
+  private final List<IdValue> ids;
 
-  private IdAggregate(Id... ids) {
+  private IdAggregate(IdValue... ids) {
     Objects.requireNonNull(ids, "argument ids must not be null");
     this.ids = List.of(ids);
     if (ids.length == 0) {
@@ -29,7 +29,7 @@ public final class IdAggregate implements Value<List<Id>> {
    * @param ids to be added to this aggregate
    * @return a new aggregate with all ids
    */
-  public static IdAggregate of(Id... ids) {
+  public static IdAggregate of(IdValue... ids) {
     return new IdAggregate(ids);
   }
 
@@ -39,7 +39,7 @@ public final class IdAggregate implements Value<List<Id>> {
    * @return List of IDs
    */
   @Override
-  public List<Id> value() {
+  public List<IdValue> value() {
     return List.copyOf(ids);
   }
 
@@ -50,13 +50,13 @@ public final class IdAggregate implements Value<List<Id>> {
    * @param id which will be added if not already included
    * @return a copy of the original aggregate, if ID is newly added
    */
-  public IdAggregate add(Id id) {
+  public IdAggregate add(IdValue id) {
     if (contains(id)) {
       return this;
     } else {
-      List<Id> tmpIds = new LinkedList<>(ids);
+      List<IdValue> tmpIds = new LinkedList<>(ids);
       tmpIds.add(id);
-      return of(tmpIds.toArray(new Id[0]));
+      return of(tmpIds.toArray(new IdValue[0]));
     }
   }
 
@@ -66,11 +66,11 @@ public final class IdAggregate implements Value<List<Id>> {
    * @param id which will be removed if found
    * @return a copy of the original aggregate, if found
    */
-  public IdAggregate remove(Id id) {
+  public IdAggregate remove(IdValue id) {
     if (contains(id)) {
-      List<Id> tmpIds = new LinkedList<>(ids);
+      List<IdValue> tmpIds = new LinkedList<>(ids);
       tmpIds.remove(id);
-      return of(tmpIds.toArray(new Id[0]));
+      return of(tmpIds.toArray(new IdValue[0]));
     } else {
       return this;
     }
@@ -82,7 +82,7 @@ public final class IdAggregate implements Value<List<Id>> {
    * @param id which is looked up
    * @return ture if ID is included
    */
-  public boolean contains(Id id) {
+  public boolean contains(IdValue id) {
     return ids.contains(id);
   }
 

@@ -2,9 +2,9 @@ package ch.addere.osv.util;
 
 import static ch.addere.osv.impl.fields.AffectedValues.AFFECTED_KEY;
 import static ch.addere.osv.impl.fields.DetailsValue.DETAILS_KEY;
-import static ch.addere.osv.impl.fields.Id.ID_KEY;
 import static ch.addere.osv.impl.fields.IdAggregate.ALIASES_KEY;
 import static ch.addere.osv.impl.fields.IdAggregate.RELATED_KEY;
+import static ch.addere.osv.impl.fields.IdValue.ID_KEY;
 import static ch.addere.osv.impl.fields.ModifiedValue.MODIFIED_KEY;
 import static ch.addere.osv.impl.fields.PublishedValue.PUBLISHED_KEY;
 import static ch.addere.osv.impl.fields.ReferencesValues.REFERENCES_KEY;
@@ -16,8 +16,8 @@ import static ch.addere.osv.impl.fields.references.ReferenceUrlValue.REFERENCE_U
 import ch.addere.osv.impl.Entry;
 import ch.addere.osv.impl.fields.AffectedValues;
 import ch.addere.osv.impl.fields.DetailsValue;
-import ch.addere.osv.impl.fields.Id;
 import ch.addere.osv.impl.fields.IdAggregate;
+import ch.addere.osv.impl.fields.IdValue;
 import ch.addere.osv.impl.fields.ModifiedValue;
 import ch.addere.osv.impl.fields.PublishedValue;
 import ch.addere.osv.impl.fields.ReferencesValues;
@@ -51,8 +51,8 @@ public final class EntryDeserializer extends StdDeserializer<Entry> {
     super(vc);
   }
 
-  private static Id readId(JsonNode idNode) {
-    return Id.fromString(idNode.asText());
+  private static IdValue readId(JsonNode idNode) {
+    return IdValue.fromString(idNode.asText());
   }
 
   private static ModifiedValue readModified(JsonNode modifiedNode) {
@@ -64,7 +64,7 @@ public final class EntryDeserializer extends StdDeserializer<Entry> {
     if (isEmptyJsonNode(idAggregateNode)) {
       return Optional.empty();
     }
-    List<Id> ids = new ArrayList<>();
+    List<IdValue> ids = new ArrayList<>();
     if (idAggregateNode.isArray()) {
       for (final JsonNode idNote : idAggregateNode) {
         ids.add(readId(idNote));
@@ -73,7 +73,7 @@ public final class EntryDeserializer extends StdDeserializer<Entry> {
     if (ids.isEmpty()) {
       return Optional.empty();
     } else {
-      return Optional.of(IdAggregate.of(ids.toArray(new Id[0])));
+      return Optional.of(IdAggregate.of(ids.toArray(new IdValue[0])));
     }
   }
 
@@ -150,7 +150,7 @@ public final class EntryDeserializer extends StdDeserializer<Entry> {
     if (node.get(ID_KEY) == null) {
       throw new OsvParserException("deserialization error");
     }
-    final Id id = readId(node.get(ID_KEY));
+    final IdValue id = readId(node.get(ID_KEY));
     if (node.get(MODIFIED_KEY) == null) {
       throw new OsvParserException("deserialization error");
     }

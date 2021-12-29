@@ -5,7 +5,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 
-class IdDatabaseValueTest {
+class IdValueDatabaseValueTest {
 
   private static final String CVE = "CVE";
 

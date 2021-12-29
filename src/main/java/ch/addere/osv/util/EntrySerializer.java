@@ -4,9 +4,9 @@ import static ch.addere.osv.fields.affected.Ranges.RANGES_KEY;
 import static ch.addere.osv.fields.affected.ranges.Event.EVENTS_KEY;
 import static ch.addere.osv.impl.fields.AffectedValues.AFFECTED_KEY;
 import static ch.addere.osv.impl.fields.DetailsValue.DETAILS_KEY;
-import static ch.addere.osv.impl.fields.Id.ID_KEY;
 import static ch.addere.osv.impl.fields.IdAggregate.ALIASES_KEY;
 import static ch.addere.osv.impl.fields.IdAggregate.RELATED_KEY;
+import static ch.addere.osv.impl.fields.IdValue.ID_KEY;
 import static ch.addere.osv.impl.fields.ModifiedValue.MODIFIED_KEY;
 import static ch.addere.osv.impl.fields.PublishedValue.PUBLISHED_KEY;
 import static ch.addere.osv.impl.fields.ReferencesValues.REFERENCES_KEY;
@@ -30,7 +30,7 @@ import ch.addere.osv.fields.affected.ranges.Event;
 import ch.addere.osv.impl.Entry;
 import ch.addere.osv.impl.fields.AffectedValues;
 import ch.addere.osv.impl.fields.DetailsValue;
-import ch.addere.osv.impl.fields.Id;
+import ch.addere.osv.impl.fields.IdValue;
 import ch.addere.osv.impl.fields.ModifiedValue;
 import ch.addere.osv.impl.fields.PublishedValue;
 import ch.addere.osv.impl.fields.ReferencesValues;
@@ -75,7 +75,7 @@ public final class EntrySerializer extends StdSerializer<Entry> {
     gen.writeEndArray();
   }
 
-  private static String writeId(Id id) {
+  private static String writeId(IdValue id) {
     return id.value();
   }
 
