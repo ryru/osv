@@ -6,7 +6,7 @@ package ch.addere.osv;
 public interface Value<T> {
 
   /**
-   * Current value of this vulnerability propety.
+   * Current value of this vulnerability property.
    *
    * @return value
    */
