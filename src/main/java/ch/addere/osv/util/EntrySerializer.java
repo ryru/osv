@@ -8,6 +8,7 @@ import static ch.addere.osv.property.ModifiedValue.MODIFIED_KEY;
 import static ch.addere.osv.property.PublishedValue.PUBLISHED_KEY;
 import static ch.addere.osv.property.ReferencesValues.REFERENCES_KEY;
 import static ch.addere.osv.property.RelatedValue.RELATED_KEY;
+import static ch.addere.osv.property.SchemaVersionValue.SCHEMA_VERSION_KEY;
 import static ch.addere.osv.property.SummaryValue.SUMMARY_KEY;
 import static ch.addere.osv.property.WithdrawnValue.WITHDRAWN_KEY;
 import static ch.addere.osv.property.affected.DatabaseSpecificValue.DATABASE_SPECIFIC_KEY;
@@ -32,6 +33,7 @@ import ch.addere.osv.property.IdValue;
 import ch.addere.osv.property.ModifiedValue;
 import ch.addere.osv.property.PublishedValue;
 import ch.addere.osv.property.ReferencesValues;
+import ch.addere.osv.property.SchemaVersionValue;
 import ch.addere.osv.property.SummaryValue;
 import ch.addere.osv.property.WithdrawnValue;
 import ch.addere.osv.property.affected.DatabaseSpecificValue;
@@ -85,6 +87,10 @@ public final class EntrySerializer extends StdSerializer<Entry> {
 
   private static String writeModified(ModifiedValue modified) {
     return modified.value().toString();
+  }
+
+  private static String writeSchemaVersion(SchemaVersionValue schemaVersion) {
+    return schemaVersion.value();
   }
 
   private static void writeAliases(Entry value, JsonGenerator gen) throws IOException {
@@ -158,6 +164,9 @@ public final class EntrySerializer extends StdSerializer<Entry> {
       gen.writeStringField(PUBLISHED_KEY, writePublished(entry.published().get()));
     }
     gen.writeStringField(MODIFIED_KEY, writeModified(entry.modified()));
+    if (entry.schemaVersion().isPresent()) {
+      gen.writeStringField(SCHEMA_VERSION_KEY, writeSchemaVersion(entry.schemaVersion().get()));
+    }
     if (entry.aliases().isPresent()) {
       writeAliases(entry, gen);
     }

@@ -8,6 +8,7 @@ import static ch.addere.osv.property.ModifiedValue.MODIFIED_KEY;
 import static ch.addere.osv.property.PublishedValue.PUBLISHED_KEY;
 import static ch.addere.osv.property.ReferencesValues.REFERENCES_KEY;
 import static ch.addere.osv.property.RelatedValue.RELATED_KEY;
+import static ch.addere.osv.property.SchemaVersionValue.SCHEMA_VERSION_KEY;
 import static ch.addere.osv.property.SummaryValue.SUMMARY_KEY;
 import static ch.addere.osv.property.WithdrawnValue.WITHDRAWN_KEY;
 import static ch.addere.osv.property.references.ReferenceTypeValue.REFERENCE_TYPE_KEY;
@@ -22,6 +23,7 @@ import ch.addere.osv.property.ModifiedValue;
 import ch.addere.osv.property.PublishedValue;
 import ch.addere.osv.property.ReferencesValues;
 import ch.addere.osv.property.RelatedValue;
+import ch.addere.osv.property.SchemaVersionValue;
 import ch.addere.osv.property.SummaryValue;
 import ch.addere.osv.property.WithdrawnValue;
 import ch.addere.osv.property.references.ReferenceTypeValue;
@@ -61,6 +63,13 @@ public final class EntryDeserializer extends StdDeserializer<Entry> {
     return ModifiedValue.of(instant);
   }
 
+  private static Optional<SchemaVersionValue> readSchemaVersion(JsonNode schemaVersion) {
+    if (isEmptyJsonNode(schemaVersion)) {
+      return Optional.empty();
+    }
+    return Optional.of(SchemaVersionValue.fromString(schemaVersion.asText()));
+  }
+
   private static Optional<AliasesValue> readAliases(JsonNode aliasesNode) {
     if (isEmptyJsonNode(aliasesNode)) {
       return Optional.empty();
@@ -94,7 +103,6 @@ public final class EntryDeserializer extends StdDeserializer<Entry> {
     }
     return ids;
   }
-
 
   private static Optional<PublishedValue> readPublished(JsonNode publishedNode) {
     if (isEmptyJsonNode(publishedNode)) {
@@ -174,6 +182,7 @@ public final class EntryDeserializer extends StdDeserializer<Entry> {
       throw new OsvParserException("deserialization error");
     }
     ModifiedValue modified = readModified(node.get(MODIFIED_KEY));
+    Optional<SchemaVersionValue> schemaVersion = readSchemaVersion(node.get(SCHEMA_VERSION_KEY));
     Optional<AliasesValue> aliases = readAliases(node.get(ALIASES_KEY));
     Optional<RelatedValue> related = readIdAggregate(node.get(RELATED_KEY));
     Optional<PublishedValue> published = readPublished(node.get(PUBLISHED_KEY));
@@ -192,6 +201,7 @@ public final class EntryDeserializer extends StdDeserializer<Entry> {
     }
 
     Entry.EntryBuilder builder = Entry.builder(id, modified)
+        .schemaVersion(schemaVersion.orElse(null))
         .published(published.orElse(null))
         .withdrawn(withdrawn.orElse(null))
         .aliases(aliases.orElse(null))

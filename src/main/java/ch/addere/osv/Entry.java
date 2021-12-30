@@ -10,6 +10,7 @@ import ch.addere.osv.property.ModifiedValue;
 import ch.addere.osv.property.PublishedValue;
 import ch.addere.osv.property.ReferencesValues;
 import ch.addere.osv.property.RelatedValue;
+import ch.addere.osv.property.SchemaVersionValue;
 import ch.addere.osv.property.SummaryValue;
 import ch.addere.osv.property.WithdrawnValue;
 import java.util.LinkedList;
@@ -25,6 +26,7 @@ public final class Entry {
 
   private final IdValue id;
   private final ModifiedValue modified;
+  private SchemaVersionValue schemaVersionValue;
   private AliasesValue aliases;
   private RelatedValue related;
   private PublishedValue published;
@@ -67,6 +69,15 @@ public final class Entry {
    */
   public ModifiedValue modified() {
     return modified;
+  }
+
+  /**
+   * Get the SchemaVersionValue.
+   *
+   * @return the SchemaVersionValue if present, otherwise empty optional
+   */
+  public Optional<SchemaVersionValue> schemaVersion() {
+    return Optional.ofNullable(schemaVersionValue);
   }
 
   /**
@@ -199,6 +210,7 @@ public final class Entry {
 
     private final IdValue id;
     private final ModifiedValue modified;
+    private SchemaVersionValue schemaVersion = null;
     private AliasesValue aliases = null;
     private RelatedValue related = null;
     private PublishedValue published = null;
@@ -219,6 +231,17 @@ public final class Entry {
       Objects.requireNonNull(modified, "argument modified must not be null");
       this.id = id;
       this.modified = modified;
+    }
+
+    /**
+     * Add SchemaVersionValue to property. If not specified, version 1.0.0 is implicitly set.
+     *
+     * @param schemaVersion SchemaVersionValue to add
+     * @return valid EntryBuilder
+     */
+    public EntryBuilder schemaVersion(SchemaVersionValue schemaVersion) {
+      this.schemaVersion = schemaVersion;
+      return this;
     }
 
     /**
@@ -316,6 +339,7 @@ public final class Entry {
      */
     public Entry build() {
       Entry entry = new Entry(id, modified);
+      entry.schemaVersionValue = schemaVersion;
       entry.aliases = aliases;
       entry.related = related;
       entry.published = published;
