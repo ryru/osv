@@ -3,11 +3,11 @@ package ch.addere.osv.util.serializer.pckg;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import ch.addere.osv.impl.fields.affected.PackageValues;
-import ch.addere.osv.impl.fields.affected.PackageValues.PackageValueBuilder;
-import ch.addere.osv.impl.fields.affected.pckg.EcosystemValue;
-import ch.addere.osv.impl.fields.affected.pckg.NameValue;
-import ch.addere.osv.impl.fields.affected.pckg.PurlValue;
+import ch.addere.osv.property.affected.PackageValues;
+import ch.addere.osv.property.affected.PackageValues.PackageValueBuilder;
+import ch.addere.osv.property.affected.pckg.EcosystemValue;
+import ch.addere.osv.property.affected.pckg.NameValue;
+import ch.addere.osv.property.affected.pckg.PurlValue;
 import ch.addere.osv.util.OsvParserException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;

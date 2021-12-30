@@ -1,19 +1,19 @@
 package ch.addere.osv.util.serializer;
 
-import static ch.addere.osv.fields.affected.Ranges.RANGES_KEY;
-import static ch.addere.osv.impl.fields.AffectedValues.AFFECTED_KEY;
-import static ch.addere.osv.impl.fields.affected.DatabaseSpecificValue.DATABASE_SPECIFIC_KEY;
-import static ch.addere.osv.impl.fields.affected.EcosystemSpecificValue.ECOSYSTEM_SPECIFIC_KEY;
-import static ch.addere.osv.impl.fields.affected.PackageValues.PACKAGE_KEY;
-import static ch.addere.osv.impl.fields.affected.VersionsValue.VERSIONS_KEY;
+import static ch.addere.osv.property.AffectedValues.AFFECTED_KEY;
+import static ch.addere.osv.property.affected.DatabaseSpecificValue.DATABASE_SPECIFIC_KEY;
+import static ch.addere.osv.property.affected.EcosystemSpecificValue.ECOSYSTEM_SPECIFIC_KEY;
+import static ch.addere.osv.property.affected.PackageValues.PACKAGE_KEY;
+import static ch.addere.osv.property.affected.Ranges.RANGES_KEY;
+import static ch.addere.osv.property.affected.VersionsValue.VERSIONS_KEY;
 
-import ch.addere.osv.fields.affected.Ranges;
-import ch.addere.osv.impl.fields.AffectedValues;
-import ch.addere.osv.impl.fields.AffectedValues.AffectedValuesBuilder;
-import ch.addere.osv.impl.fields.affected.DatabaseSpecificValue;
-import ch.addere.osv.impl.fields.affected.EcosystemSpecificValue;
-import ch.addere.osv.impl.fields.affected.PackageValues;
-import ch.addere.osv.impl.fields.affected.VersionsValue;
+import ch.addere.osv.property.AffectedValues;
+import ch.addere.osv.property.AffectedValues.AffectedValuesBuilder;
+import ch.addere.osv.property.affected.DatabaseSpecificValue;
+import ch.addere.osv.property.affected.EcosystemSpecificValue;
+import ch.addere.osv.property.affected.PackageValues;
+import ch.addere.osv.property.affected.Ranges;
+import ch.addere.osv.property.affected.VersionsValue;
 import ch.addere.osv.util.OsvParserException;
 import ch.addere.osv.util.serializer.pckg.PackageDeserializer;
 import ch.addere.osv.util.serializer.ranges.RangesDeserializer;

@@ -1,15 +1,15 @@
 package ch.addere.osv.util.serializer.pckg;
 
-import static ch.addere.osv.impl.fields.affected.PackageValues.PACKAGE_KEY;
-import static ch.addere.osv.impl.fields.affected.pckg.EcosystemValue.ECOSYSTEM_KEY;
-import static ch.addere.osv.impl.fields.affected.pckg.NameValue.NAME_KEY;
-import static ch.addere.osv.impl.fields.affected.pckg.PurlValue.PURL_KEY;
+import static ch.addere.osv.property.affected.PackageValues.PACKAGE_KEY;
+import static ch.addere.osv.property.affected.pckg.EcosystemValue.ECOSYSTEM_KEY;
+import static ch.addere.osv.property.affected.pckg.NameValue.NAME_KEY;
+import static ch.addere.osv.property.affected.pckg.PurlValue.PURL_KEY;
 
-import ch.addere.osv.impl.fields.affected.PackageValues;
-import ch.addere.osv.impl.fields.affected.PackageValues.PackageValueBuilder;
-import ch.addere.osv.impl.fields.affected.pckg.EcosystemValue;
-import ch.addere.osv.impl.fields.affected.pckg.NameValue;
-import ch.addere.osv.impl.fields.affected.pckg.PurlValue;
+import ch.addere.osv.property.affected.PackageValues;
+import ch.addere.osv.property.affected.PackageValues.PackageValueBuilder;
+import ch.addere.osv.property.affected.pckg.EcosystemValue;
+import ch.addere.osv.property.affected.pckg.NameValue;
+import ch.addere.osv.property.affected.pckg.PurlValue;
 import ch.addere.osv.util.OsvParserException;
 import com.fasterxml.jackson.databind.JsonNode;
 import java.util.Optional;

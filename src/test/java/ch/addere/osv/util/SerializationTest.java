@@ -3,7 +3,7 @@ package ch.addere.osv.util;
 import static java.nio.file.Files.readString;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
-import ch.addere.osv.impl.Entry;
+import ch.addere.osv.Entry;
 import java.io.IOException;
 import java.nio.file.Path;
 import org.json.JSONException;

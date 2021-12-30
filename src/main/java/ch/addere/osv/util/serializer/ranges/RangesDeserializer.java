@@ -1,21 +1,21 @@
 package ch.addere.osv.util.serializer.ranges;
 
-import static ch.addere.osv.fields.affected.Ranges.RANGES_KEY;
-import static ch.addere.osv.fields.affected.ranges.Event.EVENTS_KEY;
-import static ch.addere.osv.impl.fields.affected.ranges.RangeTypeValue.TYPE_KEY;
-import static ch.addere.osv.impl.fields.affected.ranges.RepoValue.REPO_KEY;
+import static ch.addere.osv.property.affected.Ranges.RANGES_KEY;
+import static ch.addere.osv.property.affected.ranges.Event.EVENTS_KEY;
+import static ch.addere.osv.property.affected.ranges.RangeTypeValue.TYPE_KEY;
+import static ch.addere.osv.property.affected.ranges.RepoValue.REPO_KEY;
 import static java.lang.String.format;
 
-import ch.addere.osv.fields.affected.Ranges;
-import ch.addere.osv.impl.fields.affected.ranges.RangeTypeValue;
-import ch.addere.osv.impl.fields.affected.ranges.RepoValue;
-import ch.addere.osv.impl.fields.affected.ranges.TypeEcosystemValues.TypeEcosystemBuilder;
-import ch.addere.osv.impl.fields.affected.ranges.TypeGitValues.TypeGitBuilder;
-import ch.addere.osv.impl.fields.affected.ranges.TypeSemVerValues.TypeSemVerBuilder;
-import ch.addere.osv.impl.fields.affected.ranges.events.EcosystemEventValues;
-import ch.addere.osv.impl.fields.affected.ranges.events.EventSpecifierValue;
-import ch.addere.osv.impl.fields.affected.ranges.events.GitEventValues;
-import ch.addere.osv.impl.fields.affected.ranges.events.SemVerEventValues;
+import ch.addere.osv.property.affected.Ranges;
+import ch.addere.osv.property.affected.ranges.RangeTypeValue;
+import ch.addere.osv.property.affected.ranges.RepoValue;
+import ch.addere.osv.property.affected.ranges.TypeEcosystemValues.TypeEcosystemBuilder;
+import ch.addere.osv.property.affected.ranges.TypeGitValues.TypeGitBuilder;
+import ch.addere.osv.property.affected.ranges.TypeSemVerValues.TypeSemVerBuilder;
+import ch.addere.osv.property.affected.ranges.events.EcosystemEventValues;
+import ch.addere.osv.property.affected.ranges.events.EventSpecifierValue;
+import ch.addere.osv.property.affected.ranges.events.GitEventValues;
+import ch.addere.osv.property.affected.ranges.events.SemVerEventValues;
 import ch.addere.osv.util.OsvParserException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
