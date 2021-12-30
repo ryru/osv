@@ -15,19 +15,22 @@ public final class SemVerEventValues implements Event {
   private final EventSpecifierValue event;
   private final Version semVer;
 
-  private SemVerEventValues(EventSpecifierValue event, String semVer) {
-    Objects.requireNonNull(event, "argument event must not be null");
-    Objects.requireNonNull(semVer, "argument semVer must not be null");
+  private SemVerEventValues(EventSpecifierValue event, Version semVer) {
     this.event = event;
-    try {
-      this.semVer = Version.parseVersion(semVer);
-    } catch (VersionFormatException e) {
-      throw new IllegalArgumentException(format("invalid semantic version: '%s'", semVer), e);
-    }
+    this.semVer = semVer;
   }
 
   public static SemVerEventValues of(EventSpecifierValue event, String semVer) {
-    return new SemVerEventValues(event, semVer);
+    Objects.requireNonNull(event, "argument event must not be null");
+    Objects.requireNonNull(semVer, "argument semVer must not be null");
+    if (semVer.startsWith("v")) {
+      throw new IllegalArgumentException("invalid semantic version, must not start with 'v'");
+    }
+    try {
+      return new SemVerEventValues(event, Version.parseVersion(semVer));
+    } catch (VersionFormatException e) {
+      throw new IllegalArgumentException(format("invalid semantic version: '%s'", semVer), e);
+    }
   }
 
   @Override

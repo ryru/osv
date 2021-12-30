@@ -26,6 +26,13 @@ class SemVerEventValuesTest {
   }
 
   @Test
+  void testOfInvalidLeadingV() {
+    assertThatThrownBy(() -> SemVerEventValues.of(EventSpecifierValue.INTRODUCED, "v1.0.0"))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("invalid semantic version, must not start with 'v'");
+  }
+
+  @Test
   void testInvalidSemVer() {
     assertThatThrownBy(() -> SemVerEventValues.of(
         EventSpecifierValue.FIXED, "not-a-semantic-version"))
