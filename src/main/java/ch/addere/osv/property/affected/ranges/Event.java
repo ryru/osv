@@ -11,6 +11,6 @@ public interface Event {
 
   EventSpecifierValue event();
 
-  String release();
+  String version();
 
 }

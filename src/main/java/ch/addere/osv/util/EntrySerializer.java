@@ -239,7 +239,7 @@ public final class EntrySerializer extends StdSerializer<Entry> {
   private static void writeRangeEvent(Event e, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
     gen.writeFieldName(e.event().value());
-    gen.writeString(e.release());
+    gen.writeString(e.version());
     gen.writeEndObject();
   }
 
