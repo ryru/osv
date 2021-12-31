@@ -65,6 +65,46 @@ public final class EntrySerializer extends StdSerializer<Entry> {
     super(t);
   }
 
+  @Override
+  public void serialize(Entry entry, JsonGenerator gen, SerializerProvider provider)
+      throws IOException {
+    gen.writeStartObject();
+    gen.writeStringField(ID_KEY, writeId(entry.id()));
+    if (entry.published().isPresent()) {
+      gen.writeStringField(PUBLISHED_KEY, writePublished(entry.published().get()));
+    }
+    gen.writeStringField(MODIFIED_KEY, writeModified(entry.modified()));
+    if (entry.schemaVersion().isPresent()) {
+      gen.writeStringField(SCHEMA_VERSION_KEY, writeSchemaVersion(entry.schemaVersion().get()));
+    }
+    if (entry.aliases().isPresent()) {
+      writeAliases(entry, gen);
+    }
+    if (entry.related().isPresent()) {
+      writeRelated(entry, gen);
+    }
+    if (entry.withdrawn().isPresent()) {
+      gen.writeStringField(WITHDRAWN_KEY, writeWithdrawn(entry.withdrawn().get()));
+    }
+    if (entry.summary().isPresent()) {
+      gen.writeStringField(SUMMARY_KEY, writeSummary(entry.summary().get()));
+    }
+    if (entry.details().isPresent()) {
+      gen.writeStringField(DETAILS_KEY, writeDetails(entry.details().get()));
+    }
+    if (entry.affected() != null && !entry.affected().isEmpty()) {
+      writeAllAffected(entry, gen);
+    }
+    if (entry.references() != null && !entry.references().isEmpty()) {
+      writeReferences(entry, gen);
+    }
+    if (entry.databaseSpecific().isPresent()) {
+      gen.writeStringField(DATABASE_SPECIFIC_KEY,
+          writeTopLevelDatabaseSpecific(entry.databaseSpecific().get()));
+    }
+    gen.writeEndObject();
+  }
+
   private static void writeAllAffected(Entry value, JsonGenerator gen) throws IOException {
     gen.writeFieldName(AFFECTED_KEY);
     gen.writeStartArray();
@@ -155,42 +195,6 @@ public final class EntrySerializer extends StdSerializer<Entry> {
     gen.writeEndObject();
   }
 
-  @Override
-  public void serialize(Entry entry, JsonGenerator gen, SerializerProvider provider)
-      throws IOException {
-    gen.writeStartObject();
-    gen.writeStringField(ID_KEY, writeId(entry.id()));
-    if (entry.published().isPresent()) {
-      gen.writeStringField(PUBLISHED_KEY, writePublished(entry.published().get()));
-    }
-    gen.writeStringField(MODIFIED_KEY, writeModified(entry.modified()));
-    if (entry.schemaVersion().isPresent()) {
-      gen.writeStringField(SCHEMA_VERSION_KEY, writeSchemaVersion(entry.schemaVersion().get()));
-    }
-    if (entry.aliases().isPresent()) {
-      writeAliases(entry, gen);
-    }
-    if (entry.related().isPresent()) {
-      writeRelated(entry, gen);
-    }
-    if (entry.withdrawn().isPresent()) {
-      gen.writeStringField(WITHDRAWN_KEY, writeWithdrawn(entry.withdrawn().get()));
-    }
-    if (entry.summary().isPresent()) {
-      gen.writeStringField(SUMMARY_KEY, writeSummary(entry.summary().get()));
-    }
-    if (entry.details().isPresent()) {
-      gen.writeStringField(DETAILS_KEY, writeDetails(entry.details().get()));
-    }
-    if (entry.affected() != null && !entry.affected().isEmpty()) {
-      writeAllAffected(entry, gen);
-    }
-    if (entry.references() != null && !entry.references().isEmpty()) {
-      writeReferences(entry, gen);
-    }
-    gen.writeEndObject();
-  }
-
   private static void writePackage(PackageValues pckg, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
     gen.writeFieldName(ECOSYSTEM_KEY);
@@ -256,6 +260,10 @@ public final class EntrySerializer extends StdSerializer<Entry> {
       JsonGenerator gen)
       throws IOException {
     gen.writeRawValue(ecosystemSpecific.value());
+  }
+
+  private static String writeTopLevelDatabaseSpecific(DatabaseSpecificValue databaseSpecificValue) {
+    return databaseSpecificValue.value();
   }
 
   private static void writeDatabaseSpecific(DatabaseSpecificValue databaseSpecificValue,

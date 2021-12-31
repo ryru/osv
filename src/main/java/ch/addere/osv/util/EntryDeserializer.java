@@ -11,6 +11,7 @@ import static ch.addere.osv.property.RelatedValue.RELATED_KEY;
 import static ch.addere.osv.property.SchemaVersionValue.SCHEMA_VERSION_KEY;
 import static ch.addere.osv.property.SummaryValue.SUMMARY_KEY;
 import static ch.addere.osv.property.WithdrawnValue.WITHDRAWN_KEY;
+import static ch.addere.osv.property.affected.DatabaseSpecificValue.DATABASE_SPECIFIC_KEY;
 import static ch.addere.osv.property.references.ReferenceTypeValue.REFERENCE_TYPE_KEY;
 import static ch.addere.osv.property.references.ReferenceUrlValue.REFERENCE_URL_KEY;
 
@@ -26,6 +27,7 @@ import ch.addere.osv.property.RelatedValue;
 import ch.addere.osv.property.SchemaVersionValue;
 import ch.addere.osv.property.SummaryValue;
 import ch.addere.osv.property.WithdrawnValue;
+import ch.addere.osv.property.affected.DatabaseSpecificValue;
 import ch.addere.osv.property.references.ReferenceTypeValue;
 import ch.addere.osv.property.references.ReferenceUrlValue;
 import ch.addere.osv.util.serializer.AffectedDeserializer;
@@ -48,6 +50,58 @@ public final class EntryDeserializer extends StdDeserializer<Entry> {
 
   EntryDeserializer() {
     this(null);
+  }
+
+  @Override
+  public Entry deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+    ObjectCodec codec = p.getCodec();
+    JsonNode node = codec.readTree(p);
+
+    if (node.get(ID_KEY) == null) {
+      throw new OsvParserException("deserialization error");
+    }
+    final IdValue id = readId(node.get(ID_KEY));
+    if (node.get(MODIFIED_KEY) == null) {
+      throw new OsvParserException("deserialization error");
+    }
+    ModifiedValue modified = readModified(node.get(MODIFIED_KEY));
+    Optional<SchemaVersionValue> schemaVersion = readSchemaVersion(node.get(SCHEMA_VERSION_KEY));
+    Optional<AliasesValue> aliases = readAliases(node.get(ALIASES_KEY));
+    Optional<RelatedValue> related = readIdAggregate(node.get(RELATED_KEY));
+    Optional<PublishedValue> published = readPublished(node.get(PUBLISHED_KEY));
+    Optional<WithdrawnValue> withdrawn = readWithdrawn(node.get(WITHDRAWN_KEY));
+    Optional<SummaryValue> summary = readSummary(node.get(SUMMARY_KEY));
+    Optional<DetailsValue> details = readDetails(node.get(DETAILS_KEY));
+    List<AffectedValues> affected = null;
+    JsonNode affectedNode = node.get(AFFECTED_KEY);
+    if (affectedNode != null && !affectedNode.isNull()) {
+      affected = AffectedDeserializer.deserialize(affectedNode);
+    }
+    List<ReferencesValues> references = null;
+    JsonNode referenceNode = node.get(REFERENCES_KEY);
+    if (referenceNode != null && !referenceNode.isNull()) {
+      references = readReferences(referenceNode);
+    }
+    Optional<DatabaseSpecificValue> databaseSpecific = readDatabaseSpecific(
+        node.get(DATABASE_SPECIFIC_KEY));
+
+    Entry.EntryBuilder builder = Entry.builder(id, modified)
+        .schemaVersion(schemaVersion.orElse(null))
+        .published(published.orElse(null))
+        .withdrawn(withdrawn.orElse(null))
+        .aliases(aliases.orElse(null))
+        .related(related.orElse(null))
+        .summary(summary.orElse(null))
+        .details(details.orElse(null))
+        .databaseSpecific(databaseSpecific.orElse(null));
+    if (affected != null) {
+      builder.affected(affected.toArray(new AffectedValues[0]));
+    }
+
+    if (references != null) {
+      builder.references(references.toArray(new ReferencesValues[0]));
+    }
+    return builder.build();
   }
 
   private EntryDeserializer(Class<?> vc) {
@@ -161,60 +215,18 @@ public final class EntryDeserializer extends StdDeserializer<Entry> {
     }
   }
 
+  private static Optional<DatabaseSpecificValue> readDatabaseSpecific(JsonNode databaseSpecific) {
+    if (isEmptyJsonNode(databaseSpecific)) {
+      return Optional.empty();
+    }
+    return Optional.of(DatabaseSpecificValue.fromString(databaseSpecific.asText()));
+  }
+
   private static boolean isEmptyJsonNode(JsonNode relatedNode) {
     return relatedNode == null || relatedNode.isNull();
   }
 
   private static Instant readInstant(JsonNode jsonNode) {
     return Instant.parse(jsonNode.asText());
-  }
-
-  @Override
-  public Entry deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-    ObjectCodec codec = p.getCodec();
-    JsonNode node = codec.readTree(p);
-
-    if (node.get(ID_KEY) == null) {
-      throw new OsvParserException("deserialization error");
-    }
-    final IdValue id = readId(node.get(ID_KEY));
-    if (node.get(MODIFIED_KEY) == null) {
-      throw new OsvParserException("deserialization error");
-    }
-    ModifiedValue modified = readModified(node.get(MODIFIED_KEY));
-    Optional<SchemaVersionValue> schemaVersion = readSchemaVersion(node.get(SCHEMA_VERSION_KEY));
-    Optional<AliasesValue> aliases = readAliases(node.get(ALIASES_KEY));
-    Optional<RelatedValue> related = readIdAggregate(node.get(RELATED_KEY));
-    Optional<PublishedValue> published = readPublished(node.get(PUBLISHED_KEY));
-    Optional<WithdrawnValue> withdrawn = readWithdrawn(node.get(WITHDRAWN_KEY));
-    Optional<SummaryValue> summary = readSummary(node.get(SUMMARY_KEY));
-    Optional<DetailsValue> details = readDetails(node.get(DETAILS_KEY));
-    List<AffectedValues> affected = null;
-    JsonNode affectedNode = node.get(AFFECTED_KEY);
-    if (affectedNode != null && !affectedNode.isNull()) {
-      affected = AffectedDeserializer.deserialize(affectedNode);
-    }
-    List<ReferencesValues> references = null;
-    JsonNode referenceNode = node.get(REFERENCES_KEY);
-    if (referenceNode != null && !referenceNode.isNull()) {
-      references = readReferences(referenceNode);
-    }
-
-    Entry.EntryBuilder builder = Entry.builder(id, modified)
-        .schemaVersion(schemaVersion.orElse(null))
-        .published(published.orElse(null))
-        .withdrawn(withdrawn.orElse(null))
-        .aliases(aliases.orElse(null))
-        .related(related.orElse(null))
-        .summary(summary.orElse(null))
-        .details(details.orElse(null));
-    if (affected != null) {
-      builder.affected(affected.toArray(new AffectedValues[0]));
-    }
-
-    if (references != null) {
-      builder.references(references.toArray(new ReferencesValues[0]));
-    }
-    return builder.build();
   }
 }

@@ -13,6 +13,7 @@ import ch.addere.osv.property.RelatedValue;
 import ch.addere.osv.property.SchemaVersionValue;
 import ch.addere.osv.property.SummaryValue;
 import ch.addere.osv.property.WithdrawnValue;
+import ch.addere.osv.property.affected.DatabaseSpecificValue;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -35,6 +36,7 @@ public final class Entry {
   private DetailsValue detailsValue;
   private List<AffectedValues> affected;
   private List<ReferencesValues> references;
+  private DatabaseSpecificValue databaseSpecific;
 
   private Entry(IdValue id, ModifiedValue modified) {
     this.id = id;
@@ -160,6 +162,15 @@ public final class Entry {
     }
   }
 
+  /**
+   * Get a DatabaseSpecificValue.
+   *
+   * @return DatabaseSpecificValue if present, otherwise empty optional
+   */
+  public Optional<DatabaseSpecificValue> databaseSpecific() {
+    return Optional.ofNullable(databaseSpecific);
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -195,7 +206,8 @@ public final class Entry {
             summary,
             detailsValue,
             affected,
-            references
+            references,
+            databaseSpecific
         )
         .filter(Objects::nonNull)
         .map(Objects::toString)
@@ -219,6 +231,7 @@ public final class Entry {
     private DetailsValue detailsValue = null;
     private List<AffectedValues> affected = null;
     private List<ReferencesValues> references = null;
+    private DatabaseSpecificValue databaseSpecific = null;
 
     /**
      * Entry builder.
@@ -333,6 +346,17 @@ public final class Entry {
     }
 
     /**
+     * Add DatabaseSpecificValue to property.
+     *
+     * @param databaseSpecific DatabaseSpecificValue to add
+     * @return valid EntryBuilder
+     */
+    public EntryBuilder databaseSpecific(DatabaseSpecificValue databaseSpecific) {
+      this.databaseSpecific = databaseSpecific;
+      return this;
+    }
+
+    /**
      * Build a concrete entry.
      *
      * @return valid entry
@@ -348,6 +372,7 @@ public final class Entry {
       entry.detailsValue = detailsValue;
       entry.affected = affected;
       entry.references = references;
+      entry.databaseSpecific = databaseSpecific;
       return entry;
     }
   }
