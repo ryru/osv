@@ -18,24 +18,11 @@ import org.junit.jupiter.api.Test;
 
 class TypeGitValuesTest {
 
-  private static GitEventValues introducedEvent() {
-    return GitEventValues.of(EventSpecifierValue.INTRODUCED, "1.0.0");
-  }
-
-  private static GitEventValues fixedEvent() {
-    return GitEventValues.of(EventSpecifierValue.FIXED, "1.0.1");
-  }
-
   @Test
   void testOfRepoNull() {
     assertThatThrownBy(() -> new TypeGitBuilder(null, introducedEvent()))
         .isInstanceOf(NullPointerException.class)
         .hasMessageContaining("argument repo must not be null");
-  }
-
-
-  private static RepoValue repo() {
-    return RepoValue.fromString("https://osv.dev");
   }
 
   @Test
@@ -65,13 +52,10 @@ class TypeGitValuesTest {
   }
 
   @Test
-  void testNonEquality() {
-    Ranges type = new TypeGitBuilder(repo(), introducedEvent()).build();
-    Ranges otherType = new TypeGitBuilder(repo(), fixedEvent()).build();
-    assertThat(type).satisfies(t -> {
-      assertThat(t).isNotEqualTo(null);
-      assertThat(t).isNotEqualTo(otherType);
-    });
+  void testMissingIntroducedEvent() {
+    assertThatThrownBy(() -> new TypeGitBuilder(repo(), fixedEvent()))
+        .isInstanceOf(IllegalStateException.class)
+        .hasMessageContaining("at least one 'introduced' event required");
   }
 
   @Test
@@ -110,6 +94,28 @@ class TypeGitValuesTest {
     List<? extends Event> events = typeEcosystem.events();
     assertThat(events.toArray()).containsExactly(
         GitEventValues.of(EventSpecifierValue.INTRODUCED, "1.0.0"));
+  }
+
+  @Test
+  void testNonEquality() {
+    Ranges type = new TypeGitBuilder(repo(), introducedEvent()).build();
+    Ranges otherType = new TypeGitBuilder(repo(), introducedEvent(), fixedEvent()).build();
+    assertThat(type).satisfies(t -> {
+      assertThat(t).isNotEqualTo(null);
+      assertThat(t).isNotEqualTo(otherType);
+    });
+  }
+
+  private static RepoValue repo() {
+    return RepoValue.fromString("https://osv.dev");
+  }
+
+  private static GitEventValues introducedEvent() {
+    return GitEventValues.of(EventSpecifierValue.INTRODUCED, "1.0.0");
+  }
+
+  private static GitEventValues fixedEvent() {
+    return GitEventValues.of(EventSpecifierValue.FIXED, "1.0.1");
   }
 
   private static String typeToString() {

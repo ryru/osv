@@ -18,24 +18,18 @@ import org.junit.jupiter.api.Test;
 
 class TypeSemVerValuesTest {
 
-
-  private static SemVerEventValues introducedEvent() {
-    return SemVerEventValues.of(EventSpecifierValue.INTRODUCED, "1.0.0");
-  }
-
-  private static SemVerEventValues fixedEvent() {
-    return SemVerEventValues.of(EventSpecifierValue.FIXED, "1.0.1");
-  }
-
-  private static RepoValue repo() {
-    return RepoValue.fromString("https://osv.dev");
-  }
-
   @Test
   void testOfEventsNull() {
     assertThatThrownBy(() -> new TypeSemVerBuilder((SemVerEventValues[]) null))
         .isInstanceOf(NullPointerException.class)
         .hasMessageContaining("argument events must not be null");
+  }
+
+  @Test
+  void testMissingIntroducedEvent() {
+    assertThatThrownBy(() -> new TypeSemVerBuilder(fixedEvent()))
+        .isInstanceOf(IllegalStateException.class)
+        .hasMessageContaining("at least one 'introduced' event required");
   }
 
   @Test
@@ -61,16 +55,6 @@ class TypeSemVerValuesTest {
     assertThat(type).satisfies(t -> {
       assertThat(t).isEqualTo(type);
       assertThat(t).isEqualTo(otherType);
-    });
-  }
-
-  @Test
-  void testNonEquality() {
-    Ranges type = new TypeSemVerBuilder(introducedEvent()).build();
-    Ranges otherType = new TypeSemVerBuilder(fixedEvent()).build();
-    assertThat(type).satisfies(t -> {
-      assertThat(t).isNotEqualTo(null);
-      assertThat(t).isNotEqualTo(otherType);
     });
   }
 
@@ -118,6 +102,28 @@ class TypeSemVerValuesTest {
     List<? extends Event> events = typeSemVer.events();
     assertThat(events.toArray()).containsExactly(
         SemVerEventValues.of(EventSpecifierValue.INTRODUCED, "1.0.0"));
+  }
+
+  @Test
+  void testNonEquality() {
+    Ranges type = new TypeSemVerBuilder(introducedEvent()).build();
+    Ranges otherType = new TypeSemVerBuilder(introducedEvent(), fixedEvent()).build();
+    assertThat(type).satisfies(t -> {
+      assertThat(t).isNotEqualTo(null);
+      assertThat(t).isNotEqualTo(otherType);
+    });
+  }
+
+  private static SemVerEventValues introducedEvent() {
+    return SemVerEventValues.of(EventSpecifierValue.INTRODUCED, "1.0.0");
+  }
+
+  private static RepoValue repo() {
+    return RepoValue.fromString("https://osv.dev");
+  }
+
+  private static SemVerEventValues fixedEvent() {
+    return SemVerEventValues.of(EventSpecifierValue.FIXED, "1.0.1");
   }
 
   private static String typeToString() {

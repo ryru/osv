@@ -18,24 +18,18 @@ import org.junit.jupiter.api.Test;
 
 class TypeEcosystemValuesTest {
 
-
-  private static EcosystemEventValues introducedEvent() {
-    return EcosystemEventValues.of(EventSpecifierValue.INTRODUCED, "1.0.0");
-  }
-
-  private static EcosystemEventValues fixedEvent() {
-    return EcosystemEventValues.of(EventSpecifierValue.FIXED, "1.0.1");
-  }
-
-  private static RepoValue repo() {
-    return RepoValue.fromString("https://osv.dev");
-  }
-
   @Test
   void testOfEventsNull() {
     assertThatThrownBy(() -> new TypeEcosystemBuilder((EcosystemEventValues[]) null))
         .isInstanceOf(NullPointerException.class)
         .hasMessageContaining("argument events must not be null");
+  }
+
+  @Test
+  void testMissingIntroducedEvent() {
+    assertThatThrownBy(() -> new TypeEcosystemBuilder(fixedEvent()))
+        .isInstanceOf(IllegalStateException.class)
+        .hasMessageContaining("at least one 'introduced' event required");
   }
 
   @Test
@@ -68,7 +62,7 @@ class TypeEcosystemValuesTest {
   @Test
   void testNonEquality() {
     Ranges type = new TypeEcosystemBuilder(introducedEvent()).build();
-    Ranges otherType = new TypeEcosystemBuilder(fixedEvent()).build();
+    Ranges otherType = new TypeEcosystemBuilder(introducedEvent(), fixedEvent()).build();
     assertThat(type).satisfies(t -> {
       assertThat(t).isNotEqualTo(null);
       assertThat(t).isNotEqualTo(otherType);
@@ -119,6 +113,18 @@ class TypeEcosystemValuesTest {
     List<? extends Event> events = typeEcosystem.events();
     assertThat(events.toArray()).containsExactly(
         EcosystemEventValues.of(EventSpecifierValue.INTRODUCED, "1.0.0"));
+  }
+
+  private static EcosystemEventValues introducedEvent() {
+    return EcosystemEventValues.of(EventSpecifierValue.INTRODUCED, "1.0.0");
+  }
+
+  private static EcosystemEventValues fixedEvent() {
+    return EcosystemEventValues.of(EventSpecifierValue.FIXED, "1.0.1");
+  }
+
+  private static RepoValue repo() {
+    return RepoValue.fromString("https://osv.dev");
   }
 
   private static String typeToString() {

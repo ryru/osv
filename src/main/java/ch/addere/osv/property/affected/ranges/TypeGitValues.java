@@ -1,6 +1,8 @@
 package ch.addere.osv.property.affected.ranges;
 
+import static ch.addere.osv.property.affected.ranges.events.EventSpecifierValue.INTRODUCED;
 import static java.lang.String.join;
+import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.joining;
 
 import ch.addere.osv.property.affected.Ranges;
@@ -85,6 +87,10 @@ public final class TypeGitValues implements Ranges {
       Objects.requireNonNull(events, "argument events must not be null");
       this.repo = repo;
       this.events = List.of(events);
+
+      if (stream(events).noneMatch(e -> e.event().equals(INTRODUCED))) {
+        throw new IllegalStateException("at least one 'introduced' event required");
+      }
     }
 
     /**

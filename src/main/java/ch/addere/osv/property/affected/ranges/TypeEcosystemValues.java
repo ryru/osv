@@ -1,5 +1,7 @@
 package ch.addere.osv.property.affected.ranges;
 
+import static ch.addere.osv.property.affected.ranges.events.EventSpecifierValue.INTRODUCED;
+import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.joining;
 
 import ch.addere.osv.property.affected.Ranges;
@@ -87,6 +89,10 @@ public final class TypeEcosystemValues implements Ranges {
     public TypeEcosystemBuilder(EcosystemEventValues... events) {
       Objects.requireNonNull(events, "argument events must not be null");
       this.events = List.of(events);
+
+      if (stream(events).noneMatch(e -> e.event().equals(INTRODUCED))) {
+        throw new IllegalStateException("at least one 'introduced' event required");
+      }
     }
 
     /**
