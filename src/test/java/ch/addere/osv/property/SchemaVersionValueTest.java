@@ -62,7 +62,7 @@ class SchemaVersionValueTest {
   @Test
   void testNonEquality() {
     SchemaVersionValue schemaVersion = SchemaVersionValue.fromString(SCHEMA_VERSION);
-    SchemaVersionValue otherSchemaVersion = SchemaVersionValue.fromString("1.0.1");
+    SchemaVersionValue otherSchemaVersion = SchemaVersionValue.fromString("1.1.0");
     assertThat(schemaVersion).satisfies(m -> {
       assertThat(m).isNotEqualTo(null);
       assertThat(m).isNotEqualTo(otherSchemaVersion);

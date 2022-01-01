@@ -3,6 +3,7 @@ package ch.addere.osv.util.serializer;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import ch.addere.osv.EntrySchemaVersion;
 import ch.addere.osv.property.AffectedValues;
 import ch.addere.osv.property.AffectedValues.AffectedValuesBuilder;
 import ch.addere.osv.property.affected.PackageValues;
@@ -86,7 +87,7 @@ class AffectedDeserializerTest {
 
   private static List<AffectedValues> deserialize(String jsonData)
       throws JsonProcessingException, OsvParserException {
-    return AffectedDeserializer.deserialize(toJsonNode(jsonData));
+    return AffectedDeserializer.deserialize(toJsonNode(jsonData), EntrySchemaVersion.latest());
   }
 
   private static PackageValueBuilder builder(EcosystemValue ecosystem, NameValue name) {

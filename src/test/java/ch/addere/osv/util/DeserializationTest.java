@@ -14,6 +14,7 @@ import ch.addere.osv.property.ModifiedValue;
 import ch.addere.osv.property.PublishedValue;
 import ch.addere.osv.property.ReferencesValues;
 import ch.addere.osv.property.RelatedValue;
+import ch.addere.osv.property.SchemaVersionValue;
 import ch.addere.osv.property.SummaryValue;
 import ch.addere.osv.property.affected.DatabaseSpecificValue;
 import ch.addere.osv.property.affected.EcosystemSpecificValue;
@@ -51,6 +52,7 @@ class DeserializationTest {
   private static final String PYTHON_EXAMPLE_PATH = "src/test/resources/python-example.json";
   private static final String RUBY_EXAMPLE_PATH = "src/test/resources/ruby-example.json";
   private static final String RUST_EXAMPLE_PATH = "src/test/resources/rust-example.json";
+  public static final String A_DATE = "2021-03-10T23:20:53Z";
 
   private static Entry deserialize(String jsonData) throws OsvParserException {
     return Deserializer.fromJson(jsonData);
@@ -68,14 +70,14 @@ class DeserializationTest {
   private static Entry minimalEntry() {
     return Entry.builder(
             IdValue.of(IdDatabaseValue.GO, "2021-99998"),
-            ModifiedValue.of(Instant.parse("2021-03-10T23:20:53Z")))
+            ModifiedValue.of(Instant.parse(A_DATE)))
         .build();
   }
 
   private static Entry goEntry() throws MalformedURLException {
     return Entry.builder(
             IdValue.of(IdDatabaseValue.GO, "2021-99998"),
-            ModifiedValue.of(Instant.parse("2021-03-10T23:20:53Z")))
+            ModifiedValue.of(Instant.parse(A_DATE)))
         .published(PublishedValue.of(Instant.parse("2021-01-21T19:15:00Z")))
         .aliases(AliasesValue.of(IdValue.of(IdDatabaseValue.CVE, "2021-3114")))
         .summary(SummaryValue.fromString("incorrect P-224 curve operations"))
@@ -111,7 +113,7 @@ class DeserializationTest {
   private static Entry goToolEntry() throws MalformedURLException {
     return Entry.builder(
             IdValue.of(IdDatabaseValue.GO, "2021-99999"),
-            ModifiedValue.of(Instant.parse("2021-03-10T23:20:53Z"))
+            ModifiedValue.of(Instant.parse(A_DATE))
         )
         .published(PublishedValue.of(Instant.parse("2021-01-21T19:15:00Z")))
         .aliases(AliasesValue.of(IdValue.of(IdDatabaseValue.CVE, "2021-3115")))
@@ -209,12 +211,13 @@ class DeserializationTest {
   private static Entry osvEntry() throws MalformedURLException {
     return Entry.builder(
             IdValue.of(IdDatabaseValue.OSV, "2020-584"),
-            ModifiedValue.of(Instant.parse("2021-03-09T04:49:05.965964Z"))
+            ModifiedValue.of(Instant.parse(A_DATE))
         )
-        .published(PublishedValue.of(Instant.parse("2020-07-01T00:00:18.401815Z")))
+        .schemaVersion(SchemaVersionValue.fromString("1.1.0"))
+        .published(PublishedValue.of(Instant.parse("2021-01-21T19:15:00Z")))
         .summary(SummaryValue.fromString("Heap-buffer-overflow in collator_compare_fuzzer.cpp"))
         .details(DetailsValue.fromString(
-            "OSS-Fuzz report: https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=15499\n\nCrash "
+            "OSS-Fuzz report: https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=15499\nCrash "
                 + "type: Heap-buffer-overflow WRITE 3\nCrash state:\ncollator_compare_fuzzer"
                 + ".cpp\n"))
         .references(ReferencesValues.of(
@@ -233,11 +236,6 @@ class DeserializationTest {
                             "c43455749b914feef56b178b256f29b3016146eb")
                     ).build()
                 )
-                .versions(VersionsValue.of("aVersion"))
-                .ecosystemSpecific(EcosystemSpecificValue.fromString("{\"severity\":\"HIGH\"}"))
-                .databaseSpecific(DatabaseSpecificValue.fromString(
-                    "{\"source\":\"https://github.com/google/oss-fuzz-vulns/blob/main/vulns/icu/"
-                        + "OSV-2020-584.yaml\"}"))
                 .build()
         )
         .build();
@@ -382,7 +380,7 @@ class DeserializationTest {
                 builder(EcosystemValue.CRATES_IO, NameValue.fromString("http")).build())
                 .ranges(
                     new TypeSemVerBuilder(
-                        SemVerEventValues.of(EventSpecifierValue.INTRODUCED, "0.0.0-0"),
+                        SemVerEventValues.of(EventSpecifierValue.INTRODUCED, "0"),
                         SemVerEventValues.of(EventSpecifierValue.FIXED, "0.1.20")
                     ).build())
                 .ecosystemSpecific(EcosystemSpecificValue.fromString("{\"functions\":"

@@ -2,6 +2,7 @@ package ch.addere.osv.property;
 
 import static java.lang.String.format;
 
+import ch.addere.osv.EntrySchemaVersion;
 import ch.addere.osv.Value;
 import de.skuzzle.semantic.Version;
 import de.skuzzle.semantic.Version.VersionFormatException;
@@ -15,6 +16,7 @@ public final class SchemaVersionValue implements Value<String> {
   public static final String SCHEMA_VERSION_KEY = "schema_version";
 
   private final Version schemaVersion;
+  private final EntrySchemaVersion schemaVersion2;
 
   private SchemaVersionValue(String schemaVersion) {
     try {
@@ -23,6 +25,7 @@ public final class SchemaVersionValue implements Value<String> {
       throw new IllegalArgumentException(
           format("invalid semantic version: '%s'", schemaVersion), e);
     }
+    schemaVersion2 = EntrySchemaVersion.fromVersionString(schemaVersion);
   }
 
   /**
@@ -42,6 +45,10 @@ public final class SchemaVersionValue implements Value<String> {
   @Override
   public String value() {
     return schemaVersion.toString();
+  }
+
+  public EntrySchemaVersion value2() {
+    return schemaVersion2;
   }
 
   @Override

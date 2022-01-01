@@ -7,6 +7,7 @@ import static ch.addere.osv.property.affected.PackageValues.PACKAGE_KEY;
 import static ch.addere.osv.property.affected.Ranges.RANGES_KEY;
 import static ch.addere.osv.property.affected.VersionsValue.VERSIONS_KEY;
 
+import ch.addere.osv.EntrySchemaVersion;
 import ch.addere.osv.property.AffectedValues;
 import ch.addere.osv.property.AffectedValues.AffectedValuesBuilder;
 import ch.addere.osv.property.affected.DatabaseSpecificValue;
@@ -38,11 +39,13 @@ public final class AffectedDeserializer {
    * @return Set of affected
    * @throws OsvParserException if parser exception
    */
-  public static List<AffectedValues> deserialize(JsonNode affectedNode) throws OsvParserException {
+  public static List<AffectedValues> deserialize(
+      JsonNode affectedNode,
+      EntrySchemaVersion schemaVersion) throws OsvParserException {
     if (affectedNode.isArray()) {
       List<AffectedValues> affectedSet = new LinkedList<>();
       for (JsonNode jsonNode : affectedNode) {
-        Optional<AffectedValues> affected = readAffected(jsonNode);
+        Optional<AffectedValues> affected = readAffected(jsonNode, schemaVersion);
         affected.ifPresent(affectedSet::add);
       }
       return affectedSet;
@@ -51,7 +54,9 @@ public final class AffectedDeserializer {
     }
   }
 
-  private static Optional<AffectedValues> readAffected(JsonNode affected)
+  private static Optional<AffectedValues> readAffected(
+      JsonNode affected,
+      EntrySchemaVersion schemaVersion)
       throws OsvParserException {
     PackageValues pckg = PackageDeserializer.deserialize(affected.get(PACKAGE_KEY));
     List<Ranges> ranges = List.of();
@@ -76,7 +81,7 @@ public final class AffectedDeserializer {
     databaseSpecificNode.ifPresent(
         jsonNode -> affectedValuesBuilder.databaseSpecific(readDatabaseSpecific(jsonNode)));
 
-    return Optional.of(affectedValuesBuilder.build());
+    return Optional.of(affectedValuesBuilder.entrySchemaVersion(schemaVersion).build());
   }
 
   private static VersionsValue readVersions(JsonNode versionsNode) {

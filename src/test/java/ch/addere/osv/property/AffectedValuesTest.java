@@ -1,5 +1,7 @@
 package ch.addere.osv.property;
 
+import static ch.addere.osv.EntrySchemaVersion.V_1_0_0;
+import static ch.addere.osv.EntrySchemaVersion.V_1_1_0;
 import static ch.addere.osv.property.AffectedValues.AFFECTED_KEY;
 import static ch.addere.osv.property.affected.DatabaseSpecificValue.DATABASE_SPECIFIC_KEY;
 import static ch.addere.osv.property.affected.EcosystemSpecificValue.ECOSYSTEM_SPECIFIC_KEY;
@@ -11,6 +13,7 @@ import static ch.addere.osv.property.affected.pckg.NameValue.NAME_KEY;
 import static ch.addere.osv.property.affected.pckg.PurlValue.PURL_KEY;
 import static ch.addere.osv.property.affected.ranges.Event.EVENTS_KEY;
 import static ch.addere.osv.property.affected.ranges.RangeTypeValue.TYPE_KEY;
+import static ch.addere.osv.property.affected.ranges.events.EventSpecifierValue.INTRODUCED;
 import static java.lang.String.join;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -25,42 +28,21 @@ import ch.addere.osv.property.affected.VersionsValue;
 import ch.addere.osv.property.affected.pckg.EcosystemValue;
 import ch.addere.osv.property.affected.pckg.NameValue;
 import ch.addere.osv.property.affected.pckg.PurlValue;
+import ch.addere.osv.property.affected.ranges.RepoValue;
+import ch.addere.osv.property.affected.ranges.TypeGitValues.TypeGitBuilder;
 import ch.addere.osv.property.affected.ranges.TypeSemVerValues.TypeSemVerBuilder;
-import ch.addere.osv.property.affected.ranges.events.EventSpecifierValue;
+import ch.addere.osv.property.affected.ranges.events.GitEventValues;
 import ch.addere.osv.property.affected.ranges.events.SemVerEventValues;
 import org.junit.jupiter.api.Test;
 
 class AffectedValuesTest {
 
   private static final String VERSION = "aVersion";
+  public static final String VER_100 = "1.0.0";
 
   @Test
   void testJsonKey() {
     assertThat(AFFECTED_KEY).isEqualTo("affected");
-  }
-
-  private static AffectedValuesBuilder builder(PackageValues pckg) {
-    return new AffectedValuesBuilder(pckg);
-  }
-
-  private static PackageValues pckg() {
-    return new PackageValueBuilder(EcosystemValue.GO, NameValue.fromString("aName"))
-        .purl(PurlValue.fromString("pkg:deb/debian/curl@7.50.3-1?arch=i386&distro=jessie"))
-        .build();
-  }
-
-  private static Ranges ranges() {
-    return new TypeSemVerBuilder(
-        SemVerEventValues.of(EventSpecifierValue.INTRODUCED, "1.0.0"))
-        .build();
-  }
-
-  private static EcosystemSpecificValue ecosystemSpecific() {
-    return EcosystemSpecificValue.fromString("an ecosystem specific value");
-  }
-
-  private static DatabaseSpecificValue databaseSpecific() {
-    return DatabaseSpecificValue.fromString("a database specific value");
   }
 
   @Test
@@ -91,10 +73,6 @@ class AffectedValuesTest {
         .hasMessageContaining("argument ecosystem specific must not be null");
   }
 
-  private static VersionsValue versions() {
-    return VersionsValue.of("1.0.0");
-  }
-
   @Test
   void testOfDatabaseSpecificNull() {
     assertThatThrownBy(() -> builder(pckg()).databaseSpecific(null))
@@ -105,14 +83,14 @@ class AffectedValuesTest {
   @Test
   void testValidAffected() {
     AffectedValues affected = builder(pckg())
-        .ranges(ranges())
+        .ranges(rangesOfSemVer())
         .versions(versions())
         .databaseSpecific(databaseSpecific())
         .ecosystemSpecific(ecosystemSpecific())
         .build();
     assertThat(affected).satisfies(aff -> {
       assertThat(aff.pckg()).isEqualTo(pckg());
-      assertThat(aff.ranges().toArray()).containsExactly(ranges());
+      assertThat(aff.ranges().toArray()).containsExactly(rangesOfSemVer());
       assertThat(aff.versions()).contains(versions());
       assertThat(aff.databaseSpecific()).contains(databaseSpecific());
       assertThat(aff.ecosystemSpecific()).contains(ecosystemSpecific());
@@ -133,19 +111,31 @@ class AffectedValuesTest {
   @Test
   void testValidAffectedWithSemVerRange() {
     AffectedValues affected = builder(pckg())
-        .ranges(ranges())
+        .ranges(rangesOfSemVer())
         .build();
     assertThat(affected).satisfies(aff -> {
       assertThat(aff.pckg()).isEqualTo(pckg());
-      assertThat(aff.ranges().toArray()).containsExactly(ranges());
+      assertThat(aff.ranges().toArray()).containsExactly(rangesOfSemVer());
+    });
+  }
+
+  @Test
+  void testValidAffectedWithoutVersionOrSemVerRange() {
+    AffectedValues affected = builder(pckg())
+        .ranges(rangesOfGit())
+        .entrySchemaVersion(V_1_1_0)
+        .build();
+    assertThat(affected).satisfies(aff -> {
+      assertThat(aff.pckg()).isEqualTo(pckg());
+      assertThat(aff.ranges().toArray()).containsExactly(rangesOfGit());
     });
   }
 
   @Test
   void testInvalidAffectedWithoutVersionOrSemVerRange() {
-    assertThatThrownBy(() -> builder(pckg()).build())
+    assertThatThrownBy(() -> builder(pckg()).entrySchemaVersion(V_1_0_0).build())
         .isInstanceOf(IllegalStateException.class)
-        .hasMessageContaining("no versions or no range of type semantic version");
+        .hasMessageContaining("validation for schema version 1.0.0 failed: versions is required");
   }
 
   @Test
@@ -175,11 +165,11 @@ class AffectedValuesTest {
   @Test
   void testHashCode() {
     AffectedValues affected = builder(pckg())
-        .ranges(ranges())
+        .ranges(rangesOfSemVer())
         .versions(VersionsValue.of(VERSION))
         .build();
     AffectedValues otherAffected = builder(pckg())
-        .ranges(ranges())
+        .ranges(rangesOfSemVer())
         .versions(VersionsValue.of(VERSION))
         .build();
     assertThat(affected).hasSameHashCodeAs(otherAffected);
@@ -188,7 +178,7 @@ class AffectedValuesTest {
   @Test
   void testToString() {
     AffectedValues affected = builder(pckg())
-        .ranges(ranges())
+        .ranges(rangesOfSemVer())
         .versions(VersionsValue.of(VERSION))
         .ecosystemSpecific(
             EcosystemSpecificValue.fromString("{\"some\":\"ecosystem specific properties\"}"))
@@ -210,6 +200,41 @@ class AffectedValuesTest {
         packageEcosystemToString(),
         packageNameToString(),
         packagePurlToString());
+  }
+
+  private static AffectedValuesBuilder builder(PackageValues pckg) {
+    return new AffectedValuesBuilder(pckg);
+  }
+
+  private static PackageValues pckg() {
+    return new PackageValueBuilder(EcosystemValue.GO, NameValue.fromString("aName"))
+        .purl(PurlValue.fromString("pkg:deb/debian/curl@7.50.3-1?arch=i386&distro=jessie"))
+        .build();
+  }
+
+  private static Ranges rangesOfSemVer() {
+    return new TypeSemVerBuilder(
+        SemVerEventValues.of(INTRODUCED, VER_100))
+        .build();
+  }
+
+  private static Ranges rangesOfGit() {
+    return new TypeGitBuilder(
+        RepoValue.fromString("https://osv.dev"),
+        GitEventValues.of(INTRODUCED, "aGitCommit"))
+        .build();
+  }
+
+  private static EcosystemSpecificValue ecosystemSpecific() {
+    return EcosystemSpecificValue.fromString("an ecosystem specific value");
+  }
+
+  private static DatabaseSpecificValue databaseSpecific() {
+    return DatabaseSpecificValue.fromString("a database specific value");
+  }
+
+  private static VersionsValue versions() {
+    return VersionsValue.of(VER_100);
   }
 
   private static String packageEcosystemToString() {
@@ -235,7 +260,7 @@ class AffectedValuesTest {
   }
 
   private static String rangesEventsToString() {
-    return EVENTS_KEY + ": " + join(", ", "introduced", "1.0.0");
+    return EVENTS_KEY + ": " + join(", ", "introduced", VER_100);
   }
 
   private static String versionsToString() {

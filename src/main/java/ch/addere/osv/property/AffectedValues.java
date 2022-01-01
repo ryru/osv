@@ -1,17 +1,23 @@
 package ch.addere.osv.property;
 
+import static ch.addere.osv.EntrySchemaVersion.V_1_0_0;
+import static ch.addere.osv.EntrySchemaVersion.latest;
+import static ch.addere.osv.property.affected.VersionsValue.VERSIONS_KEY;
+import static ch.addere.osv.property.affected.ranges.RangeTypeValue.SEMVER;
+import static java.lang.String.format;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Stream.concat;
 
+import ch.addere.osv.EntrySchemaVersion;
 import ch.addere.osv.property.affected.DatabaseSpecificValue;
 import ch.addere.osv.property.affected.EcosystemSpecificValue;
 import ch.addere.osv.property.affected.PackageValues;
 import ch.addere.osv.property.affected.Ranges;
 import ch.addere.osv.property.affected.VersionsValue;
-import ch.addere.osv.property.affected.ranges.RangeTypeValue;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 /**
@@ -98,6 +104,7 @@ public final class AffectedValues {
    */
   public static final class AffectedValuesBuilder {
 
+    private EntrySchemaVersion entrySchemaVersion;
     private final PackageValues pckg;
     private List<Ranges> ranges = List.of();
     private VersionsValue versions = null;
@@ -111,7 +118,13 @@ public final class AffectedValues {
      */
     public AffectedValuesBuilder(PackageValues pckg) {
       Objects.requireNonNull(pckg, "argument package must not be null");
+      this.entrySchemaVersion = latest();
       this.pckg = pckg;
+    }
+
+    public AffectedValuesBuilder entrySchemaVersion(EntrySchemaVersion entrySchemaVersion) {
+      this.entrySchemaVersion = entrySchemaVersion;
+      return this;
     }
 
     /**
@@ -165,26 +178,36 @@ public final class AffectedValues {
     /**
      * Build a concrete Affected property.
      *
-     * @return valid Affected
+     * @return valid AffectedValue
      */
     public AffectedValues build() {
-      if (validate()) {
-        return new AffectedValues(pckg, ranges, versions, ecosystemSpecific, databaseSpecificValue);
-      } else {
-        throw new IllegalStateException("no versions or no range of type semantic version");
+      isValidAffectedValue();
+      return new AffectedValues(pckg, ranges, versions, ecosystemSpecific, databaseSpecificValue);
+    }
+
+    private void isValidAffectedValue() {
+      if (entrySchemaVersion == V_1_0_0) {
+        validate(hasVersionProperty, this, format("%s is required", VERSIONS_KEY));
+        validate(hasRangeOfSemVerType, this, "range must have one SemVer type");
       }
     }
 
-    private boolean validate() {
-      return hasVersions() || hasRangeOfSemVer();
-    }
+    private final Predicate<AffectedValuesBuilder> hasVersionProperty = affected ->
+        affected.versions != null && affected.versions.value().stream().findAny().isPresent();
 
-    private boolean hasVersions() {
-      return versions != null && versions.value().stream().findAny().isPresent();
-    }
+    private final Predicate<AffectedValuesBuilder> hasRangeOfSemVerType = affected ->
+        affected.ranges.stream().anyMatch(range -> range.type() == SEMVER);
 
-    private boolean hasRangeOfSemVer() {
-      return ranges.stream().anyMatch(range -> range.type() == RangeTypeValue.SEMVER);
+    private void validate(
+        Predicate<AffectedValuesBuilder> predicate,
+        AffectedValuesBuilder builder,
+        String failMsg) {
+      if (!predicate.test(builder)) {
+        throw new IllegalStateException(
+            format("validation for schema version %s failed: %s",
+                entrySchemaVersion.value(),
+                failMsg));
+      }
     }
   }
 }

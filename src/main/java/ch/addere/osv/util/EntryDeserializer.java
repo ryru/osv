@@ -16,6 +16,7 @@ import static ch.addere.osv.property.references.ReferenceTypeValue.REFERENCE_TYP
 import static ch.addere.osv.property.references.ReferenceUrlValue.REFERENCE_URL_KEY;
 
 import ch.addere.osv.Entry;
+import ch.addere.osv.EntrySchemaVersion;
 import ch.addere.osv.property.AffectedValues;
 import ch.addere.osv.property.AliasesValue;
 import ch.addere.osv.property.DetailsValue;
@@ -75,7 +76,11 @@ public final class EntryDeserializer extends StdDeserializer<Entry> {
     List<AffectedValues> affected = null;
     JsonNode affectedNode = node.get(AFFECTED_KEY);
     if (affectedNode != null && !affectedNode.isNull()) {
-      affected = AffectedDeserializer.deserialize(affectedNode);
+      if (schemaVersion.isPresent()) {
+        affected = AffectedDeserializer.deserialize(affectedNode, schemaVersion.get().value2());
+      } else {
+        affected = AffectedDeserializer.deserialize(affectedNode, EntrySchemaVersion.latest());
+      }
     }
     List<ReferencesValues> references = null;
     JsonNode referenceNode = node.get(REFERENCES_KEY);
