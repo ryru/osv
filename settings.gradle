@@ -1,2 +1,4 @@
-rootProject.name = 'osv'
+rootProject.name = 'osvs'
 
+include 'osvs-lib'
+include 'osvs-app'
