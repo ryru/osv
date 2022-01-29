@@ -1,6 +1,5 @@
 package ch.addere.osvs.app;
 
-
 import ch.addere.osvs.lib.field.*;
 import ch.addere.osvs.lib.field.types.IdDb;
 import ch.addere.osvs.lib.field.types.Reference;
@@ -11,7 +10,7 @@ import java.net.URL;
 
 public class App {
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws MalformedURLException {
     IdDb db = IdDb.GSD;
     IdField id = IdField.of(db, "someId42");
     IdField id2 = IdField.of("1.1.0", db, "");
@@ -29,7 +28,13 @@ public class App {
     System.out.println("---");
     System.out.println("key = " + refType().getKey() + ", value = " + refType().getValue());
     System.out.println("key = " + refUrl().getKey() + ", value = " + refUrl().getValue());
-    System.out.println("key = " + referencesField.getKey() + ", value = " + referencesField.getValue());
+    System.out.println(
+        "key = " + referencesField.getKey() + ", value = " + referencesField.getValue());
+    System.out.println("---");
+
+    PackagePurlField purl =
+        PackagePurlField.of("pkg:bitbucket/birkenfeld/pygments-main@244fd47e07d1014f0aed9c");
+    System.out.println(purl);
   }
 
   private static ReferencesTypeField refType() {
