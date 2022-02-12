@@ -7,3 +7,7 @@
 .gradle
 /build/
 
+osvs-app/
+osvs-app/src/main/java/ch/addere/osvs/app/ch.addere.osvs.app.App.java
+osvs-lib/build/
+
